@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """ matrix_shape function
 
-Write a function def matrix_shape(matrix): that calculates the shape of a matrix:
+Write a function def matrix_shape(matrix): that calculates the shape of a
+matrix:
  * You can assume all elements in the same dimension are of the same type/shape
  * The shape should be returned as a list of integers
 """
@@ -23,7 +24,8 @@ def matrix_shape(matrix):
     while isinstance(matrix, list):
         # Append the length of the current dimension to the shape list
         shape.append(len(matrix))
-        # Move to the next dimension by taking the first element of the current dimension
+        # Move to the next dimension by taking the first element of the current
+        # dimension
         matrix = matrix[0] if matrix else None
 
     # Return the shape list
