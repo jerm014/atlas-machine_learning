@@ -20,7 +20,7 @@ def add_matrices2D(mat1, mat2):
 
     Returns:
         list: A new 2D matrix containing the element-wise sum of mat1 and mat2.
-              If mat1 and mat2 are not the same shape, returns None.  
+              If mat1 and mat2 are not the same shape, returns None.
     """
     if len(mat1) != len(mat2) or len(mat1[0]) != len(mat2[0]):
         return None
@@ -32,4 +32,4 @@ def add_matrices2D(mat1, mat2):
             row.append(mat1[i][j] + mat2[i][j])
         result.append(row)
 
-    return result 
+    return result
