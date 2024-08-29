@@ -20,7 +20,6 @@ def np_shape(matrix):
         tuple: A tuple of integers representing the shape of the array.
 
     Note:
-        This function does not use loops, conditional statements, or
-        try/except.
+        This function does not use loops, conditional statements, ortry/except.
     """
-    return tuple(map(len, (matrix,) + matrix))
+    return matrix.shape
