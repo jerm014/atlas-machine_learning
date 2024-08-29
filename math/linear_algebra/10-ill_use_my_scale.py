@@ -24,4 +24,4 @@ def np_shape(matrix):
         This function does not use loops, conditional statements, or
         try/except.
     """
-    return matrix.shape
+    return tuple(map(len, (matrix,) + matrix))
