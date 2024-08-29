@@ -27,9 +27,4 @@ def np_elementwise(mat1, mat2):
         This function assumes mat1 and mat2 can be interpreted as
         numpy.ndarrays and are never empty.
     """
-    return (
-        mat1 + mat2,
-        mat1 - mat2,
-        mat1 * mat2,
-        mat1 / mat2
-    )
+    return (mat1 + mat2, mat1 - mat2, mat1 * mat2, mat1 / mat2)
