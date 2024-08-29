@@ -8,6 +8,7 @@ Write a function def matrix_transpose(matrix): that returns the transpose of a
 * You can assume all elements in the same dimension are of the same type/shape
 """
 
+
 def matrix_transpose(matrix):
     """
     Return the transpose of a 2D matrix.
@@ -39,4 +40,3 @@ def matrix_transpose(matrix):
             transposed[j][i] = matrix[i][j]
 
     return transposed
-
