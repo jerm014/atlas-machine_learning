@@ -7,6 +7,7 @@ matrix:
  * The shape should be returned as a list of integers
 """
 
+
 def matrix_shape(matrix):
     """
     Calculates the shape of a matrix.
