@@ -11,4 +11,5 @@ import numpy as np
 
 
 def np_matmul(mat1, mat2):
+    """ multiply matrices using numpy """
     return (mat1 @ mat2)
