@@ -18,12 +18,14 @@ def mat_mul(mat1, mat2):
         mat2 (list of lists): The second input matrix.
 
     Returns:
-        list of lists or None: A new matrix that is the product of mat1 and mat2,
-                               or None if the matrices cannot be multiplied.
+        list of lists or None: A new matrix that is the product of mat1 and
+                               mat2, or None if the matrices cannot be
+                               multiplied.
 
     Note:
         - Assumes mat1 and mat2 are 2D matrices containing ints/floats.
-        - Assumes all elements in the same dimension are of the same type/shape.
+        - Assumes all elements in the same dimension are of the same
+          type/shape.
     """
     # Check if matrices can be multiplied
     if len(mat1[0]) != len(mat2):
