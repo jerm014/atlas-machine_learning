@@ -7,7 +7,6 @@ numpy.ndarray:
  * You are not allowed to use try/except statements
  * The shape should be returned as a tuple of integers
 """
-import numpy as np
 
 
 def np_shape(matrix):
