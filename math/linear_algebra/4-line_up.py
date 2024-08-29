@@ -14,7 +14,7 @@ def add_arrays(arr1, arr2):
     If the arrays are not of the same length, returns None.
     """
     if not arr1 or not arr2:
-        return None
+        return []
     if len(arr1) != len(arr2):
         return None
 
