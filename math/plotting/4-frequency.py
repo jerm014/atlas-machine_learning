@@ -12,7 +12,7 @@ def frequency():
 
     # Create histogram
     plt.hist(student_grades, bins=range(0, 101, 10), edgecolor='black',
-             linewidth=1))
+             linewidth=1)
 
     # Set those labels for x-axis and y-axis
     plt.xlabel('Grades')
