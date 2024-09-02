@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def frequency():
     """ show frequency graph """
     np.random.seed(5)
