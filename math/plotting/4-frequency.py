@@ -20,8 +20,8 @@ def frequency():
     # Set some title
     plt.title('Project A')
 
-    # Set the x-axis range
-    plt.xlim(0, 100)
+    # Set x-axis ticks to show bins every 10 units
+    plt.xticks(np.arange(0, 101, 10))
 
     # Display the plot
     plt.show()
