@@ -13,7 +13,7 @@ def poly_integral(poly, C=0):
         return None
 
     if sum(poly):
-        out = [fints(c/(i + 1)) for i, c in enumerate(poly)]
+        out = [fint(c/(i + 1)) for i, c in enumerate(poly)]
     else:
         out = []
 
