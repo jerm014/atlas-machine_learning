@@ -1,0 +1,5 @@
+power rule of integrals
+if f(x) = x^n: f(x^2) dx = x^n+1 over n+1
+
+example x^3: x^4 over 4
+
