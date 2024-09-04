@@ -6,7 +6,7 @@ def poly_integral(poly, C=0):
     """
     write better documentation.
     """
-    if not poly or type(poly) is not list
+    if not poly or type(poly) is not list:
         return None
 
     if type(C) is not int:
