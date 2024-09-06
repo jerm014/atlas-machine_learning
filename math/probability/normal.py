@@ -87,10 +87,13 @@ class Normal:
             float: The CDF value for x.
         """
         erf = erf(self.z_score(x))
-        if x >= 0 sign = 1 else sign = -1
+        sign = -1
+        if x >= 0:
+          sign = 1
 
         # Calculate the CDF
         return 0.5 * (1 + sign * erf)
+
 
 def erf(x):
   """ approximation for erf """
@@ -103,7 +106,10 @@ def erf(x):
     p  =  0.3275911
 
     # Save the sign of x
-    if x >= 0 sign = 1 else sign = -1
+    sign = -1
+    if x >= 0:
+      sign = 1
+
     x = abs(x)
 
     # A&S formula 7.1.26
