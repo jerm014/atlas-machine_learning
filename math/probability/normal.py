@@ -89,14 +89,14 @@ class Normal:
         erf = erf(self.z_score(x))
         sign = -1
         if x >= 0:
-          sign = 1
+            sign = 1
 
         # Calculate the CDF
         return 0.5 * (1 + sign * erf)
 
 
 def erf(x):
-  """ approximation for erf """
+    """ approximation for erf """
     # Constants
     a1 =  0.254829592
     a2 = -0.284496736
@@ -108,7 +108,7 @@ def erf(x):
     # Save the sign of x
     sign = -1
     if x >= 0:
-      sign = 1
+        sign = 1
 
     x = abs(x)
 
