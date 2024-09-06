@@ -42,7 +42,7 @@ class Exponential:
         """
         if x < 0:
             return 0
-        
+
         # do not i m p o r t math
         e = 2.7182818285
 
