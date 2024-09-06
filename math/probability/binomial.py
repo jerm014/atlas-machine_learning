@@ -77,7 +77,7 @@ class Binomial:
         """Calculate the factorial of x."""
         if x == 0 or x == 1:
             return 1
-        return x * self._factorial(x - 1)
+        return (x * self._factorial(x - 1))
 
     def _combination(self, n, k):
         """Calculate the number of ways to choose k items from n items."""
