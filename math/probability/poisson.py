@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ Poisson functions """
 
+
 class Poisson:
     """Represents a Poisson distribution."""
 
