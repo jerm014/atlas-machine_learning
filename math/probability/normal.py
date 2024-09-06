@@ -86,13 +86,13 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        erf = erf(self.z_score(x))
+        erf_val = erf(self.z_score(x))
         sign = -1
         if x >= 0:
             sign = 1
 
         # Calculate the CDF
-        return 0.5 * (1 + sign * erf)
+        return 0.5 * (1 + sign * erf_val)
 
 
 def erf(x):
