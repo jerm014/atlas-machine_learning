@@ -86,7 +86,7 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        erf_val = self.erf(self.z_score(x))
+        erf_val = Normal.erf(self.z_score(x))
         sign = -1
         if x >= 0:
             sign = 1
@@ -115,7 +115,7 @@ class Normal:
         # A&S formula 7.1.26
         t = 1.0 / (1.0 + p * x)
         y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) *
-                   t + a1) * t * self.exp(-x * x)
+                   t + a1) * t * Normal.exp(-x * x)
 
         return sign * y
 
