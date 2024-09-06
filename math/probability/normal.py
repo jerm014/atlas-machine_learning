@@ -86,7 +86,7 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        erf_val = erf(self.z_score(x))
+        erf_val = self.erf(self.z_score(x))
         sign = -1
         if x >= 0:
             sign = 1
