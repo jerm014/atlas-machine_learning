@@ -78,7 +78,8 @@ class Normal:
 
     def cdf(self, x):
         """
-        Calculate the value of the CDF for a given x-value.
+        Calculate the value of the CDF for a given x-value, using the Hart
+        approximation.
 
         Args:
             x (float): The x-value.
@@ -86,48 +87,27 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        erf_val = Normal.erf(self.z_score(x))
-        sign = -1
-        if x >= 0:
-            sign = 1
-
-        # Calculate the CDF
-        return 0.5 * (1 + sign * erf_val)
-
-    @staticmethod
-    def erf(x):
-        """ approximation for erf """
-        # Constants
-        a1 =  0.254829592
-        a2 = -0.284496736
-        a3 =  1.421413741
-        a4 = -1.453152027
-        a5 =  1.061405429
-        p  =  0.3275911
-
-        # Save the sign of x
-        sign = -1
-        if x >= 0:
-            sign = 1
-
-        x = abs(x)
-
-        # A&S formula 7.1.26
-        t = 1.0 / (1.0 + p * x)
-        y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) *
-                   t + a1) * t * Normal.exp(-x * x)
-
-        return sign * y
-
-    @staticmethod
-    def exp(x):
-        """
-        Taylor series approximation for e^x
-        """
-        n = 20  # Number of terms in the series
-        result = 1.0
-        term = 1.0
-        for i in range(1, n):
-            term *= x / i
-            result += term
-        return result
+        z = self.z_score(x)
+        
+        # Constants for approximation
+        b0 = 0.2316419
+        b1 = 0.319381530
+        b2 = -0.356563782
+        b3 = 1.781477937
+        b4 = -1.821255978
+        b5 = 1.330274429
+        pi = 3.1415926536
+        e = 2.7182818285
+        
+        t = 1 / (1 + b0 * abs(z))
+        
+        # Approximation formula
+        cdf = 1 - (1 / ((2 * pi) ** 0.5)) * \
+              e ** (-0.5 * z * z) * \
+              (b1 * t + b2 * t**2 + b3 * t**3 + b4 * t**4 + b5 * t**5)
+        
+        # Adjust for negative z
+        if z < 0:
+            cdf = 1 - cdf
+        
+        return cdf
