@@ -81,7 +81,7 @@ class Binomial:
 
     def _combination(self, n, k):
         """Calculate the number of ways to choose k items from n items."""
-        return (self._factorial(n) // 
+        return (self._factorial(n) //
                 (self._factorial(k) * self._factorial(n - k)))
 
     def pmf(self, k):
@@ -97,5 +97,5 @@ class Binomial:
         k = int(k)
         if k < 0 or k > self.n:
             return 0
-        return (self._combination(self.n, k) * (self.p ** k) * 
+        return (self._combination(self.n, k) * (self.p ** k) *
                 ((1 - self.p) ** (self.n - k)))
