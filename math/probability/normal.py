@@ -103,8 +103,8 @@ class Normal:
 
         # Approximation formula
         cdf = 1 - (1 / ((2 * pi) ** 0.5)) * \
-              e ** (-0.5 * z * z) * \
-              (b1 * t + b2 * t**2 + b3 * t**3 + b4 * t**4 + b5 * t**5)
+            e ** (-0.5 * z * z) * \
+            (b1 * t + b2 * t ** 2 + b3 * t ** 3 + b4 * t ** 4 + b5 * t ** 5)
 
         # Adjust for negative z
         if z < 0:
