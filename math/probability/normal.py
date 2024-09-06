@@ -88,7 +88,7 @@ class Normal:
             float: The CDF value for x.
         """
         z = self.z_score(x)
-        
+
         # Constants for approximation
         b0 = 0.2316419
         b1 = 0.319381530
@@ -98,16 +98,16 @@ class Normal:
         b5 = 1.330274429
         pi = 3.1415926536
         e = 2.7182818285
-        
+
         t = 1 / (1 + b0 * abs(z))
-        
+
         # Approximation formula
         cdf = 1 - (1 / ((2 * pi) ** 0.5)) * \
               e ** (-0.5 * z * z) * \
               (b1 * t + b2 * t**2 + b3 * t**3 + b4 * t**4 + b5 * t**5)
-        
+
         # Adjust for negative z
         if z < 0:
             cdf = 1 - cdf
-        
+
         return cdf
