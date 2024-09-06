@@ -43,7 +43,7 @@ class Exponential:
         if x < 0:
             return 0
         
-        # do not import math
+        # do not i m p o r t math
         e = 2.7182818285
 
         return self.lambtha * (e ** (-self.lambtha * x))
