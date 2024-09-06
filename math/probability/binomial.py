@@ -24,6 +24,7 @@ Note:
     built-in Python functions.
 """
 
+
 class Binomial:
     """
     Represents a binomial distribution.
