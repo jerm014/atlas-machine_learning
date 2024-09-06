@@ -86,26 +86,41 @@ class Normal:
         Returns:
             float: The CDF value for x.
         """
-        z = self.z_score(x)
-        
-        # Constants for approximation
-        a1 = 0.254829592
-        a2 = -0.284496736
-        a3 = 1.421413741
-        a4 = -1.453152027
-        a5 = 1.061405429
-        p = 0.3275911
-        
-        # Take the absolute value of z
-        sign = 1
-        if z < 0:
-            sign = -1
-        z = abs(z) / (2 ** 0.5)
-        
-        # Approximation formula
-        t = 1.0 / (1.0 + p * z)
-        erf = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * \
-              2.7182818285 ** (-z * z)
-        
+        erf = erf(self.z_score(x))
+        if x >= 0 sign = 1 else sign = -1
+
         # Calculate the CDF
         return 0.5 * (1 + sign * erf)
+
+def erf(x):
+  """ approximation for erf """
+    # Constants
+    a1 =  0.254829592
+    a2 = -0.284496736
+    a3 =  1.421413741
+    a4 = -1.453152027
+    a5 =  1.061405429
+    p  =  0.3275911
+
+    # Save the sign of x
+    if x >= 0 sign = 1 else sign = -1
+    x = abs(x)
+
+    # A&S formula 7.1.26
+    t = 1.0 / (1.0 + p * x)
+    y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t *
+               exp(-x * x)
+
+    return sign * y
+
+def exp(x):
+    """
+    Taylor series approximation for e^x
+    """
+    n = 20  # Number of terms in the series
+    result = 1.0
+    term = 1.0
+    for i in range(1, n):
+        term *= x / i
+        result += term
+    return result
