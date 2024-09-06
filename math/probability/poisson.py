@@ -44,11 +44,9 @@ class Poisson:
         if k < 0:
             return 0
 
-        # use e from the project requirements:
-        e_lambda = 2.7182818285
-
-        # or calculate it this way?
-        e_lambda = (1 - self.lambtha/1000000) ** 1000000
+        # Calculate e^(-λ) using e = 2.7182818285 from the project requirements
+        e = 2.7182818285
+        e_lambda = e ** (-self.lambtha)
 
         # Calculate λ^k without math
         lambda_k = self.lambtha ** k
