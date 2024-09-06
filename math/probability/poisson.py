@@ -43,5 +43,16 @@ class Poisson:
         k = int(k)
         if k < 0:
             return 0
-        return (math.exp(-self.lambtha) *
-          (self.lambtha ** k)) / math.factorial(k)
+        
+        # use e from the project requirements:
+        e_lambda = 2.7182818285
+        
+        # Calculate λ^k without math
+        lambda_k = self.lambtha ** k
+        
+        # Calculate k! without math
+        factorial_k = 1
+        for i in range(1, k + 1):
+            factorial_k *= i
+        
+        return (e_lambda * lambda_k) / factorial_k
