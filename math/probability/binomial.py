@@ -99,3 +99,20 @@ class Binomial:
             return 0
         return (self._combination(self.n, k) * (self.p ** k) *
                 ((1 - self.p) ** (self.n - k)))
+
+    def cdf(self, k):
+        """
+        Calculate the Cumulative Distribution Function (CDF) for k successes.
+
+        Args:
+            k (int): Number of successes.
+
+        Returns:
+            float: The CDF value for k successes.
+        """
+        k = int(k)
+        if k < 0:
+            return 0
+        if k >= self.n:
+            return 1
+        return sum(self.pmf(i) for i in range(k + 1))
