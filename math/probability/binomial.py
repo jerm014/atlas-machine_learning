@@ -72,3 +72,19 @@ class Binomial:
         self.p = sum(data) / len(data)
         self.n = round(max(data) / self.p)
         self.p = sum(data) / (self.n * len(data))
+
+    def pmf(self, k):
+        """
+        Calculate the Probability Mass Function (PMF) for k successes.
+
+        Args:
+            k (int): Number of successes.
+
+        Returns:
+            float: The PMF value for k successes.
+        """
+        k = int(k)
+        if k < 0 or k > self.n:
+            return 0
+        return (math.comb(self.n, k) * (self.p ** k) * 
+                ((1 - self.p) ** (self.n - k)))
