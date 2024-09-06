@@ -73,6 +73,17 @@ class Binomial:
         self.n = round(max(data) / self.p)
         self.p = sum(data) / (self.n * len(data))
 
+    def _factorial(self, x):
+        """Calculate the factorial of x."""
+        if x == 0 or x == 1:
+            return 1
+        return x * self._factorial(x - 1)
+
+    def _combination(self, n, k):
+        """Calculate the number of ways to choose k items from n items."""
+        return (self._factorial(n) // 
+                (self._factorial(k) * self._factorial(n - k)))
+
     def pmf(self, k):
         """
         Calculate the Probability Mass Function (PMF) for k successes.
@@ -86,5 +97,5 @@ class Binomial:
         k = int(k)
         if k < 0 or k > self.n:
             return 0
-        return (math.comb(self.n, k) * (self.p ** k) * 
+        return (self._combination(self.n, k) * (self.p ** k) * 
                 ((1 - self.p) ** (self.n - k)))
