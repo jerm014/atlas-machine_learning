@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<table>
+<table border=0>
 <tr><td rowspan=6><img height=100 src="002_color-261c5d8dcd9df7930ced5c51da7ac8a20266ad8b3861fea9ce55fbc3a4df3fd7.png"></td><td><i class="fa fa-level-up fa-fw"></i></td><td>Level:</td><td>Amateur</td></tr>
 <tr><td><i class="fas fa-user"></i></td><td>By:</td><td>Alexa Orrico, Software Engineer at Holberton School</td></tr>
 <tr><td><i class="fa fa-cog fa-fw"></i></td><td>Weight:</td><td>3</td></tr>
