@@ -10,7 +10,7 @@ Classes:
     Binomial: Represents a binomial distribution.
 
 Usage:
-    from binomial import Binomial
+    from binomial i*mport Binomial
 
     # Create a binomial distribution with specified parameters
     b1 = Binomial(n=10, p=0.3)
