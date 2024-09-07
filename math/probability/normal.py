@@ -89,9 +89,10 @@ class Normal:
         """
         # Get the z-score using the provided function
         z = self.z_score(x)
+        z = (x - self.mean) / (self.std_dev * (2 ** 0.5))
 
         # Use numerical integration (Simpson's rule) to approximate the CDF
-        num_steps = 10000
+        num_steps = 1000
         step_size = z / num_steps
         integral = 0
 
