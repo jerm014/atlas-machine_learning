@@ -78,36 +78,27 @@ class Normal:
 
     def cdf(self, x):
         """
-        Calculate the value of the CDF for a given x-value, using the Hart
-        approximation.
+        Calculate the Cumulative Distribution Function (CDF) for a given
+        x-value.
 
         Args:
-            x (float): The x-value.
+            x (float): The x-value to calculate the CDF for.
 
         Returns:
-            float: The CDF value for x.
+            float: The CDF value for the given x.
         """
+        # Get the z-score using the provided function
         z = self.z_score(x)
 
-        # Constants for approximation
-        b0 = 0.2316419
-        b1 = 0.319381530
-        b2 = -0.356563782
-        b3 = 1.781477937
-        b4 = -1.821255978
-        b5 = 1.330274429
-        pi = 3.1415926536
-        e = 2.7182818285
+        # Use numerical integration (Simpson's rule) to approximate the CDF
+        num_steps = 1000
+        step_size = z / num_steps
+        integral = 0
 
-        t = 1 / (1 + b0 * abs(z))
+        for i in range(num_steps):
+            x0 = i * step_size
+            x1 = (i + 1) * step_size
+            integral += (self.pdf(x0) + 4 * self.pdf((x0 + x1) / 2) +
+                         self.pdf(x1)) * step_size / 6
 
-        # Approximation formula
-        cdf = 1 - (1 / ((2 * pi) ** 0.5)) * \
-            e ** (-0.5 * z * z) * \
-            (b1 * t + b2 * t ** 2 + b3 * t ** 3 + b4 * t ** 4 + b5 * t ** 5)
-
-        # Adjust for negative z
-        if z < 0:
-            cdf = 1 - cdf
-
-        return cdf
+        return 0.5 + integral

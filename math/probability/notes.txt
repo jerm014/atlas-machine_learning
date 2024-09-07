@@ -1,0 +1,135 @@
+λ lamdba - how often something happens.
+
+Poisson formula is:
+
+    P(k) = (e^-λ * λ^k) / k!
+
+ * P(k) is the probability of the event happening k times
+ * e is a special number (about 2.71828)
+ * λ is our average rate
+ * k is the number of times we're checking for
+ * k! means k factorial (like 3! = 3 x 2 x 1)
+
+
+----------
+NORMAL distribution:
+
+Imagine you're measuring the heights of all the students in a big school:
+
+Bell Shape:
+  If you drew a picture of how many students are at each height, it would look
+  like a bell. This bell shape is the key feature of the Normal distribution.
+
+Middle is Most Common:
+  You'd find that most students are around average height. This is the tall
+  middle part of the bell.
+
+Fewer at the Extremes:
+  There are fewer very short or very tall students. These are the tapering
+  sides of the bell.
+
+Symmetry:
+  The bell shape is the same on both sides. This means there are about as many
+  students a bit shorter than average as there are a bit taller than average.
+
+68-95-99.7 Rule:
+  About 68% of students are within one "step" (called a standard deviation) of
+  the average height.
+  About 95% are within two "steps" of the average.
+  Almost all (99.7%) are within three "steps" of the average.
+
+Not Just for Height:
+  This pattern shows up in lots of places - test scores, errors in
+  measurements, even the size of peas in a pod!
+
+It's Called "Normal":
+  We call it "Normal" not because it's better, but because it's so common in
+  nature and many human characteristics.
+
+
+----------
+Z SCORES?
+
+A z-score is a way to describe how unusual or typical a specific value is
+within a Normal distribution. Let's break it down simply:
+
+Distance from Average:
+  A z-score tells you how far a particular value is from the average (mean) of
+  a group.
+
+In "Standard Deviation" Units:
+  It measures this distance in terms of standard deviations, which are like
+  consistent "steps" away from the average.
+
+Positive or Negative:
+  A positive z-score means the value is above average.
+  A negative z-score means it's below average.
+  A z-score of 0 means it's exactly average.
+
+How to Calculate:
+  Z = (X - μ) / σ
+  Where:
+    X is the value you're looking at
+    μ (mu) is the mean (average) of the group
+    σ (sigma) is the standard deviation of the group
+
+What the Numbers Mean:
+  A z-score of 1 means the value is 1 standard deviation above average.
+  A z-score of -2 means it's 2 standard deviations below average.
+
+Usefulness:
+  Z-scores help compare values from different datasets or distributions, putting
+  everything on a standard scale.
+
+Example:
+  If a student's test score has a z-score of 2, it means they scored 2 standard
+  deviations above the average - better than about 97.5% of students.
+
+
+----------
+Normal Probability Density Function (PDF):
+
+The Normal PDF is a mathematical function that describes the shape of the
+Normal distribution. Here are the key points:
+
+Mathematical Formula:
+  The formula for the Normal PDF is:
+  f(x) = (1 / (σ√(2π))) * e^(-(x-μ)^2 / (2σ^2))
+  Where:
+    x is the value we're interested in
+    μ (mu) is the mean of the distribution
+    σ (sigma) is the standard deviation
+    e is the mathematical constant (approximately 2.71828)
+    π (pi) is the mathematical constant (approximately 3.14159)
+
+Bell Curve Shape:
+  When plotted, this function creates the familiar bell-shaped curve of the
+  Normal distribution.
+
+Probability Density:
+  The height of the curve at any point represents the relative likelihood of
+  that value occurring.
+
+Area Under the Curve:
+  The total area under the PDF curve always equals 1, representing 100% of all
+  possible outcomes.
+
+Symmetry:
+  The Normal PDF is symmetrical around the mean (μ).
+
+Inflection Points:
+  The curve changes from concave to convex at μ ± σ.
+
+Uses:
+  Calculating probabilities for specific ranges of values
+  Determining likelihood of extreme values
+  Basis for many statistical tests and models
+
+Standard Normal Distribution:
+  When μ = 0 and σ = 1, we get the standard Normal distribution, which
+  simplifies many calculations.
+  μ (mu) is the mean of the distribution
+  σ (sigma) is the standard deviation
+
+This function is crucial in statistics and probability theory, allowing us to
+calculate precise probabilities for Normal distributions.
