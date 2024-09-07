@@ -91,7 +91,7 @@ class Normal:
         z = self.z_score(x)
 
         # Use numerical integration (Simpson's rule) to approximate the CDF
-        num_steps = 1000
+        num_steps = 10000
         step_size = z / num_steps
         integral = 0
 
