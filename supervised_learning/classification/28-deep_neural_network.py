@@ -56,19 +56,16 @@ class DeepNeuralNetwork:
     def forward_prop(self, X):
         """ Calculates the forward propagation of the neural network """
         self.__cache['A0'] = X
-        for l in range(1, self.__L + 1):
-            Z = np.matmul(self.__weights[f'W{l}'], self.__cache[f'A{l-1}']) + \
-                self.__weights[f'b{l}']
-            if l == self.__L:
+        for ll in range(1, self.__L + 1):
+            Z = np.matmul(self.__weights[f'W{ll}'],
+                          self.__cache[f'A{ll-1}']) + self.__weights[f'b{ll}']
+            if ll == self.__L:
                 # Softmax activation for the output layer
                 t = np.exp(Z - np.max(Z, axis=0, keepdims=True))
-                self.__cache[f'A{l}'] = t / np.sum(t, axis=0, keepdims=True)
+                self.__cache[f'A{ll}'] = t / np.sum(t, axis=0, keepdims=True)
             else:
-                # Activation for hidden layers
-                if self.__activation == 'sig':
-                    self.__cache[f'A{l}'] = 1 / (1 + np.exp(-Z))
-                else:  # tanh
-                    self.__cache[f'A{l}'] = np.tanh(Z)
+                # ReLU activation for hidden layers
+                self.__cache[f'A{ll}'] = np.maximum(0, Z)
         return self.__cache[f'A{self.__L}'], self.__cache
 
     def cost(self, Y, A):
