@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Module containing the DeepNeuralNetwork class for binary classification"""
+""" Module containing the DeepNeuralNetwork class for binary classification """
 
 import numpy as np
 
 
 class DeepNeuralNetwork:
-    """Defines a deep neural network performing binary classification"""
+    """ Defines a deep neural network performing binary classification """
 
     def __init__(self, nx, layers):
         """ Class constructor for the deep neural network """
@@ -20,13 +20,13 @@ class DeepNeuralNetwork:
         self.__cache = {}
         self.__weights = {}
 
-        for l in range(1, self.__L + 1):
-            layer_size = layers[l-1]
-            prev_layer_size = nx if l == 1 else layers[l-2]
-            self.__weights[f'W{l}'] = np.random.randn(layer_size,
+        for ll in range(1, self.__L + 1):
+            layer_size = layers[ll-1]
+            prev_layer_size = nx if ll == 1 else layers[ll-2]
+            self.__weights[f'W{ll}'] = np.random.randn(layer_size,
                                                       prev_layer_size) * \
                 np.sqrt(2 / prev_layer_size)
-            self.__weights[f'b{l}'] = np.zeros((layer_size, 1))
+            self.__weights[f'b{ll}'] = np.zeros((layer_size, 1))
 
     @property
     def L(self):
