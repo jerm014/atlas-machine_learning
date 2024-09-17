@@ -52,7 +52,7 @@ class DeepNeuralNetwork:
 
     @property
     def activation(self):
-        """ Forward propagation """
+        """ Activation for sig or tanh """
         return self.__activation
         for layer in range(1, self.__L + 1):
             Z = np.dot(self.__weights[f'W{layer}'],
@@ -86,13 +86,32 @@ class DeepNeuralNetwork:
         """ Gradient descent """
         return prediction, cost
 
+    def forward_prop(self, X):
+        """Forward propagation"""
+        self.__cache['A0'] = X
+        for layer in range(1, self.__L + 1):
+            Z = np.dot(self.__weights[f'W{layer}'],
+                       self.__cache[f'A{layer-1}']) + \
+                self.__weights[f'b{layer}']
+            if layer == self.__L:
+                self.__cache[f'A{layer}'] = 1 / (1 + np.exp(-Z))
+            else:
+                if self.__activation == 'sig':
+                    self.__cache[f'A{layer}'] = 1 / (1 + np.exp(-Z))
+                else:
+                    self.__cache[f'A{layer}'] = np.tanh(Z)
+        return self.__cache[f'A{self.__L}'], self.__cache
+
     def gradient_descent(self, Y, cache, alpha=0.05):
+        """Gradient descent"""
+        m = Y.shape[1]
+        dZ = cache[f'A{self.__L}'] - Y
         for layer in reversed(range(1, self.__L + 1)):
             A_prev = cache[f'A{layer-1}']
             dW = np.dot(dZ, A_prev.T) / m
             db = np.sum(dZ, axis=1, keepdims=True) / m
             if layer > 1:
-            dW = 1/m * np.matmul(dZ, cache[f'A{ll-1}'].T)
+                if self.__activation == 'sig':
                     dZ = np.dot(self.__weights[f'W{layer}'].T, dZ) * \
                         (A_prev * (1 - A_prev))
                 else:
@@ -100,6 +119,3 @@ class DeepNeuralNetwork:
                         (1 - A_prev**2)
             self.__weights[f'W{layer}'] -= alpha * dW
             self.__weights[f'b{layer}'] -= alpha * db
-                return pickle.load(file)
-        except FileNotFoundError:
-            return None
