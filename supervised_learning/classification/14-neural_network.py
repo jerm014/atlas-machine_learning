@@ -54,7 +54,7 @@ class NeuralNetwork:
     def forward_prop(self, X):
         Z1 = np.dot(self.__W1, X) + self.__b1
         self.__A1 = 1 / (1 + np.exp(-Z1))
-        
+
         Z2 = np.dot(self.__W2, self.__A1) + self.__b2
         self.__A2 = 1 / (1 + np.exp(-Z2))
         
@@ -73,15 +73,15 @@ class NeuralNetwork:
 
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
         m = X.shape[1]
-        
+
         dZ2 = A2 - Y
         dW2 = np.dot(dZ2, A1.T) / m
         db2 = np.sum(dZ2, axis=1, keepdims=True) / m
-        
+
         dZ1 = np.dot(self.__W2.T, dZ2) * (A1 * (1 - A1))
         dW1 = np.dot(dZ1, X.T) / m
         db1 = np.sum(dZ1, axis=1, keepdims=True) / m
-        
+
         self.__W2 -= alpha * dW2
         self.__b2 -= alpha * db2
         self.__W1 -= alpha * dW1
