@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
-"""
-Module containing the DeepNeuralNetwork class for multiclass
-classification
-"""
+"""Module containing the DeepNeuralNetwork class for binary classification"""
 
 import numpy as np
-import matplotlib.pyplot as plt
-import pickle
-
 
 class DeepNeuralNetwork:
-    """Defines a deep neural network performing multiclass classification"""
+    """Defines a deep neural network performing binary classification"""
 
     def __init__(self, nx, layers):
         """Class constructor for the deep neural network"""
@@ -30,8 +24,7 @@ class DeepNeuralNetwork:
         for l in range(1, self.__L + 1):
             layer_size = layers[l-1]
             prev_layer_size = nx if l == 1 else layers[l-2]
-            self.__weights[f'W{l}'] = np.random.randn(
-                layer_size, prev_layer_size) * np.sqrt(2 / prev_layer_size)
+            self.__weights[f'W{l}'] = np.random.randn(layer_size, prev_layer_size) * np.sqrt(2 / prev_layer_size)
             self.__weights[f'b{l}'] = np.zeros((layer_size, 1))
 
     @property
@@ -53,28 +46,21 @@ class DeepNeuralNetwork:
         """Calculates the forward propagation of the neural network"""
         self.__cache['A0'] = X
         for l in range(1, self.__L + 1):
-            Z = np.matmul(self.__weights[f'W{l}'], self.__cache[f'A{l-1}']) + \
-                self.__weights[f'b{l}']
-            if l == self.__L:
-                # Softmax activation for the output layer
-                t = np.exp(Z - np.max(Z, axis=0, keepdims=True))
-                self.__cache[f'A{l}'] = t / np.sum(t, axis=0, keepdims=True)
-            else:
-                # ReLU activation for hidden layers
-                self.__cache[f'A{l}'] = np.maximum(0, Z)
+            Z = np.matmul(self.__weights[f'W{l}'], self.__cache[f'A{l-1}']) + self.__weights[f'b{l}']
+            self.__cache[f'A{l}'] = 1 / (1 + np.exp(-Z))
         return self.__cache[f'A{self.__L}'], self.__cache
 
     def cost(self, Y, A):
-        """Calculates the cost of the model using categorical cross-entropy"""
+        """Calculates the cost of the model using logistic regression"""
         m = Y.shape[1]
-        cost = -1/m * np.sum(Y * np.log(A + 1e-8))
+        cost = -1/m * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neural network's predictions"""
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
-        prediction = np.eye(Y.shape[0])[np.argmax(A, axis=0)].T
+        prediction = np.where(A >= 0.5, 1, 0)
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
@@ -85,13 +71,11 @@ class DeepNeuralNetwork:
             dW = 1/m * np.matmul(dZ, cache[f'A{l-1}'].T)
             db = 1/m * np.sum(dZ, axis=1, keepdims=True)
             if l > 1:
-                dZ = np.matmul(self.__weights[f'W{l}'].T, dZ) * \
-                    (cache[f'A{l-1}'] > 0)
+                dZ = np.matmul(self.__weights[f'W{l}'].T, dZ) * (cache[f'A{l-1}'] * (1 - cache[f'A{l-1}']))
             self.__weights[f'W{l}'] -= alpha * dW
             self.__weights[f'b{l}'] -= alpha * db
 
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
-              graph=True, step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05):
         """Trains the deep neural network"""
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -101,44 +85,9 @@ class DeepNeuralNetwork:
             raise TypeError("alpha must be a float")
         if alpha <= 0:
             raise ValueError("alpha must be positive")
-        if verbose or graph:
-            if not isinstance(step, int):
-                raise TypeError("step must be an integer")
-            if step <= 0 or step > iterations:
-                raise ValueError("step must be positive and <= iterations")
 
-        costs = []
-        for i in range(iterations + 1):
+        for _ in range(iterations):
             A, self.__cache = self.forward_prop(X)
-            cost = self.cost(Y, A)
-            if i % step == 0 or i == iterations:
-                costs.append(cost)
-                if verbose:
-                    print(f"Cost after {i} iterations: {cost}")
-            if i < iterations:
-                self.gradient_descent(Y, self.__cache, alpha)
-
-        if graph:
-            plt.plot(range(0, iterations + 1, step), costs, 'b-')
-            plt.xlabel('iteration')
-            plt.ylabel('cost')
-            plt.title('Training Cost')
-            plt.show()
+            self.gradient_descent(Y, self.__cache, alpha)
 
         return self.evaluate(X, Y)
-
-    def save(self, filename):
-        """Saves the instance object to a file in pickle format"""
-        if not filename.endswith('.pkl'):
-            filename += '.pkl'
-        with open(filename, 'wb') as file:
-            pickle.dump(self, file)
-
-    @staticmethod
-    def load(filename):
-        """Loads a pickled DeepNeuralNetwork object"""
-        try:
-            with open(filename, 'rb') as file:
-                return pickle.load(file)
-        except FileNotFoundError:
-            return None

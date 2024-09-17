@@ -1,18 +1,13 @@
 #!/usr/bin/env python3
-"""
-Module containing the DeepNeuralNetwork class for multiclass
-classification
-"""
+"""Module containing the DeepNeuralNetwork class for binary classification"""
 
 import numpy as np
 import matplotlib.pyplot as plt
-import pickle
-
 
 class DeepNeuralNetwork:
-    """Defines a deep neural network performing multiclass classification"""
+    """Defines a deep neural network performing binary classification"""
 
-    def __init__(self, nx, layers, activation='sig'):
+    def __init__(self, nx, layers):
         """Class constructor for the deep neural network"""
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -22,19 +17,15 @@ class DeepNeuralNetwork:
             raise TypeError("layers must be a list of positive integers")
         if not all(isinstance(nodes, int) and nodes > 0 for nodes in layers):
             raise TypeError("layers must be a list of positive integers")
-        if activation not in ['sig', 'tanh']:
-            raise ValueError("activation must be 'sig' or 'tanh'")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        self.__activation = activation
 
         for l in range(1, self.__L + 1):
             layer_size = layers[l-1]
             prev_layer_size = nx if l == 1 else layers[l-2]
-            self.__weights[f'W{l}'] = np.random.randn(
-                layer_size, prev_layer_size) * np.sqrt(2 / prev_layer_size)
+            self.__weights[f'W{l}'] = np.random.randn(layer_size, prev_layer_size) * np.sqrt(2 / prev_layer_size)
             self.__weights[f'b{l}'] = np.zeros((layer_size, 1))
 
     @property
@@ -52,40 +43,25 @@ class DeepNeuralNetwork:
         """Getter for weights"""
         return self.__weights
 
-    @property
-    def activation(self):
-        """Getter for activation"""
-        return self.__activation
-
     def forward_prop(self, X):
         """Calculates the forward propagation of the neural network"""
         self.__cache['A0'] = X
         for l in range(1, self.__L + 1):
-            Z = np.matmul(self.__weights[f'W{l}'], self.__cache[f'A{l-1}']) + \
-                self.__weights[f'b{l}']
-            if l == self.__L:
-                # Softmax activation for the output layer
-                t = np.exp(Z - np.max(Z, axis=0, keepdims=True))
-                self.__cache[f'A{l}'] = t / np.sum(t, axis=0, keepdims=True)
-            else:
-                # Activation for hidden layers
-                if self.__activation == 'sig':
-                    self.__cache[f'A{l}'] = 1 / (1 + np.exp(-Z))
-                else:  # tanh
-                    self.__cache[f'A{l}'] = np.tanh(Z)
+            Z = np.matmul(self.__weights[f'W{l}'], self.__cache[f'A{l-1}']) + self.__weights[f'b{l}']
+            self.__cache[f'A{l}'] = 1 / (1 + np.exp(-Z))
         return self.__cache[f'A{self.__L}'], self.__cache
 
     def cost(self, Y, A):
-        """Calculates the cost of the model using categorical cross-entropy"""
+        """Calculates the cost of the model using logistic regression"""
         m = Y.shape[1]
-        cost = -1/m * np.sum(Y * np.log(A + 1e-8))
+        cost = -1/m * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         return cost
 
     def evaluate(self, X, Y):
         """Evaluates the neural network's predictions"""
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
-        prediction = np.eye(Y.shape[0])[np.argmax(A, axis=0)].T
+        prediction = np.where(A >= 0.5, 1, 0)
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
@@ -96,17 +72,11 @@ class DeepNeuralNetwork:
             dW = 1/m * np.matmul(dZ, cache[f'A{l-1}'].T)
             db = 1/m * np.sum(dZ, axis=1, keepdims=True)
             if l > 1:
-                if self.__activation == 'sig':
-                    dZ = np.matmul(self.__weights[f'W{l}'].T, dZ) * \
-                        (cache[f'A{l-1}'] * (1 - cache[f'A{l-1}']))
-                else:  # tanh
-                    dZ = np.matmul(self.__weights[f'W{l}'].T, dZ) * \
-                        (1 - np.power(cache[f'A{l-1}'], 2))
+                dZ = np.matmul(self.__weights[f'W{l}'].T, dZ) * (cache[f'A{l-1}'] * (1 - cache[f'A{l-1}']))
             self.__weights[f'W{l}'] -= alpha * dW
             self.__weights[f'b{l}'] -= alpha * db
 
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
-              graph=True, step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
         """Trains the deep neural network"""
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -141,19 +111,3 @@ class DeepNeuralNetwork:
             plt.show()
 
         return self.evaluate(X, Y)
-
-    def save(self, filename):
-        """Saves the instance object to a file in pickle format"""
-        if not filename.endswith('.pkl'):
-            filename += '.pkl'
-        with open(filename, 'wb') as file:
-            pickle.dump(self, file)
-
-    @staticmethod
-    def load(filename):
-        """Loads a pickled DeepNeuralNetwork object"""
-        try:
-            with open(filename, 'rb') as file:
-                return pickle.load(file)
-        except FileNotFoundError:
-            return None
