@@ -49,5 +49,5 @@ class DeepNeuralNetwork:
         for ll in range(1, self.__L + 1):
             Z = np.matmul(self.__weights[f'W{ll}'],
                           self.__cache[f'A{ll-1}']) + self.__weights[f'b{ll}']
-            self.__cache[f'A{l}'] = 1 / (1 + np.exp(-Z))
+            self.__cache[f'A{ll}'] = 1 / (1 + np.exp(-Z))
         return self.__cache[f'A{self.__L}'], self.__cache
