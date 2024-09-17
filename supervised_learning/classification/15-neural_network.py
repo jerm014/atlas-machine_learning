@@ -1,7 +1,16 @@
+#!/usr/bin/env python3
+"""Module that defines a neural network with one hidden layer"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class NeuralNetwork:
+    """
+    A class that defines a neural network with one hidden layer
+    performing binary classification
+    """
+
     def __init__(self, nx, nodes):
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
