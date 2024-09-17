@@ -2,6 +2,7 @@
 """ Module containing the DeepNeuralNetwork class for binary classification """
 
 import numpy as np
+import pickle
 
 
 class DeepNeuralNetwork:
