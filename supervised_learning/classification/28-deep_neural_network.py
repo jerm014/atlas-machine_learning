@@ -24,8 +24,7 @@ class DeepNeuralNetwork:
         self.__activation = activation
         
         for layer in range(1, self.__L + 1):
-            if not isinstance(layers[layer-1], int) or layers[layer-1] <= 0:
-                raise TypeError("layers must be a list of positive integers")
+            layer_size = layers[layer-1]
             prev_layer = nx if layer == 1 else layers[layer-2]
             self.__weights[f'W{layer}'] = np.random.randn(
                 layers[layer-1], prev_layer) * np.sqrt(2 / prev_layer)
