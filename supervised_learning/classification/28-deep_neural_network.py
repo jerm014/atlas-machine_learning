@@ -119,3 +119,58 @@ class DeepNeuralNetwork:
                         (1 - A_prev**2)
             self.__weights[f'W{layer}'] -= alpha * dW
             self.__weights[f'b{layer}'] -= alpha * db
+
+    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
+              graph=True, step=100):
+        """Trains the deep neural network"""
+        if not isinstance(iterations, int):
+            raise TypeError("iterations must be an integer")
+        if iterations <= 0:
+            raise ValueError("iterations must be a positive integer")
+        if not isinstance(alpha, float):
+            raise TypeError("alpha must be a float")
+        if alpha <= 0:
+            raise ValueError("alpha must be positive")
+        if verbose or graph:
+            if not isinstance(step, int):
+                raise TypeError("step must be an integer")
+            if step <= 0 or step > iterations:
+                raise ValueError("step must be positive and <= iterations")
+
+        costs = []
+        for i in range(iterations + 1):
+            A, self.__cache = self.forward_prop(X)
+            cost = self.cost(Y, A)
+            if i % step == 0 or i == iterations:
+                costs.append(cost)
+                if verbose:
+                    print(f"Cost after {i} iterations: {cost}")
+            if i < iterations:
+                self.gradient_descent(Y, self.__cache, alpha)
+
+        if graph:
+            plt.plot(range(0, iterations + 1, step), costs, 'b-')
+            plt.xlabel('iteration')
+            plt.ylabel('cost')
+            plt.title('Training Cost')
+            plt.show()
+
+        return self.evaluate(X, Y)
+
+    def save(self, filename):
+        """ Saves the instance object to a file in pickle format """
+        if not filename.endswith('.pkl'):
+            filename += '.pkl'
+        with open(filename, 'wb') as file:
+            pickle.dump(self, file)
+
+    @staticmethod
+    def load(filename):
+        """ Loads a pickled DeepNeuralNetwork object """
+        try:
+            with open(filename, 'rb') as file:
+                return pickle.load(file)
+        except FileNotFoundError:
+            return None
+
+
