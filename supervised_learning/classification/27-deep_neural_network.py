@@ -80,14 +80,14 @@ class DeepNeuralNetwork:
         """ Calculates one pass of gradient descent on the neural network """
         m = Y.shape[1]
         dZ = cache[f'A{self.__L}'] - Y
-        for l in reversed(range(1, self.__L + 1)):
-            dW = 1/m * np.matmul(dZ, cache[f'A{l-1}'].T)
+        for ll in reversed(range(1, self.__L + 1)):
+            dW = 1/m * np.matmul(dZ, cache[f'A{ll-1}'].T)
             db = 1/m * np.sum(dZ, axis=1, keepdims=True)
-            if l > 1:
-                dZ = np.matmul(self.__weights[f'W{l}'].T, dZ) * \
-                    (cache[f'A{l-1}'] > 0)
-            self.__weights[f'W{l}'] -= alpha * dW
-            self.__weights[f'b{l}'] -= alpha * db
+            if ll > 1:
+                dZ = np.matmul(self.__weights[f'W{ll}'].T, dZ) * \
+                  (cache[f'A{ll-1}'] * (1 - cache[f'A{ll-1}']))
+            self.__weights[f'W{ll}'] -= alpha * dW
+            self.__weights[f'b{ll}'] -= alpha * db
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
               graph=True, step=100):
