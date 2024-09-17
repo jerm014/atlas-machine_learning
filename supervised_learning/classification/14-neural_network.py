@@ -11,6 +11,8 @@ class NeuralNetwork:
     """
 
     def __init__(self, nx, nodes):
+        """ init the Neural Network """
+
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
@@ -66,12 +68,19 @@ class NeuralNetwork:
         return cost
 
     def evaluate(self, X, Y):
+        """ Evaluates the neural network's predictions """
+
         self.forward_prop(X)
         cost = self.cost(Y, self.__A2)
         prediction = np.where(self.__A2 >= 0.5, 1, 0)
         return prediction, cost
 
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
+        """
+        Updates the weights and biases of the neural network using gradient
+        descent
+        """
+
         m = X.shape[1]
 
         dZ2 = A2 - Y
@@ -88,6 +97,8 @@ class NeuralNetwork:
         self.__b1 -= alpha * db1
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
+        """ Trains the neural network using gradient descent """
+
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
