@@ -30,10 +30,9 @@ class DeepNeuralNetwork:
             self.__weights[f'W{layer}'] = np.random.randn(
                 layers[layer-1], prev_layer) * np.sqrt(2 / prev_layer)
             self.__weights[f'b{layer}'] = np.zeros((layers[layer-1], 1))
-            self.__weights[f'W{ll}'] = np.random.randn(layer_size,
+            self.__weights[f'W{layer}'] = np.random.randn(layer_size,
                                                        prev_layer_size) * \
                 np.sqrt(2 / prev_layer_size)
-        """ Getter for L"""
 
     @property
     def L(self):
