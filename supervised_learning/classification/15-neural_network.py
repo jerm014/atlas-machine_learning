@@ -12,7 +12,7 @@ class NeuralNetwork:
     """
 
     def __init__(self, nx, nodes):
-        """ Initialize the neural network """
+        """ Class constructor for the neural network """
 
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -32,26 +32,32 @@ class NeuralNetwork:
 
     @property
     def W1(self):
+        """ Getter for W1 """
         return self.__W1
 
     @property
     def b1(self):
+        """ Getter for b1 """
         return self.__b1
 
     @property
     def A1(self):
+        """ Getter for A1 """
         return self.__A1
 
     @property
     def W2(self):
+        """ Getter for W2 """
         return self.__W2
 
     @property
     def b2(self):
+        """ Getter for b2 """
         return self.__b2
 
     @property
     def A2(self):
+        """ Getter for A2 """
         return self.__A2
 
     def forward_prop(self, X):
@@ -81,7 +87,10 @@ class NeuralNetwork:
         return prediction, cost
 
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
-        """ Update the weights and biases using gradient descent """
+        """
+        Updates the weights and biases of the neural network using gradient
+        descent
+        """
 
         m = X.shape[1]
 
@@ -100,7 +109,7 @@ class NeuralNetwork:
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
               graph=True, step=100):
-        """ Train the model using Gradient Descent """
+        """ Trains the neural network using gradient descent """
 
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")

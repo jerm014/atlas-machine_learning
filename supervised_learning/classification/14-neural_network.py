@@ -11,7 +11,7 @@ class NeuralNetwork:
     """
 
     def __init__(self, nx, nodes):
-        """ init the Neural Network """
+        """ Class constructor for the neural network """
 
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -31,29 +31,36 @@ class NeuralNetwork:
 
     @property
     def W1(self):
+        """ Getter for W1 """
         return self.__W1
 
     @property
     def b1(self):
+        """ Getter for b1 """
         return self.__b1
 
     @property
     def A1(self):
+        """ Getter for A1 """
         return self.__A1
 
     @property
     def W2(self):
+        """ Getter for W2 """
         return self.__W2
 
     @property
     def b2(self):
+        """ Getter for b2 """
         return self.__b2
 
     @property
     def A2(self):
+        """ Getter for A2 """
         return self.__A2
 
     def forward_prop(self, X):
+        """ Calculates the forward propagation of the neural network """
         Z1 = np.dot(self.__W1, X) + self.__b1
         self.__A1 = 1 / (1 + np.exp(-Z1))
 
@@ -63,6 +70,8 @@ class NeuralNetwork:
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
+        """ Calculate the cost of the model using logistic regression """
+
         m = Y.shape[1]
         cost = -1/m * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         return cost

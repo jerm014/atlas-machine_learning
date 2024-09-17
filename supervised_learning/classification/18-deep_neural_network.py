@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Module containing the DeepNeuralNetwork class for binary classification"""
+""" Module containing the DeepNeuralNetwork class for binary classification """
 
 import numpy as np
 
 class DeepNeuralNetwork:
-    """Defines a deep neural network performing binary classification"""
+    """ Defines a deep neural network performing binary classification """
 
     def __init__(self, nx, layers):
-        """Class constructor for the deep neural network"""
+        """ Class constructor for the deep neural network """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
@@ -29,21 +29,21 @@ class DeepNeuralNetwork:
 
     @property
     def L(self):
-        """Getter for L"""
+        """ Getter for L """
         return self.__L
 
     @property
     def cache(self):
-        """Getter for cache"""
+        """ Getter for cache """
         return self.__cache
 
     @property
     def weights(self):
-        """Getter for weights"""
+        """ Getter for weights """
         return self.__weights
 
     def forward_prop(self, X):
-        """Calculates the forward propagation of the neural network"""
+        """ Calculates the forward propagation of the neural network """
         self.__cache['A0'] = X
         for l in range(1, self.__L + 1):
             Z = np.matmul(self.__weights[f'W{l}'], self.__cache[f'A{l-1}']) + self.__weights[f'b{l}']
