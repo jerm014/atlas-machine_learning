@@ -64,7 +64,9 @@ class DeepNeuralNetwork:
         return self.__cache[f'A{self.__L}'], self.__cache
 
     def cost(self, Y, A):
-        """ Calculates the cost of the model using categorical cross-entropy """
+        """
+        Calculates the cost of the model using categorical cross-entropy
+        """
         m = Y.shape[1]
         cost = -1/m * np.sum(Y * np.log(A + 1e-8))
         return cost
