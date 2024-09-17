@@ -84,7 +84,6 @@ class DeepNeuralNetwork:
     def gradient_descent(self, Y, cache, alpha=0.05):
         """ Calculates one pass of gradient descent on the neural network """
         m = Y.shape[1]
-        l = l
         dZ = cache[f'A{self.__L}'] - Y
         for ll in reversed(range(1, self.__L + 1)):
             dW = 1/m * np.matmul(dZ, cache[f'A{ll-1}'].T)
