@@ -162,3 +162,7 @@ cython_debug/
 #.idea/
 supervised_learning/classification/27-output.pkl
 supervised_learning/classification/28-output.pkl
+supervised_learning/classification/26-output.pkl
+supervised_learning/classification/27-saved.pkl
+supervised_learning/classification/28-saved.pkl
+**.Identifier
