@@ -22,12 +22,12 @@ class DeepNeuralNetwork:
         self.cache = {}
         self.weights = {}
 
-        for layer_idx in range(1, self.L + 1):
-            layer_input_size = nx if layer_idx == 1 else layers[layer_idx-2]
-            layer_size = layers[layer_idx-1]
+        for i in range(self.L):
+            layer_size = layers[i]
+            layer_input_size = nx if i == 0 else layers[i-1]
             
-            self.weights['W' + str(layer_idx)] = (
+            self.weights['W' + str(i+1)] = (
                 np.random.randn(layer_size, layer_input_size) * 
                 np.sqrt(2 / layer_input_size)
             )
-            self.weights['b' + str(layer_idx)] = np.zeros((layer_size, 1))
+            self.weights['b' + str(i+1)] = np.zeros((layer_size, 1))
