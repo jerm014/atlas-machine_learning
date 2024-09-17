@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 class DeepNeuralNetwork:
     """Defines a deep neural network performing binary classification"""
 

@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class DeepNeuralNetwork:
     """ Defines a deep neural network performing binary classification """
 
