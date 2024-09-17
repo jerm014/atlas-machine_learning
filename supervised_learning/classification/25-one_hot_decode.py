@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module containing the one_hot_decode function"""
+""" Module containing the one_hot_decode function """
 
 import numpy as np
 

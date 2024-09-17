@@ -10,55 +10,52 @@ import pickle
 
 
 class DeepNeuralNetwork:
-    """Defines a deep neural network performing multiclass classification"""
+    """ Defines a deep neural network performing multiclass classification """
 
     def __init__(self, nx, layers, activation='sig'):
-        """Class constructor for the deep neural network"""
+        """ Class constructor for the deep neural network """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
             raise ValueError("nx must be a positive integer")
-        if not isinstance(layers, list):
+        if not isinstance(layers, list) or not layers:
             raise TypeError("layers must be a list of positive integers")
-        if not all(isinstance(nodes, int) and nodes > 0 for nodes in layers):
-            raise TypeError("layers must be a list of positive integers")
-        if activation not in ['sig', 'tanh']:
-            raise ValueError("activation must be 'sig' or 'tanh'")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
-        self.__activation = activation
 
         for l in range(1, self.__L + 1):
             layer_size = layers[l-1]
             prev_layer_size = nx if l == 1 else layers[l-2]
-            self.__weights[f'W{l}'] = np.random.randn(
-                layer_size, prev_layer_size) * np.sqrt(2 / prev_layer_size)
+            self.__weights[f'W{l}'] = np.random.randn(layer_size,
+                                                      prev_layer_size) * \
+                np.sqrt(2 / prev_layer_size)
             self.__weights[f'b{l}'] = np.zeros((layer_size, 1))
+
 
     @property
     def L(self):
-        """Getter for L"""
+        """ Getter for L """
         return self.__L
 
     @property
     def cache(self):
-        """Getter for cache"""
+        """ Getter for cache """
         return self.__cache
 
     @property
     def weights(self):
-        """Getter for weights"""
+        """ Getter for weights """
         return self.__weights
 
     @property
     def activation(self):
-        """Getter for activation"""
+        """ Getter for activation """
         return self.__activation
 
     def forward_prop(self, X):
-        """Calculates the forward propagation of the neural network"""
+        """ Calculates the forward propagation of the neural network """
         self.__cache['A0'] = X
         for l in range(1, self.__L + 1):
             Z = np.matmul(self.__weights[f'W{l}'], self.__cache[f'A{l-1}']) + \
@@ -76,20 +73,20 @@ class DeepNeuralNetwork:
         return self.__cache[f'A{self.__L}'], self.__cache
 
     def cost(self, Y, A):
-        """Calculates the cost of the model using categorical cross-entropy"""
+        """ Calculates the cost of the model using categorical cross-entropy """
         m = Y.shape[1]
         cost = -1/m * np.sum(Y * np.log(A + 1e-8))
         return cost
 
     def evaluate(self, X, Y):
-        """Evaluates the neural network's predictions"""
+        """ Evaluates the neural network's predictions """
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
         prediction = np.eye(Y.shape[0])[np.argmax(A, axis=0)].T
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Calculates one pass of gradient descent on the neural network"""
+        """ Calculates one pass of gradient descent on the neural network """
         m = Y.shape[1]
         dZ = cache[f'A{self.__L}'] - Y
         for l in reversed(range(1, self.__L + 1)):
@@ -107,7 +104,7 @@ class DeepNeuralNetwork:
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
               graph=True, step=100):
-        """Trains the deep neural network"""
+        """ Trains the deep neural network """
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
         if iterations <= 0:
@@ -143,7 +140,7 @@ class DeepNeuralNetwork:
         return self.evaluate(X, Y)
 
     def save(self, filename):
-        """Saves the instance object to a file in pickle format"""
+        """ Saves the instance object to a file in pickle format """
         if not filename.endswith('.pkl'):
             filename += '.pkl'
         with open(filename, 'wb') as file:
@@ -151,7 +148,7 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
-        """Loads a pickled DeepNeuralNetwork object"""
+        """ Loads a pickled DeepNeuralNetwork object """
         try:
             with open(filename, 'rb') as file:
                 return pickle.load(file)
