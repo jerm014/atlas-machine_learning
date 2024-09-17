@@ -25,9 +25,10 @@ class DeepNeuralNetwork:
         
         for layer in range(1, self.__L + 1):
             layer_size = layers[layer-1]
-            prev_layer = nx if layer == 1 else layers[layer-2]
+            prev_layer_size = nx if layer == 1 else layers[layer-2]
             self.__weights[f'W{layer}'] = np.random.randn(
-                layers[layer-1], prev_layer) * np.sqrt(2 / prev_layer)
+                layers[layer-1], prev_layer_size) * \
+                np.sqrt(2 / prev_layer_size)
             self.__weights[f'b{layer}'] = np.zeros((layers[layer-1], 1))
             self.__weights[f'W{layer}'] = np.random.randn(layer_size,
                                                        prev_layer_size) * \
