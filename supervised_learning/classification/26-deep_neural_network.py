@@ -7,6 +7,9 @@ import pickle
 
 
 class DeepNeuralNetwork:
+    """ Defines a deep neural network performing binary classification """
+
+    def __init__(self, nx, layers):
         """ Class constructor for the deep neural network """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
