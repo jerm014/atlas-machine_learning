@@ -24,6 +24,10 @@ class DeepNeuralNetwork:
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
+        self.__activation = activation
+
+        # Initialize weights and biases
+        nx = layers[0]
 
         for ll in range(1, self.__L + 1):
             layer_size = layers[ll-1]
