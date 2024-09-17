@@ -82,7 +82,7 @@ class DeepNeuralNetwork:
         """ Evaluates the neural network's predictions """
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
-        """ Gradient descent """
+        prediction = np.eye(Y.shape[0])[np.argmax(A, axis=0)].T
         return prediction, cost
 
     def forward_prop(self, X):
