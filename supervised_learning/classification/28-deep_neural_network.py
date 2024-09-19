@@ -27,6 +27,8 @@ class DeepNeuralNetwork:
 
         for i in range(self.__L):
             if not isinstance(layers[i], int) or layers[i] <= 0:
+                # I want this to be above line 22 but I am only allowed one
+                # loop for this project.
                 raise TypeError("layers must be a list of positive integers")
             layer_size = layers[i]
             input_size = nx if i == 0 else layers[i - 1]
