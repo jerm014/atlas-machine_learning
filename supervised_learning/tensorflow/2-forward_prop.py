@@ -19,12 +19,7 @@ def forward_prop(x, layer_sizes=[], activations=[]):
     Returns:
         tf.Tensor: The prediction of the network in tensor form.
     """
-    if len(layer_sizes) != len(activations):
-        raise ValueError("The number of layer sizes must match the number " + /
-                         "of activation functions.")
 
-    prev_layer = x
-    for i in range(len(layer_sizes)):
-        prev_layer = create_layer(prev_layer, layer_sizes[i], activations[i])
-
-    return prev_layer
+    for i, (n, activation) in enumerate(zip(layer_sizes, activations)):
+        x = create_layer(x, n, activation)
+    return x
