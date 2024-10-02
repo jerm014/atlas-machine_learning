@@ -20,7 +20,7 @@ def create_layer(prev, n, activation):
     weights = tf.Variable(initializer([int(prev.shape[1]), n]))
     biases = tf.Variable(tf.zeros([n]))
     z = tf.matmul(prev, weights) + biases
-    
+
     if activation is None:
         return z
     else:
