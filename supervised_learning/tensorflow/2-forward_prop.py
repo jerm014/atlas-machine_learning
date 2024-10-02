@@ -20,9 +20,8 @@ def forward_prop(x, layer_sizes=[], activations=[]):
         tf.Tensor: The prediction of the network in tensor form.
     """
 
-    previous = x
-    print(layer_sizes)
-    print(activations)
+    A = x
     for i, (n, activation) in enumerate(zip(layer_sizes, activations)):
-        previous = create_layer(previous, n, activation)
-    return previous
+        with tf.variable_scope(f'layer{i}'):
+            A = create_layer(A, n, activation)
+    return A
