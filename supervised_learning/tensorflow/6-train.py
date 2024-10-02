@@ -30,6 +30,7 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
     Returns:
         str: The spot where the model was written out. Booyah.
     """
+    print("this is inside the function train")
     tf.reset_default_graph()
 
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
