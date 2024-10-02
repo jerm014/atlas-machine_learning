@@ -22,8 +22,8 @@ if __name__ == '__main__':
     X_valid = X_valid_3D.reshape((X_valid_3D.shape[0], -1))
     Y_valid_oh = one_hot(Y_valid, 10)
 
-    layer_sizes = [256, 256, 10]
-    activations = [tf.nn.tanh, tf.nn.tanh, None]
+    layer_sizes = [50, 16, 10]
+    activations = [tf.nn.tanh, tf.nn.sigmoid, None]
     alpha = 0.01
     iterations = 1000
 
