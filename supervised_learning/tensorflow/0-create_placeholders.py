@@ -9,7 +9,7 @@ def create_placeholders(nx, classes):
     Creates two placeholders, x and y, for the neural network.
 
     Args:
-        nx (int): The number of feature columns in our data.
+        nx (int):      The number of feature columns in our data.
         classes (int): The number of classes in our classifier.
 
     Returns:

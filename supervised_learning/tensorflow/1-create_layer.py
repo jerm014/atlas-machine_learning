@@ -9,8 +9,8 @@ def create_layer(prev, n, activation):
     Creates a layer for a neural network.
 
     Args:
-        prev (tf.Tensor): The tensor output of the previous layer.
-        n (int): The number of nodes in the layer to create.
+        prev (tf.Tensor):      The tensor output of the previous layer.
+        n (int):               The number of nodes in the layer to create.
         activation (callable): The activation function for this layer.
 
     Returns:
