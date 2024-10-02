@@ -8,8 +8,6 @@ calculate_accuracy = __import__('3-calculate_accuracy').calculate_accuracy
 calculate_loss = __import__('4-calculate_loss').calculate_loss
 create_train_op = __import__('5-create_train_op').create_train_op
 
-print("this is a test print that should be shown on imprt.")
-
 
 def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
           iterations, save_path="/tmp/model.ckpt"):
@@ -30,30 +28,24 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
     Returns:
         str: The spot where the model was written out. Booyah.
     """
-    print("this is inside the function train")
     tf.reset_default_graph()
-    print("before create_placebolders")
+
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])
-    print("before forward_prop")
     y_pred = forward_prop(x, layer_sizes, activations)
-    print("before calculate loss")
     loss = calculate_loss(y, y_pred)
-    print("before calculate accuracy")
     accuracy = calculate_accuracy(y, y_pred)
-    print("before create_train_op")
     train_op = create_train_op(loss, alpha)
-    print("before add to collection section")
+
     tf.add_to_collection('x', x)
     tf.add_to_collection('y', y)
     tf.add_to_collection('y_pred', y_pred)
     tf.add_to_collection('loss', loss)
     tf.add_to_collection('accuracy', accuracy)
     tf.add_to_collection('train_op', train_op)
-    print("before init")
+
     init = tf.global_variables_initializer()
-    print("before saver")
     saver = tf.train.Saver()
-    print("before session as sess.")
+
     with tf.Session() as sess:
         sess.run(init)
 
