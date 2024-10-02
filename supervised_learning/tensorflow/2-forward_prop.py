@@ -10,7 +10,7 @@ def forward_prop(x, layer_sizes=[], activations=[]):
     Creates the forward propagation graph for the neural network.
 
     Args:
-        x (tf.Tensor):      The placeholder for the input data.
+        x (tf.Tensor):      input data.
         layer_sizes (list): A list containing the number of nodes in each layer
                             of the network.
         activations (list): A list containing the activation functions for each
@@ -20,7 +20,7 @@ def forward_prop(x, layer_sizes=[], activations=[]):
         tf.Tensor: The prediction of the network in tensor form.
     """
 
-    previous = x``
+    previous = x
     for i, (n, activation) in enumerate(zip(layer_sizes, activations)):
         previous = create_layer(previous, n, activation)
     return previous
