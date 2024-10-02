@@ -21,6 +21,8 @@ def forward_prop(x, layer_sizes=[], activations=[]):
     """
 
     previous = x
+    print(layer_sizes)
+    print(activations)
     for i, (n, activation) in enumerate(zip(layer_sizes, activations)):
         previous = create_layer(previous, n, activation)
     return previous
