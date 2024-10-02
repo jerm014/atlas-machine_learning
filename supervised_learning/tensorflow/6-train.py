@@ -28,15 +28,6 @@ def train(X_train, Y_train, X_valid, Y_valid, layer_sizes, activations, alpha,
     Returns:
         str: The spot where the model was written out. Booyah.
     """
-    print(f"X_train: {X_train}")
-    print(f"Y_train: {Y_train}")
-    print(f"X_valid: {X_valid}")
-    print(f"Y_valid: {Y_valid}")
-    print(f"layer_sizes: {layer_sizes}")
-    print(f"activations: {activations}")
-    print(f"alpha: {alpha}")
-    print(f"iterations: {iterations}")
-    print(f"save_path: {save_path}")
     tf.reset_default_graph()
 
     x, y = create_placeholders(X_train.shape[1], Y_train.shape[1])

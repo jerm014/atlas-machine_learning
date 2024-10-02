@@ -25,9 +25,9 @@ if __name__ == '__main__':
     layer_sizes = [50, 16, 10]
     activations = [tf.nn.tanh, tf.nn.sigmoid, None]
     alpha = 0.01
-    iterations = 1000
+    iterations = 300
 
-    tf.set_random_seed(0)
+    tf.set_random_seed(1234)
     save_path = train(X_train, Y_train_oh, X_valid, Y_valid_oh, layer_sizes,
                       activations, alpha, iterations, save_path="./model.ckpt")
     print("Model saved in path: {}".format(save_path))
