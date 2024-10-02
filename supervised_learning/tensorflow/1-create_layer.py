@@ -16,8 +16,8 @@ def create_layer(prev, n, activation):
     Returns:
         tf.Tensor: The tensor output of the layer.
     """
-    initializer = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
-    weights = tf.Variable(initializer([prev.shape[1].value, n]))
+    initializer = tf.variance_scaling_initializer(mode="fan_avg")
+    weights = tf.Variable(initializer([int(prev.shape[1]), n]))
     biases = tf.Variable(tf.zeros([n]))
     z = tf.matmul(prev, weights) + biases
     
