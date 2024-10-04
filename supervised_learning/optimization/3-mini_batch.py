@@ -9,11 +9,11 @@ def create_mini_batches(X, Y, batch_size):
     """Creates mini-batches for training a neural network."""
     m = X.shape[0]
     X_shuffled, Y_shuffled = shuffle_data(X, Y)
-    
+
     mini_batches = []
     for i in range(0, m, batch_size):
         X_batch = X_shuffled[i:min(i + batch_size, m)]
         Y_batch = Y_shuffled[i:min(i + batch_size, m)]
         mini_batches.append((X_batch, Y_batch))
-    
+
     return mini_batches
