@@ -7,7 +7,7 @@ import numpy as np
 def precision(confusion):
     """
     Calculates precision for each class in a confusion matrix
-    
+
     Args:
       confusion is a confusion numpy.ndarray of shape (classes, classes)
         row indices represent the correct labels
