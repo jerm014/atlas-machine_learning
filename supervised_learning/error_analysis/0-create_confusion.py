@@ -11,9 +11,10 @@ def create_confusion_matrix(labels, logits):
     Args:
         labels (numpy.ndarray): correct
         logits (numpy.ndarray): predicted
-    each arg is an ndarray of shape (m, classes) 
-       where m is the number of examples
-       and classes is the number of classes
+
+    Note: each arg is an ndarray of shape (m, classes)
+          * m is the number of examples
+          * classes is the number of classes
 
     Returns:
         numpy.ndarray: A confusion matrix, that's the whole point.
