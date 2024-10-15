@@ -118,15 +118,15 @@ class CodependencyScaleApp:
         messagebox.showinfo("Result", result_text)
         print("All questions have been answered.")
         for section, values in self.answers.items():
-            print(f"{section:<20}: {CodependencyScaleApp.int_to_ascii_scale(sum(values), 18, fill_left='*')} {values}")
+            print(f"{section:<20}: {CodependencyScaleApp.int_to_ascii_scale(sum(values), 48, fill_left='*')} {values}")
         self.master.quit()
 
     @staticmethod
     def int_to_ascii_scale(
             value,
-            total_width=20,
-            min_value=-4,
-            max_value=4,
+            total_width=48,
+            min_value=-12,
+            max_value=12,
             marker="|",
             fill_left=" ",
             fill_right=" "):
