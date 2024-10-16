@@ -17,7 +17,7 @@ def l2_reg_cost(cost, model):
     l2_costs = []
     for layer in model.layers:
         if hasattr(layer, 'kernel'):
-            l2_cost = tf.nn.l2_loss(layer.kernel)
+            l2_cost = 0.5 * tf.reduce_sum(tf.square(layer.kernel))
             l2_costs.append(l2_cost)
-
+    
     return tf.convert_to_tensor(l2_costs)
