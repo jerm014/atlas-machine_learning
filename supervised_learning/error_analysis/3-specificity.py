@@ -31,6 +31,6 @@ def specificity(confusion):
       # get the false positive rate
       false_positives = np.sum(confusion[:, i]) - confusion[i, i]
       # calculate the specificity
-      specificities[i] = true_negatives / (true_negatives + false_positives)
+      specificity[i] = true_negatives / (true_negatives + false_positives)
 
     return specificity
