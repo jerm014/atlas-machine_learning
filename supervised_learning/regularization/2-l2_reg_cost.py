@@ -19,7 +19,5 @@ def l2_reg_cost(cost, model):
         if hasattr(layer, 'kernel_regularizer') and layer.kernel_regularizer:
             l2_cost = tf.reduce_sum(layer.losses)
             l2_costs.append(l2_cost)
-
-    total_l2_cost = tf.reduce_sum(l2_costs)
-    out = tf.concat([tf.expand_dims(cost + total_l2_cost, 0), l2_costs], axis=0)
-    return out
+    
+    return tf.convert_to_tensor(l2_costs)
