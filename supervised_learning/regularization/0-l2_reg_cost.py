@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" module to calculate the cost of a nn with l2 regularization """
 import numpy as np
 
 
