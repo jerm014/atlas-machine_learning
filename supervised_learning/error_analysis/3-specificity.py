@@ -19,16 +19,16 @@ def specificity(confusion):
     Notes from PLD:
       Specificity is true negative rate tn / tn + fp (minimize fp)
     """
-    # Get the diagonal elements (true negatives for each class)
-    tn = np.diag(confusion)
-    
-    # Calculate the sum of each column (total predicted for each class)
-    total_predicted = np.sum(confusion, axis=0)
-    
-    # Calculate false positives by subtracting true negatives from total predicted
-    fp = total_predicted - tn
-    
-    # Calculate specificity
-    specificity = tn / (tn + fp)
-    
+    # get the number of classes
+    classes = confusion.shape[0]
+    # initialize the specificity array
+    specificity = np.zeros(classes)
+    # calculate the specificity for each class
+    for i in range(classes):
+      # get the true negative rate
+      tn = confusion[i, i]
+      # get the false positive rate
+      fp = np.sum(confusion[:, i]) - tn
+      # calculate the specificity
+      specificity[i] = tn / (tn + fp)
     return specificity
