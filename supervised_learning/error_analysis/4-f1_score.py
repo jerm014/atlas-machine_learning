@@ -16,5 +16,5 @@ def f1_score(confusion):
     p = precision(confusion)
 
     f1 = 2 * (p * s) / (p + s)
-    
+
     return f1
