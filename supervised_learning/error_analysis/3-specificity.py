@@ -26,7 +26,7 @@ def specificity(confusion):
     # calculate the specificity for each class
     for i in range(classes):
         # get the true negative rate
-        true_negatives = np.sum(confusion) - np.sum( \
+        true_negatives = np.sum(confusion) - np.sum(
           confusion[i, :]) - np.sum(confusion[:, i]) + confusion[i, i]
         # get the false positive rate
         false_positives = np.sum(confusion[:, i]) - confusion[i, i]
