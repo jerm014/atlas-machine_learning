@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+""" module for dropout_forward_prop function for task 4 of project 2297 """
 import numpy as np
 
 def dropout_forward_prop(X, weights, L, keep_prob):
