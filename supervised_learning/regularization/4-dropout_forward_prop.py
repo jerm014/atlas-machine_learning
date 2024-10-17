@@ -1,0 +1,53 @@
+import numpy as np
+
+def dropout_forward_prop(X, weights, L, keep_prob):
+    """
+    Conducts forward propagation using Dropout.
+
+    Parameters:
+    X : numpy.ndarray of shape (nx, m)
+        The input data for the network.
+        nx is the number of input faetures
+        m is the number of data points
+    weights : dict
+        The weights and biases of the neural network.
+    L : int
+        The number of layers in the network.
+    keep_prob : float
+        The probablity that a node will be kept.
+
+    Returns:
+    dict
+        A dictionary containing the outputs of each layer and 
+        the dropout mask used on each layer.
+
+    Look at me:
+        Writing good documentaiton.
+    """
+    cache = {}
+    A = X
+    cache['A0'] = A
+
+    for l in range(1, L + 1):
+        W = weights[f'W{l}']
+        b = weights[f'b{l}']
+        Z = np.dot(W, A) + b
+
+        if l == L:
+            # Last layer uses softmax activation ok
+            A = np.exp(Z) / np.sum(np.exp(Z), axis=0, keepdims=True)
+        else:
+            # Other layers use tanh activation
+            A = np.tanh(Z)
+
+            # Apply da dropout
+            D = np.random.rand(*A.shape) < keep_prob
+            A = np.multiply(A, D)
+            A /= keep_prob
+
+            # Save the dropout mask
+            cache[f'D{l}'] = D
+
+        cache[f'A{l}'] = A
+
+    return cache
