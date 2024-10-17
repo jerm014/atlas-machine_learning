@@ -31,8 +31,8 @@ def dropout_forward_prop(X, weights, L, keep_prob):
     cache['A0'] = A
 
     for layer in range(1, L + 1):
-        W = weights[f'W{l}']
-        b = weights[f'b{l}']
+        W = weights[f'W{layer}']
+        b = weights[f'b{layer}']
         Z = np.dot(W, A) + b
 
         if layer == L:
