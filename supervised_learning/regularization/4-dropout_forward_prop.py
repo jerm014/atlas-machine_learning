@@ -37,7 +37,7 @@ def dropout_forward_prop(X, weights, L, keep_prob):
 
         if layer == L:
             # Last layer uses softmax activation ok?
-            cache[f'A{layer}'] = np.exp(z) / np.sum(np.exp(z),
+            cache[f'A{layer}'] = np.exp(Z) / np.sum(np.exp(Z),
                                                     axis=0,
                                                     keepdims=True)
         else:
