@@ -51,8 +51,8 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             D = drop.astype(int)
 
             # Save the dropout mask
-            cache[f'D{l}'] = D
+            cache[f'D{layer}'] = D
 
-            cache[f'A{l}'] = A
+            cache[f'A{layer}'] = A
 
     return cache
