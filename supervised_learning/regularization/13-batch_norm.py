@@ -3,6 +3,9 @@
 import numpy as np
 
 def batch_norm(Z, gamma, beta, epsilon):
+  """
+  documentation goes here.
+  """
     # Calculate mean of each feature
     mu = np.mean(Z, axis=0)
     
