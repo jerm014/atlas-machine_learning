@@ -21,7 +21,7 @@ def dropout_forward_prop(X, weights, L, keep_prob):
 
     Returns:
     dict
-        A dictionary containing the outputs of each layer and 
+        A dictionary containing the outputs of each layer and
         the dropout mask used on each layer.
 
     Look at me:
