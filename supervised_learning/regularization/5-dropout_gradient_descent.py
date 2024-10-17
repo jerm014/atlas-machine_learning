@@ -23,7 +23,7 @@ def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
           Number of layers in the network
 
     Returns:
-        None (weights are updated in place)
+        [Nothing] (weights are updated in place)
     """
     m = Y.shape[1]
     dZ = cache[f'A{L}'] - Y
