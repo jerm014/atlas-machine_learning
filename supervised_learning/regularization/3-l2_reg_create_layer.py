@@ -7,16 +7,12 @@ def l2_reg_create_layer(prev, n, activation, lambtha):
     """
     documentation goes here
     """
-    # Initialize the weights using He
-    initializer = tf.keras.initializers.he_normal()
-
-    # Create the layer with L2 regulraization
-    layer = tf.keras.layers.Dense(
-        units=n,
-        activation=activation,
-        kernel_initializer=initializer,
-        kernel_regularizer=tf.keras.regularizers.l2(lambtha)
-    )
-
-    # Apply the layer to the previous layers output
-    return layer(prev)
+    # Initialize the weights using VarianceScaling
+    kernel_initializer = tf.keras.initializers.VarianceScaling(scale=2.0,
+                                                               mode='fan_avg')
+    # use the keras l2 regularizer
+    kernel_regularizer=tf.keras.regularizers.l2(lambtha)
+    return tf.keras.layers.Dense(n,
+                                 activation=activation,
+                                 kernel_regularizer=kernel_regularizer,
+                                 kernel_initializer=kernel_initializer)(prev)
