@@ -33,24 +33,27 @@ def convolve_grayscale_valid(images, kernel):
     # Initialize the output array
     output = np.zeros((m, output_h, output_w))
 
-    # Loop over each image
+    # First Loop over each image
     for i in range(m):
-        # Loop over the height of the output
+        # Second Loop over the height of the output
         for x in range(output_h):
-            # Extract the slice of the image that corresponds to the current window in height
+            # Extract the slice of the image that corresponds to the current
+            # window in height
             image_slice = images[i, x:x + kh, :]
-            # Use numpy's stride tricks to create a sliding window over the width
-            # This will avoid the third loop
-            sub_matrices = np.lib.stride_tricks.as_strided(
-                image_slice,
-                shape=(output_w, kh, kw),
-                strides=(image_slice.strides[1],
-                image_slice.strides[0],
-                image_slice.strides[1])
-            )
-            # Perform element-wise multiplication and sum over kh and kw dimensions
+            # Use numpy's stride tricks to create a sliding window over the
+            # width to avoid a third loop
+            shape = (output_w, kh, kw)
+            strides = (image_slice.strides[1],
+                       image_slice.strides[0],
+                       image_slice.strides[1])
+            sub_matrices = np.lib.stride_tricks.as_strided(image_slice,
+                                                           shape=shape,
+                                                           strides=strides)
+            # Perform element-wise multiplication and sum over kh and kw
+            # dimensions
+            axes = ([1, 2], [0, 1])
             output[i, x, :] = np.tensordot(sub_matrices,
                                            kernel,
-                                           axes=([1, 2], [0, 1]))
+                                           axes=axes)
     
     return output
