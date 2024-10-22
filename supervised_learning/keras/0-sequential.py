@@ -14,7 +14,8 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         activations (list): List containing the activation functions for each
                             layer.
         lambtha (float):    L2 regularization parameter.
-        keep_prob (float):  Probability that a node will be kept during dropout.
+        keep_prob (float):  Probability that a node will be kept during
+                            dropout.
 
     Returns:
         keras.Model: The constructed Keras model.
