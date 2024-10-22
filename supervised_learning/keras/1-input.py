@@ -5,7 +5,8 @@ import tensorflow.keras as K
 
 def build_model(nx, layers, activations, lambtha, keep_prob):
     """
-    Builds a neural network with Keras using the Model Subclassing API.
+    Builds a neural network with Keras Functional API without using Sequential
+    or Input classes.
 
     Args:
         nx (int):           Number of input features to the network.
@@ -20,37 +21,23 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         Keras.Model: The constructed Keras model.
     """
 
-    class CustomModel(K.models.Model):
-        def __init__(self):
-            super(CustomModel, self).__init__()
-            self.layers_list = []
-            for i in range(len(layers)):
-                if i == 0:
-                    # First layer with input dimension
-                    dense = K.layers.Dense(
-                        units=layers[i],
-                        activation=activations[i],
-                        kernel_regularizer=K.regularizers.l2(lambtha),
-                        input_dim=nx
-                    )
-                else:
-                    # Subsequent layers
-                    dense = K.layers.Dense(
-                        units=layers[i],
-                        activation=activations[i],
-                        kernel_regularizer=K.regularizers.l2(lambtha)
-                    )
-                self.layers_list.append(dense)
-                if i < len(layers) - 1:
-                    # Add dropout after each layer except the last
-                    dropout = K.layers.Dropout(rate=1 - keep_prob)
-                    self.layers_list.append(dropout)
+    # Create an InputLayer and get its input tensor
+    input_layer = K.layers.InputLayer(input_shape=(nx,))
+    x = input_layer.input  # This is the input tensor
 
-        def call(self, inputs):
-            x = inputs
-            for layer in self.layers_list:
-                x = layer(x)
-            return x
+    # Build the rest of the model
+    y = x
+    for i in range(len(layers)):
+        # Add Dense layer
+        y = K.layers.Dense(
+            units=layers[i],
+            activation=activations[i],
+            kernel_regularizer=K.regularizers.l2(lambtha)
+        )(y)
+        # Add Dropout layer after each layer except the last
+        if i < len(layers) - 1:
+            y = K.layers.Dropout(rate=1 - keep_prob)(y)
 
-    model = CustomModel()
+    # Create the model
+    model = K.models.Model(inputs=x, outputs=y)
     return model
