@@ -20,8 +20,9 @@ def train_model(network,
                 filepath=None,
                 verbose=True,
                 shuffle=False):
-    """Trains a model using mini-batch gradient descent, with optional
-    early stopping, learning rate decay, and model checkpointing.
+    """
+    Trains a model using mini-batch gradient descent, with optional early
+    stopping, learning rate decay, and model checkpointing.
 
     Args:
         network:                              The model to train.
