@@ -40,7 +40,6 @@ def convolve_grayscale_valid(images, kernel):
             image_slice = images[i, x:x + kh, :]
             # Perform convolution over the width by multiplying the kernel and
             # summing over kh and kw
-            output[i, x, :] = np.sum(image_slice[:, np.newaxis, \
-              :output_w + kw] * kernel[:, np.newaxis], axis=(0, 2))
+            output[i, x, :] = np.sum(image_slice[:, np.newaxis, :output_w + kw] * kernel[:, np.newaxis], axis=(0, 2))
 
     return output
