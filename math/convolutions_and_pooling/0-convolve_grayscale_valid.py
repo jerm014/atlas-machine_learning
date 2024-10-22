@@ -8,7 +8,7 @@ import numpy as np
 def convolve_grayscale_valid(images, kernel):
     """
     Performs a valid convolution on grayscale images.
-    
+
     Args:
         images (numpy.ndarray): A numpy array with shape (m, h, w) containing
                                 multiple grayscale images.
@@ -19,7 +19,7 @@ def convolve_grayscale_valid(images, kernel):
                                 the kernel for the convolution.
             - kh (int): The height of the kernel.
             - kw (int): The width of the kernel.
-    
+
     Returns:
         numpy.ndarray: A numpy array containing the convolved images, with
                        shape (m, h-kh+1, w-kw+1).
@@ -55,5 +55,5 @@ def convolve_grayscale_valid(images, kernel):
             output[i, x, :] = np.tensordot(sub_matrices,
                                            kernel,
                                            axes=axes)
-    
+
     return output
