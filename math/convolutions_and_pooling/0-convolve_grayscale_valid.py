@@ -22,7 +22,7 @@ def convolve_grayscale_valid(images, kernel):
     
     Returns:
         numpy.ndarray: A numpy array containing the convolved images, with
-        shape (m, h-kh+1, w-kw+1).
+                       shape (m, h-kh+1, w-kw+1).
     """
     m, h, w = images.shape
     kh, kw = kernel.shape
@@ -32,12 +32,15 @@ def convolve_grayscale_valid(images, kernel):
     # Create an output array to store the results of the convolution
     output = np.zeros((m, output_h, output_w))
 
-    # Perform convolution for all images at once using only two loops
+    # Perform convolution using only two loops!
     for i in range(m):
-        image = images[i]
         for x in range(output_h):
-            image_slice = image[x:x+kh, :]
-            output[i, x, :] = np.sum(image_slice[:, None, :] * \
-              kernel[:, None, :], axis=(1, 2))
-    
+            # Get the slice of the image that corresponds to the current
+            # height window
+            image_slice = images[i, x:x + kh, :]
+            # Perform convolution over the width by multiplying the kernel and
+            # summing over kh and kw
+            output[i, x, :] = np.sum(image_slice[:, np.newaxis, \
+              :output_w + kw] * kernel[:, np.newaxis], axis=(0, 2))
+
     return output
