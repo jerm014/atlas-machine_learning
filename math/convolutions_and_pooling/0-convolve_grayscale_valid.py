@@ -26,22 +26,31 @@ def convolve_grayscale_valid(images, kernel):
     """
     m, h, w = images.shape
     kh, kw = kernel.shape
+
     output_h = h - kh + 1
     output_w = w - kw + 1
 
-    # Create an output array to store the results of the convolution
+    # Initialize the output array
     output = np.zeros((m, output_h, output_w))
 
-    # Perform convolution using only two loops!
+    # Loop over each image
     for i in range(m):
+        # Loop over the height of the output
         for x in range(output_h):
-            # Get the slice of the image that corresponds to the current
-            # height window
+            # Extract the slice of the image that corresponds to the current window in height
             image_slice = images[i, x:x + kh, :]
-            # Perform convolution over the width by multiplying the kernel and
-            # summing over kh and kw
-            # output[i, x, :] = np.sum(image_slice[:, np.newaxis, :output_w + kw] * kernel[:, np.newaxis], axis=(0, 2))
-            # output[i, x, :] = np.sum(image_slice[:, np.newaxis, :] * kernel[:, :, np.newaxis], axis=(0, 1))
-            output[i, x, :] = np.sum(image_slice[:, np.newaxis, :kw] * kernel[:, np.newaxis], axis=(0, 1))
-
+            # Use numpy's stride tricks to create a sliding window over the width
+            # This will avoid the third loop
+            sub_matrices = np.lib.stride_tricks.as_strided(
+                image_slice,
+                shape=(output_w, kh, kw),
+                strides=(image_slice.strides[1],
+                image_slice.strides[0],
+                image_slice.strides[1])
+            )
+            # Perform element-wise multiplication and sum over kh and kw dimensions
+            output[i, x, :] = np.tensordot(sub_matrices,
+                                           kernel,
+                                           axes=([1, 2], [0, 1]))
+    
     return output
