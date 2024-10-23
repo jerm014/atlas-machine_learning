@@ -27,26 +27,30 @@ def convolve_grayscale_same(images, kernel):
     m, h, w = images.shape
     kh, kw = kernel.shape
 
-    # Calculate the padding for height and width
+    # Calculate padding for height and width
     pad_h = (kh - 1) // 2
     pad_w = (kw - 1) // 2
 
-    # Pad the images with zeros
+    # Pad the images with 0s (same padding)
     padded_images = np.pad(images,
                            ((0, 0),
                            (pad_h, pad_h),
                            (pad_w, pad_w)),
                            mode='constant')
 
-    # Create an output array to store the results of the convolution
+    # Initialize the output array with the same height and width as the input
+    # images
     output = np.zeros((m, h, w))
 
-    # Perform convolution for all images at once using only two loops
+    # Perform convolution using two loops (one for images, one for height)
     for i in range(m):
-        image = padded_images[i]
         for x in range(h):
-            image_slice = image[x:x+kh, :]
-            output[i, x, :] = np.sum(image_slice[:, None, :] * \
-              kernel[:, None, :], axis=(1, 2))
+            # Extract the slice of the padded image that corresponds to the
+            # current window in height
+            image_slice = padded_images[i, x:x + kh, :]
+
+            # Use numpy operations to perform convolution across the width
+            S = image_slice[:, np.newaxis, :w + kw] * kernel[:, np.newaxis]
+            output[i, x, :] = np.sum(S, axis=(0, 1))
 
     return output
