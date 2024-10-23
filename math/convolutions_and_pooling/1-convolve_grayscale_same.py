@@ -22,35 +22,38 @@ def convolve_grayscale_same(images, kernel):
     
     Returns:
         numpy.ndarray: A numpy array containing the convolved images, with the
-        same dimensions as the input images (m, h, w).
+                       same dimensions as the input images (m, h, w).
     """
     m, h, w = images.shape
     kh, kw = kernel.shape
 
-    # Calculate padding for height and width
-    pad_h = (kh - 1) // 2
-    pad_w = (kw - 1) // 2
+    output_h = h - kh + 1
+    output_w = w - kw + 1
 
-    # Pad the images with 0s (same padding)
-    padded_images = np.pad(images,
-                           ((0, 0),
-                           (pad_h, pad_h),
-                           (pad_w, pad_w)),
-                           mode='constant')
+    # Initialize the output array
+    output = np.zeros((m, output_h, output_w))
 
-    # Initialize the output array with the same height and width as the input
-    # images
-    output = np.zeros((m, h, w))
-
-    # Perform convolution using two loops (one for images, one for height)
+    # First Loop over each image
     for i in range(m):
-        for x in range(h):
-            # Extract the slice of the padded image that corresponds to the
-            # current window in height
-            image_slice = padded_images[i, x:x + kh, :]
-
-            # Use numpy operations to perform convolution across the width
-            S = image_slice[:, np.newaxis, :w + kw] * kernel[:, np.newaxis]
-            output[i, x, :] = np.sum(S, axis=(0, 1))
+        # Second Loop over the height of the output
+        for x in range(output_h):
+            # Extract the slice of the image that corresponds to the current
+            # window in height
+            image_slice = images[i, x:x + kh, :]
+            # Use numpy's stride tricks to create a sliding window over the
+            # width to avoid a third loop
+            shape = (output_w, kh, kw)
+            strides = (image_slice.strides[1],
+                       image_slice.strides[0],
+                       image_slice.strides[1])
+            sub_matrices = np.lib.stride_tricks.as_strided(image_slice,
+                                                           shape=shape,
+                                                           strides=strides)
+            # Perform element-wise multiplication and sum over kh and kw
+            # dimensions
+            axes = ([1, 2], [0, 1])
+            output[i, x, :] = np.tensordot(sub_matrices,
+                                           kernel,
+                                           axes=axes)
 
     return output
