@@ -74,8 +74,8 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
     output = np.zeros((m, oh, ow, nc))
 
     for k in range(nc):  # Loop over kernels
-        for i in range(oh): # ...over height
-            for j in range(ow): # ...over width
+        for i in range(oh):  # ...over height
+            for j in range(ow):  # ...over width
                 # Calculate the window indices
                 h_start = i * sh
                 h_end = h_start + kh
