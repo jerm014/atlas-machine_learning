@@ -35,7 +35,7 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
         - sh: stride for height
         - sw: stride for width
         Default is (1, 1)
-    
+
     Returns:
       numpy.ndarray
         Convolved images with shape (m, oh, ow) where:
