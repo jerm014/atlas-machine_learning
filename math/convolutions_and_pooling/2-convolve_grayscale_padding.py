@@ -43,9 +43,9 @@ def convolve_grayscale_padding(images, kernel, padding):
 
     # Create padded input array with zeros
     padded_input = np.pad(
-      images, 
+      images,
       ((0, 0), (ph, ph), (pw, pw)),
-      mode='constant', 
+      mode='constant',
       constant_values=0
     )
 
