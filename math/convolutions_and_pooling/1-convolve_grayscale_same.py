@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""Module that contains a function for performing same convolutions on
-grayscale images."""
+"""Module for performing 'same' convolution on grayscale images."""
 
 import numpy as np
 
 
 def convolve_grayscale_same(images, kernel):
     """
-    Performs a same convolution on grayscale images.
+    Performs a 'same' convolution on grayscale images.
     
     Args:
         images (numpy.ndarray): A numpy array with shape (m, h, w) containing
@@ -21,8 +20,8 @@ def convolve_grayscale_same(images, kernel):
             - kw (int): The width of the kernel.
     
     Returns:
-        numpy.ndarray: A numpy array containing the convolved images, with the
-                       same dimensions as the input images (m, h, w).
+        numpy.ndarray: A numpy array containing the convolved images with the
+                       same height and width as the input.
     """
     m, h, w = images.shape
     kh, kw = kernel.shape
@@ -32,10 +31,11 @@ def convolve_grayscale_same(images, kernel):
     pad_w = (kw - 1) // 2
 
     # Pad the images with 0s (same padding)
+    # Padding format: ((before_m, after_m),
+    #                  (before_h, after_h),
+    #                  (before_w, after_w))
     padded_images = np.pad(images,
-                           ((0, 0),
-                           (pad_h, pad_h),
-                           (pad_w, pad_w)),
+                           ((0, 0), (pad_h, pad_h), (pad_w, pad_w)),
                            mode='constant')
 
     # Initialize the output array with the same height and width as the input
@@ -46,13 +46,24 @@ def convolve_grayscale_same(images, kernel):
     for i in range(m):
         for x in range(h):
             # Extract the slice of the padded image that corresponds to the
-            # current window in height and width
-            image_slice = padded_images[i, x:x + kh, :]
-            IS = image_slice[:, np.newaxis, :w + kw]
-            K = kernel[:, np.newaxis]
-            axis = (0,1)
-            # Use numpy's sum to compute convolution across the width for the
-            # 'same' convolution
-            output[i, x, :] = np.sum(IS * K, axis=axis)
+            # current window in height. This slice shape: (kh, w + 2 * pad_w)
+            IS = padded_images[i, x:x + kh, :]
+            KHW = (kh, kw)
+            
+            # Use sliding_window_view to extract all possible kw-sized windows
+            # along the width. This results in 3D array with shape (w, kh, kw)
+            image_patches = np.lib.stride_tricks.sliding_window_view(IS, KHW)
+            
+            # Ensure that the number of patches matches the width of the output
+            if image_patches.shape[0] != w:
+                # This should not happen with correct padding
+                raise ValueError("Incorrect number of patches extracted.")
+
+            # Perform element-wise multiplication between the kernel and each
+            # patch, then sum. This results in a 1D array with shape (w,)
+            conv = np.sum(image_patches * kernel, axis=(1, 2))
+
+            # Assign the convolved values to the output
+            output[i, x, :] = conv
 
     return output
