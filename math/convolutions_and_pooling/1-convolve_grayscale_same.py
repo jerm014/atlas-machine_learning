@@ -47,7 +47,7 @@ def convolve_grayscale_same(images, kernel):
         for x in range(h):
             # Extract the slice of the padded image that corresponds to the
             # current window in height. This slice shape: (kh, w + 2 * pad_w)
-            image_slices = padded_images[i, x:x + kh, :]
+            image_slices = padded_images[:, i:i+kh, x:x+kw]
 
             # Use sliding_window_view to extract all possible kw-sized windows
             # along the width. This results in 3D array with shape (w, kh, kw)
@@ -63,6 +63,6 @@ def convolve_grayscale_same(images, kernel):
             conv = np.sum(image_patches * kernel, axis=(1, 2))
 
             # Assign the convolved values to the output
-            output[i, x, :] = conv
+            output[:, i, x, :] = conv
 
     return output
