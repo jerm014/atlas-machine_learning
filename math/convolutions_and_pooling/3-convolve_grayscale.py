@@ -72,7 +72,7 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
             w_start = j * sw
             w_end = w_start + kw
 
-            # Extract window and perform element-wise multiplication w kernel
+            # Extract window and perform element-wise multiply with kernel
             # Sum across dimensions for each image
             output[:, i, j] = np.sum(
                 padded[:, h_start:h_end, w_start:w_end] * kernel,

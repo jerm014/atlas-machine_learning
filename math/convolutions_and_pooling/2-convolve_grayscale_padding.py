@@ -55,7 +55,7 @@ def convolve_grayscale_padding(images, kernel, padding):
     # Perform convolution using only two for loops
     for i in range(oh):
         for j in range(ow):
-            # Extract window and perform element-wise multiplication w kernel
+            # Extract window and perform element-wise multiply with kernel
             # Sum across spatial dimensions for each image
             output[:, i, j] = np.sum(
                 padded_input[:, i:i+kh, j:j+kw] * kernel,
