@@ -18,7 +18,7 @@ def convolve_grayscale_same(images, kernel):
                                 the kernel for the convolution.
             - kh (int): The height of the kernel.
             - kw (int): The width of the kernel.
-    
+
     Returns:
         numpy.ndarray: A numpy array containing the convolved images with the
                        same height and width as the input.
@@ -42,20 +42,15 @@ def convolve_grayscale_same(images, kernel):
     # images
     output = np.zeros((m, h, w))
 
-    # Perform convolution using only two loops (one for images, one for height)
+    # Perform convolution using only two loops (one for height, one for width)
     for hh in range(h):
         for ww in range(w):
             # Extract the slice of the padded image that corresponds to the
-            # current window in height. This slice shape: (kh, w + 2 * pad_w)
+            # current window in height.
             image_slices = padded_images[:, hh:hh+kh, ww:ww+kw]
 
-            # Ensure that the number of patches matches the width of the output
-            # if image_patches.shape[0] != w:
-            # This should not happen with correct padding
-            #    raise ValueError("Incorrect number of patches extracted.")
-
             # Perform element-wise multiplication between the kernel and each
-            # patch, then sum. This results in a 1D array with shape (w,)
+            # slice, then sum.
             convolve = np.sum(image_slices * kernel, axis=(1, 2))
 
             # Assign the convolved values to the output
