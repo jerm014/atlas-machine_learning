@@ -54,8 +54,8 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
         ph, pw = padding
 
     # Calculate output dimensions
-    oh = ((h + 2 * ph - kh) / sh) + 1
-    ow = ((w + 2 * pw - kw) / sw) + 1
+    oh = int((h + 2 * ph - kh) / sh) + 1
+    ow = int((w + 2 * pw - kw) / sw) + 1
 
     # Create padded input and output arrays
     padded = np.pad(images,
