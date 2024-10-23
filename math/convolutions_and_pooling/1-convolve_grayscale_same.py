@@ -63,6 +63,6 @@ def convolve_grayscale_same(images, kernel):
             conv = np.sum(image_patches * kernel, axis=(1, 2))
 
             # Assign the convolved values to the output
-            output[:, i, x, :] = conv
+            output[:, i, x] = conv
 
     return output
