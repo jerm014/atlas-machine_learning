@@ -54,9 +54,9 @@ def convolve_grayscale_same(images, kernel):
             image_patches = image_slices[:, i:i+kh, x:x+kw]
 
             # Ensure that the number of patches matches the width of the output
-            if image_patches.shape[0] != w:
-                # This should not happen with correct padding
-                raise ValueError("Incorrect number of patches extracted.")
+            # if image_patches.shape[0] != w:
+            # This should not happen with correct padding
+            #    raise ValueError("Incorrect number of patches extracted.")
 
             # Perform element-wise multiplication between the kernel and each
             # patch, then sum. This results in a 1D array with shape (w,)
