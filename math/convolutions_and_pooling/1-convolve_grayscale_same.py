@@ -43,8 +43,8 @@ def convolve_grayscale_same(images, kernel):
     output = np.zeros((m, h, w))
 
     # Perform convolution using only two loops (one for images, one for height)
-    for i in range(m):
-        for x in range(h):
+    for i in range(h):
+        for x in range(w):
             # Extract the slice of the padded image that corresponds to the
             # current window in height. This slice shape: (kh, w + 2 * pad_w)
             image_slices = padded_images[:, i:i+kh, x:x+kw]
