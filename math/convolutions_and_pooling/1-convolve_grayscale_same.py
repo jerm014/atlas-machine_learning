@@ -47,12 +47,11 @@ def convolve_grayscale_same(images, kernel):
         for x in range(h):
             # Extract the slice of the padded image that corresponds to the
             # current window in height. This slice shape: (kh, w + 2 * pad_w)
-            IS = padded_images[i, x:x + kh, :]
-            KHW = (kh, kw)
+            image_slices = padded_images[i, x:x + kh, :]
 
             # Use sliding_window_view to extract all possible kw-sized windows
             # along the width. This results in 3D array with shape (w, kh, kw)
-            image_patches = padded[:, i:i+kh, x:x+kw]
+            image_patches = image_slices[:, i:i+kh, x:x+kw]
 
             # Ensure that the number of patches matches the width of the output
             if image_patches.shape[0] != w:
