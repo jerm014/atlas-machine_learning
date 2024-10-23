@@ -27,8 +27,8 @@ def convolve_grayscale_same(images, kernel):
     kh, kw = kernel.shape
 
     # Calculate padding for height and width
-    pad_h = (kh - 1) // 2
-    pad_w = (kw - 1) // 2
+    pad_h = kh // 2
+    pad_w = kw // 2
 
     # Pad the images with 0s (same padding)
     # Padding format: ((before_m, after_m),
@@ -49,11 +49,11 @@ def convolve_grayscale_same(images, kernel):
             # current window in height. This slice shape: (kh, w + 2 * pad_w)
             IS = padded_images[i, x:x + kh, :]
             KHW = (kh, kw)
-            
+
             # Use sliding_window_view to extract all possible kw-sized windows
             # along the width. This results in 3D array with shape (w, kh, kw)
-            image_patches = np.lib.stride_tricks.sliding_window_view(IS, KHW)
-            
+            image_patches = padded[:, i:i+kh, x:x+kw]
+
             # Ensure that the number of patches matches the width of the output
             if image_patches.shape[0] != w:
                 # This should not happen with correct padding
