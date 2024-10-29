@@ -4,7 +4,7 @@ import numpy as np
 
 
 def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
-    """put the documentation here, jerm."""
+    """redo documentation, jermy."""
 
     m, h_new, w_new, c_new = dZ.shape
     m, h_prev, w_prev, c_prev = A_prev.shape
@@ -16,15 +16,21 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     db = np.zeros_like(b)
 
     if padding == 'same':
-        ph = ((h_new - 1) * sh + kh - h_prev) // 2
-        pw = ((w_new - 1) * sw + kw - w_prev) // 2
+        ph = ((h_prev - 1) * sh + kh - h_new) // 2
+        pw = ((w_prev - 1) * sw + kw - w_new) // 2
     else:
         ph, pw = 0, 0
 
-    A_prev_pad = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)),
-                        'constant', constant_values=0)
-    dA_prev_pad = np.pad(dA_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)),
-                         'constant', constant_values=0)
+    A_prev_pad = np.pad(
+        A_prev,
+        ((0, 0), (ph, ph), (pw, pw), (0, 0)),
+        'constant',
+        constant_values=0)
+    dA_prev_pad = np.pad(
+        dA_prev,
+        ((0, 0), (ph, ph), (pw, pw), (0, 0)),
+        'constant',
+        constant_values=0)
 
     for i in range(m):
         a_prev_pad = A_prev_pad[i]
@@ -32,18 +38,20 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
         for h in range(h_new):
             for w in range(w_new):
+                vert_start = h * sh
+                vert_end = vert_start + kh
+                horiz_start = w * sw
+                horiz_end = horiz_start + kw
+
+                a_slice = a_prev_pad[
+                    vert_start:vert_end, horiz_start:horiz_end, :]
+
                 for c in range(c_new):
-                    vert_start = h * sh
-                    vert_end = vert_start + kh
-                    horiz_start = w * sw
-                    horiz_end = horiz_start + kw
-
-                    a_slice = a_prev_pad[
-                        vert_start:vert_end, horiz_start:horiz_end, :]
-
                     da_prev_pad[
-                        vert_start:vert_end, horiz_start:horiz_end, :] += W[
-                            :, :, :, c] * dZ[i, h, w, c]
+                        vert_start:vert_end,
+                        horiz_start:horiz_end, :] += \
+                        W[:, :, :, c] * dZ[i, h, w, c]
+
                     dW[:, :, :, c] += a_slice * dZ[i, h, w, c]
 
         if ph == 0 and pw == 0:
