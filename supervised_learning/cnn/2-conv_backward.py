@@ -40,16 +40,14 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
             h_end = h_start + kh
             w_start = j * sw
             w_end = w_start + kw
-
             for k in range(c_new):
-                dz_mask = dZ[:, i:i+1, j:j+1, k:k+1]
                 dA_prev_pad[:, h_start:h_end, w_start:w_end, :] += \
-                    np.repeat(np.repeat(dz_mask, kh, axis=1),
-                             kw, axis=2) * W[:, :, :, k:k+1]
-                dW[:, :, :, k:k+1] += np.sum(
+                    W[:, :, :, k][np.newaxis, :, :, :] * \
+                    dZ[:, i, j, k][:, np.newaxis, np.newaxis, np.newaxis]
+                dW[:, :, :, k] += np.sum(
                     A_prev_pad[:, h_start:h_end, w_start:w_end, :] *
-                    np.repeat(np.repeat(dz_mask, kh, axis=1),
-                             kw, axis=2), axis=0, keepdims=True)
+                    dZ[:, i, j, k][:, np.newaxis, np.newaxis, np.newaxis],
+                    axis=0)
 
     if padding == 'valid':
         dA_prev = dA_prev_pad
