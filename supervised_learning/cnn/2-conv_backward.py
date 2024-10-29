@@ -61,9 +61,9 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
         ph, pw = 0, 0
 
     A_prev_padded = np.pad(
-        A_prev, ((0,0), (ph, ph), (pw, pw), (0,0)), mode='constant')
+        A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant')
     dA_prev_padded = np.pad(
-        dA_prev, ((0,0), (ph, ph), (pw, pw), (0,0)), mode='constant')
+        dA_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant')
 
     for h in range(h_new):
         for w in range(w_new):
@@ -78,8 +78,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                 :, vert_start:vert_end, horiz_start:horiz_end, :]
 
             # Reshape dZ to align dimensions for broadcasting
-            dZ_slice = dZ[:,
-                h, w, :][:, np.newaxis, np.newaxis, np.newaxis, :]
+            dZ_slice = dZ[
+                :, h, w, :][:, np.newaxis, np.newaxis, np.newaxis, :]
 
             # Update gradients for the input
             dA_prev_padded[
