@@ -6,7 +6,8 @@ import numpy as np
 def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     """Performs back propagation over convolutional layer of neural network
     Args:
-        dZ: numpy.ndarray (m, h_new, w_new, c_new) containing partial derivatives
+        dZ: numpy.ndarray (m, h_new, w_new, c_new) containing partial
+            derivatives
         A_prev: numpy.ndarray (m, h_prev, w_prev, c_prev) output of prev layer
         W: numpy.ndarray (kh, kw, c_prev, c_new) kernels for convolution
         b: numpy.ndarray (1, 1, 1, c_new) biases
