@@ -4,7 +4,7 @@ from tensorflow import keras as K
 
 
 def lenet5(X):
-  """documentaiotn"""
+    """documentaiotn"""
     he_init = K.initializers.he_normal(seed=0)
 
     # FIRST conv layer
