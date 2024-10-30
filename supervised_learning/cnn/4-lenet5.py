@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module for back propagation over pooling layer"""
-import numpy as np
+import tensorflow.compat.v1 as tf
 
 
 def lenet5(x, y):
@@ -17,7 +17,6 @@ def lenet5(x, y):
         loss: tensor for the loss of the network.
         accuracy: tensor for the accuracy of the network.
     """
-    import tensorflow.compat.v1 as tf
     tf.disable_eager_execution()
 
     he_init = tf.keras.initializers.VarianceScaling(scale=2.0)
