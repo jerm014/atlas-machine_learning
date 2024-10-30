@@ -21,7 +21,6 @@ def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
     Returns:
         The partial derivatives with respect to the previous layer (dA_prev).
     """
-    import numpy as np
 
     m, h_new, w_new, c_new = dA.shape
     m, h_prev, w_prev, c = A_prev.shape  # c_new should be equal to c?
