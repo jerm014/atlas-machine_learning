@@ -31,13 +31,16 @@ def densenet121(growth_rate=32, compression=1.0):
     nb_filters = 2 * growth_rate  # Typically 64 filters for DenseNet-121
     X = K.layers.Conv2D(
         nb_filters,
-        kernel_size=7,
+        pool_size=(7, 7),
         strides=(2,2),
         padding='same',
         kernel_initializer=he_normal)(X)
 
     # Max pooling
-    X = K.layers.MaxPooling2D(pool_size=3, strides=2, padding='same')(X)
+    X = K.layers.MaxPooling2D(
+        pool_size=(3, 3),
+        strides=(2, 2),
+        padding='same')(X)
 
     # Dense Block 1
     X, nb_filters = dense_block(X, nb_filters, growth_rate, layers=6)
