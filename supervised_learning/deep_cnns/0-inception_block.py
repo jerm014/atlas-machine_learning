@@ -14,7 +14,6 @@ def inception_block(A_prev, filters):
     Returns:
      - Concatenated output of the inception block
     """
-    from tensorflow import keras as K
 
     F1, F3R, F3, F5R, F5, FPP = filters
 
