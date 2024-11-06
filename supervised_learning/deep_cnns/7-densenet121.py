@@ -25,7 +25,7 @@ def densenet121(growth_rate=32, compression=1.0):
 
     # Initial Batch Normalization and ReLU activation
     X = K.layers.BatchNormalization(axis=3)(inputs)
-    X = K.layers.ReLU(name='re_lu')(X)
+    X = K.layers.Activation('relu')(X)
 
     # Initial convolution
     nb_filters = 2 * growth_rate  # Typically 64 filters for DenseNet-121
