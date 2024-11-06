@@ -17,7 +17,7 @@ def resnet50():
     he_normal = K.initializers.he_normal(seed=0)
 
     # Input layer
-    inputs = K.Input(shape=(224, 224, 3))
+    inputs = K.Input(shape=(224, 224, 3), name='input_1')
 
     # Initial convolutional layer
     X = K.layers.Conv2D(
