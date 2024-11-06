@@ -12,3 +12,24 @@ My natural inclination to help others understand difficult concepts shows I have
 My combination of technical expertise and ability to communicate complex ideas clearly could make me valuable in roles that bridge technical and non-technical teams.
 My proven ability to identify problems and implement innovative solutions shows I excel in positions requiring strategic thinking and system improvements.
 My consistent willingness to help others, combined with my technical skills, shows that I would be particularly effective in leadership roles driving technical teams.
+
+
+why we go to conv layers: less complicated, context based, looking for edges or details not needed
+
+cnn is image based classification
+
+
+1 interpolation 2,3,4 point
+2 image inpainting (telea navies stokes biharmonic equations?)
+  2.a krigging
+3 CNN
+4 gans, autoencoders (state of the art)
+
+region of interest (ROI)
+
+plan:
+load image
+find black pixels to make mask
+apply mask to image to know the roi's
+
+SSIM structural image
