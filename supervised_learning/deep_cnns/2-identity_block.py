@@ -7,11 +7,11 @@ def identity_block(A_prev, filters):
     """
     Builds an identity block as described in
     "Deep Residual Learning for Image Recognition" (2015).
-    
+
     Parameters:
     - A_prev: output fr_om the previous layer
     - filters: tuple/list with F11, F3, F12
-    
+
     Returns:
     - The activated output of the identity block
     """
