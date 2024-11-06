@@ -9,12 +9,12 @@ def projection_block(A_prev, filters, s=2):
     "Deep Residual Learning for Image Recognition" (2015).
 
     Args:
-    - A_prev: output fr_om the previous layer
-    - filters: tuple/list with F11, F3, F12
-    - s: stride for the first convolution in main path and shortcut
+      A_prev:  output fr_om the previous layer
+      filters: tuple/list with F11, F3, F12
+      s:       stride for the first convolution in main path and shortcut
 
     Returns:
-    - The activated output of the projection block
+      The activated output of the projection block
     """
 
     F11, F3, F12 = filters

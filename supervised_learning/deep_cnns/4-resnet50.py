@@ -11,7 +11,7 @@ def resnet50():
     "Deep Residual Learning for Image Recognition" (2015).
 
     Returns:
-     - resnet model
+      resnet model
     """
 
     he_normal = K.initializers.he_normal(seed=0)

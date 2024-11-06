@@ -9,11 +9,11 @@ def inception_block(A_prev, filters):
     "Going Deeper with Convolutions" (2014).
 
     Args:
-     - A_prev:  output fr_om the previous layer
-     - filters: tuple/list with F1, F3R, F3, F5R, F5, FPP
+      A_prev:  output fr_om the previous layer
+      filters: tuple/list with F1, F3R, F3, F5R, F5, FPP
 
     Returns:
-     - Concatenated output of the inception block
+      Concatenated output of the inception block
     """
 
     F1, F3R, F3, F5R, F5, FPP = filters

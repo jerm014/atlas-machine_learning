@@ -11,7 +11,7 @@ def inception_network():
     "Going Deeper with Convolutions" (2014).
 
     Returns:
-    - The Keras model
+      The Keras model
     """
 
     # Input layer

@@ -8,15 +8,15 @@ def dense_block(X, nb_filters, growth_rate, layers):
     Builds a Dense Block(TM) as described in
     "Densely Connected Convolutional Networks".
 
-    Parameters:
-    - X: output fr_om the previous layer
-    - nb_filters: integer representing the number of filters in X
-    - growth_rate: growth rate for the Dense Block(TM)
-    - layers: number of layers in the Dense Block(TM)
+    Args:
+      X:           output fr_om the previous layer
+      nb_filters:  integer representing the number of filters in X
+      growth_rate: growth rate for the Dense Block(TM)
+      layers:      number of layers in the Dense Block(TM)
 
     Returns:
-    - The concatenated output of each layer within the Dense Block(TM)
-    - The number of filters within the concatted outputs
+      The concatenated output of each layer within the Dense Block(TM)
+      The number of filters within the concatted outputs
     """
 
     he_normal = K.initializers.he_normal(seed=0)
