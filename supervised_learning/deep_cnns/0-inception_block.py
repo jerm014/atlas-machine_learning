@@ -13,7 +13,7 @@ def inception_block(A_prev, filters):
       filters: tuple/list with F1, F3R, F3, F5R, F5, FPP
 
     Returns:
-      Concatenated output of the inception block
+      concatenated output of the inception block
     """
 
     F1, F3R, F3, F5R, F5, FPP = filters

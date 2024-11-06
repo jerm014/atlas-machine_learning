@@ -14,8 +14,8 @@ def transition_layer(X, nb_filters, compression):
       compression: compression factor for the transition layer
 
     Returns:
-      The output of the transition layer
-      The number of filters within the output
+      output of the transition layer
+      number of filters within the output
     """
 
     he_normal = K.initializers.he_normal(seed=0)

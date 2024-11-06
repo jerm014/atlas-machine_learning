@@ -14,7 +14,7 @@ def projection_block(A_prev, filters, s=2):
       s:       stride for the first convolution in main path and shortcut
 
     Returns:
-      The activated output of the projection block
+      activated output of the projection block
     """
 
     F11, F3, F12 = filters

@@ -13,7 +13,7 @@ def identity_block(A_prev, filters):
       filters: tuple/list with F11, F3, F12
 
     Returns:
-      The activated output of the identity block
+      activated output of the identity block
     """
 
     F11, F3, F12 = filters
