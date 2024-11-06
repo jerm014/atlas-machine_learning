@@ -9,7 +9,7 @@ def resnet50():
     """
     Builds the ResNet-50 architeture as described in
     "Deep Residual Learning for Image Recognition" (2015).
-    
+
     Returns:
      - resnet model
     """
@@ -27,7 +27,7 @@ def resnet50():
         padding='same',
         kernel_initializer=he_normal)(inputs)
     X = K.layers.BatchNormalization(axis=3)(X)
-    X = K.layers.Activation('relu', name="re_lu")(X)
+    X = K.layers.Activation('relu', name='re_lu')(X)
     X = K.layers.MaxPooling2D(
         pool_size=(3, 3),
         strides=(2, 2),
