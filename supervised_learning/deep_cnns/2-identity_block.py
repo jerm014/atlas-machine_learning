@@ -9,7 +9,7 @@ def identity_block(A_prev, filters):
     "Deep Residual Learning for Image Recognition" (2015).
     
     Parameters:
-    - A_prev: output from the previous layer
+    - A_prev: output fr_om the previous layer
     - filters: tuple/list with F11, F3, F12
     
     Returns:
