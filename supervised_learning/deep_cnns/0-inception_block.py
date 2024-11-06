@@ -8,7 +8,7 @@ def inception_block(A_prev, filters):
     Builds an inception block as described in "Going Deeper with Convolutions" (2014).
 
     Args:
-     - A_prev:  output from the previous layer
+     - A_prev:  output fr_om the previous layer
      - filters: tuple/list with F1, F3R, F3, F5R, F5, FPP
 
     Returns:
