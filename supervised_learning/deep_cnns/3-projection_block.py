@@ -21,7 +21,7 @@ def projection_block(A_prev, filters, s=2):
     he_normal = K.initializers.he_normal(seed=0)
     X_shortcut = A_prev
 
-    ##### MAIN PATH #####
+    # MAIN PATH
     # First component
     X = K.layers.Conv2D(
         filters=F11,
@@ -52,7 +52,7 @@ def projection_block(A_prev, filters, s=2):
     X = K.layers.BatchNormalization(axis=3)(X)
     # No activtion here
 
-    ##### SHORTCUT PATH #####
+    # SHORTCUT PATH
     X_shortcut = K.layers.Conv2D(
         filters=F12,
         kernel_size=(1, 1),
