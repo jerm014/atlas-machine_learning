@@ -30,7 +30,7 @@ def projection_block(A_prev, filters, s=2):
         padding='same',
         kernel_initializer=he_normal)(A_prev)
     X = K.layers.BatchNormalization(axis=3)(X)
-    X = K.layers.Activation(' relu')(X)
+    X = K.layers.Activation('relu')(X)
 
     # Second component
     X = K.layers.Conv2D(
