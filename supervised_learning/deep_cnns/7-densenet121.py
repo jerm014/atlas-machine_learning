@@ -31,7 +31,7 @@ def densenet121(growth_rate=32, compression=1.0):
     nb_filters = 2 * growth_rate  # Typically 64 filters for DenseNet-121
     X = K.layers.Conv2D(
         nb_filters,
-        pool_size=(7, 7),
+        kernel_size=(7, 7),
         strides=(2,2),
         padding='same',
         kernel_initializer=he_normal)(X)
@@ -43,32 +43,52 @@ def densenet121(growth_rate=32, compression=1.0):
         padding='same')(X)
 
     # Dense Block 1
-    X, nb_filters = dense_block(X, nb_filters, growth_rate, layers=6)
+    X, nb_filters = dense_block(
+        X,
+        nb_filters=nb_filters,
+        growth_rate=growth_rate,
+        layers=6)
 
     # Transition Layer 1
-    X, nb_filters = transition_layer(X, nb_filters, compression)
+    X, nb_filters = transition_layer(
+        X,
+        nb_filters=nb_filters,
+        compression=compression)
 
     # Dense Block 2
-    X, nb_filters = dense_block(X, nb_filters, growth_rate, layers=12)
+    X, nb_filters = dense_block(X,
+        nb_filters=nb_filters,
+        growth_rate=growth_rate,
+        layers=12)
 
     # Transition Layer 2
-    X, nb_filters = transition_layer(X, nb_filters, compression)
+    X, nb_filters = transition_layer(
+        X,
+        nb_filters=nb_filters,
+        compression=compression)
 
     # Dense Block 3
-    X, nb_filters = dense_block(X, nb_filters, growth_rate, layers=24)
+    X, nb_filters = dense_block(
+        X,
+        nb_filters=nb_filters,
+        growth_rate=growth_rate,
+        layers=24)
 
     # Transition Layer 3
-    X, nb_filters = transition_layer(X, nb_filters, compression)
+    X, nb_filters = transition_layer(
+        X,
+        nb_filters=nb_filters,
+        compression=compression)
 
     # Dense Block 4
-    X, nb_filters = dense_block(X, nb_filters, growth_rate, layers=16)
+    X, nb_filters = dense_block(
+        X,
+        nb_filters=nb_filters,
+        growth_rate=growth_rate,
+        layers=16)
 
-    # Final Batch Normaliaztion and ReLU activation
-    X = K.layers.BatchNormalization(axis=3)(X)
-    X = K.layers.Activation('relu')(X)
-
-    # Global Average Pooling
-    X = K.layers.GlobalAveragePooling2D()(X)
+    # Avg Pool
+    X = K.layers.AveragePooling2D(pool_size=(7, 7))(X)
 
     # Output layer
     outputs = K.layers.Dense(
