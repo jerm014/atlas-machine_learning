@@ -32,7 +32,7 @@ def densenet121(growth_rate=32, compression=1.0):
     X = K.layers.Conv2D(
         nb_filters,
         kernel_size=(7, 7),
-        strides=(2,2),
+        strides=(2, 2),
         padding='same',
         kernel_initializer=he_normal)(X)
 
@@ -56,7 +56,8 @@ def densenet121(growth_rate=32, compression=1.0):
         compression=compression)
 
     # Dense Block 2
-    X, nb_filters = dense_block(X,
+    X, nb_filters = dense_block(
+        X,
         nb_filters=nb_filters,
         growth_rate=growth_rate,
         layers=12)
