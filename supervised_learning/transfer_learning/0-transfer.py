@@ -20,9 +20,10 @@ class EarlyStoppingAtAccuracy(K.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs=None):
         logs = logs or {}
-        acc = logs.get('categorical_accuracy')
-        if acc is not None:
-            if acc >= self.accuracy:
+        acc = logs.get('accuracy')
+        val_acc = logs.get('val_accuracy')
+        if acc is not None and val_acc is not None:
+            if acc >= self.accuracy and val_acc >= self.accuracy:
                 print(f"\nReached {self.accuracy*100}% accuracy, stopping.")
                 self.model.stop_training = True
 
@@ -53,11 +54,12 @@ if __name__ == "__main__":
     full_model = K.models.Model(inputs=input_tensor, outputs=predictions)
 
 # I think "categorical_accuracy" is the right thing here, not "accuracy".
+# but I'm not confident. so I think I'll keep accuracy?
     full_model.compile(optimizer=K.optimizers.Adam(learning_rate=0.001),
                        loss='categorical_crossentropy',
-                       metrics=['categorical_accuracy'])
+                       metrics=['accuracy'])
 
-    early_stopping_callback = EarlyStoppingAtAccuracy(accuracy=0.98)
+    early_stopping_callback = EarlyStoppingAtAccuracy(accuracy=0.87)
 
     full_model.fit(X_train_p,
                    Y_train_p,
