@@ -167,4 +167,4 @@ supervised_learning/classification/27-saved.pkl
 supervised_learning/classification/28-saved.pkl
 **.Identifier
 supervised_learning/transfer_learning/0b-transfer.py
-supervised_learning/transfer_learning/*.h5
+supervised_learning/transfer_learning/*-rev*.h5
