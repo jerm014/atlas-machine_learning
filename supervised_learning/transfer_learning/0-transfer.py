@@ -59,18 +59,19 @@ if __name__ == "__main__":
 
     early_stopping_callback = EarlyStoppingAtAccuracy(accuracy=0.98)
 
-    full_model.fit(X_train_p, Y_train_p,
+    full_model.fit(X_train_p,
+                   Y_train_p,
                    validation_data=(X_test_p, Y_test_p),
                    epochs=10,
-                   batch_size=64)
+                   batch_size=64,
+                   callbacks=[early_stopping_callback])
 
     # Evaluate the model to ensure metrics are built
     print("\nEvaluating model before saving...")
     test_scores = full_model.evaluate(X_test_p,
                                       Y_test_p,
                                       batch_size=64,
-                                      verbose=1,
-                                      callbacks=[early_stopping_callback])
+                                      verbose=1)
 
     print(f"Test loss: {test_scores[0]}")
     print(f"Test accuracy: {test_scores[1]}")
