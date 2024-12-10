@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """
 Module for YOLO v3 object detection implementation.
@@ -276,7 +275,7 @@ class Yolo:
 
         Returns:
             tuple containing:
-                - images: List of numpy.ndarray containing loaded images 
+                - images: List of numpy.ndarray containing loaded images
                 - image_paths: List of image file paths
 
         Raises:
