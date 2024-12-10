@@ -200,46 +200,43 @@ class Yolo:
            predicted_box_scores:  numpy.ndarray of shape (?) containing box
                                   scores ordered by class and score
        """
-       box_predictions = []
-       predicted_box_classes = []
-       predicted_box_scores = []
+       if len(filtered_boxes) == 0:
+           return np.array([]), np.array([]), np.array([])
 
-       unique_classes = np.unique(box_classes)
+       # sort by box classes, group the box classes together, then within each
+       # class, sort by box scores in descending order
+       idxs = np.lexsort((-box_scores, box_classes))
 
-       for class_num in unique_classes:
-           class_indices = np.where(box_classes == class_num)
-           class_boxes = filtered_boxes[class_indices]
-           class_box_scores = box_scores[class_indices]
+       box_predictions = filtered_boxes[idxs]
+       predicted_box_classes = box_classes[idxs]
+       predicted_box_scores = box_scores[idxs]
 
-           while len(class_boxes) > 0:
-               max_idx = np.argmax(class_box_scores)
-               best_box = class_boxes[max_idx]
-               box_predictions.append(best_box)
-               predicted_box_classes.append(class_num)
-               predicted_box_scores.append(class_box_scores[max_idx])
+       selected_idxs = []
+       # np.unique() returns the sorted unique elements
+       unique_classes = np.unique(predicted_box_classes)
+       # only iterate through classes that actually have detected boxes
+       for cls in unique_classes:
+           class_mask = predicted_box_classes == cls
+           class_idxs = np.where(class_mask)[0]
 
-               class_boxes = np.delete(class_boxes, max_idx, axis=0)
-               class_box_scores = np.delete(class_box_scores, max_idx)
+           while len(class_idxs) > 0:
+               selected_idxs.append(class_idxs[0])
+           
+               if len(class_idxs) == 1:
+                   break
 
-               if len(class_boxes) == 0:
-                   continue
+               ious = self.intersection_over_union(
+                   box_predictions[class_idxs[0]],
+                   box_predictions[class_idxs[1:]]
+               )
+           
+               class_idxs = class_idxs[1:][ious < self.nms_t]
 
-               ious = self.intersection_over_union(best_box, class_boxes)
-               class_boxes = class_boxes[ious < self.nms_t]
-               class_box_scores = class_box_scores[ious < self.nms_t]
+       selected_idxs = np.array(selected_idxs)
 
-       if len(box_predictions) == 0:
-           return (
-               np.array([]),
-               np.array([]),
-               np.array([])
-           )
-
-       box_predictions = np.array(box_predictions)
-       predicted_box_classes = np.array(predicted_box_classes)
-       predicted_box_scores = np.array(predicted_box_scores)
-
-       return box_predictions, predicted_box_classes, predicted_box_scores
+       return (box_predictions[selected_idxs],
+               predicted_box_classes[selected_idxs],
+               predicted_box_scores[selected_idxs])
 
 
 def sigmoid(x):
