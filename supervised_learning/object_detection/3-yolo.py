@@ -230,8 +230,8 @@ class Yolo:
        if len(filtered_boxes) == 0:
            return np.array([]), np.array([]), np.array([])
 
-       # sort by box classes, group the box classes together, then within each
-       # class, sort by box scores in descending order
+       # sort by box classes, group the box classes together, then within
+       # each class, sort by box scores in descending order
        idxs = np.lexsort((-box_scores, box_classes))
 
        box_predictions = filtered_boxes[idxs]
