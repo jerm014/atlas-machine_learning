@@ -326,16 +326,13 @@ class Yolo:
         image_shapes = []
 
         for img in images:
-            h, w, _ = img.shape
-            image_shapes.append([h, w])
-
+            image_shapes.append(img.shape[:2])
             resized = cv2.resize(
                 img,
                 (input_w, input_h),
                 interpolation=cv2.INTER_CUBIC
             )
-            reshaped = resized.reshape(input_h, input_w, 3)
-            pimages.append(reshaped / 255)
+            pimages.append(resized / 255)
 
         pimages = np.array(pimages)
         image_shapes = np.array(image_shapes)
