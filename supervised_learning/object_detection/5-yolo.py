@@ -322,17 +322,15 @@ class Yolo:
         input_h = self.model.input.shape[1]
         input_w = self.model.input.shape[2]
 
-        image_shapes = np.array(
-            [[img.shape[0], img.shape[1]] for img in images]
-        )
+        pimages = np.zeros((len(images), input_h, input_w, 3))
+        image_shapes = np.zeros((len(images), 2))
 
-        pimages = [cv2.resize(img,
-                              (input_w, input_h),
-                              interpolation=cv2.INTER_CUBIC) for img in images]
-
-        # make sure this returns a float... it should work with just 255 but
-        # "could be problematic"
-        pimages = np.array(pimages) / 255.0
+        for i, img in enumerate(images):
+            image_shapes[i] = np.array([img.shape[0], img.shape[1]])
+            pimages[i] = cv2.resize(
+                img,
+                (input_w, input_h),
+                interpolation=cv2.INTER_CUBIC) / 255.0
 
         return pimages, image_shapes
 
