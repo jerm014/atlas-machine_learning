@@ -137,6 +137,7 @@ class Yolo:
 
         return boxes, box_confidences, box_class_probs
 
+
 def sigmoid(x):
     """Apply sigmoid activation function."""
     return 1 / (1 + np.exp(-x))
