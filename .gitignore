@@ -168,3 +168,4 @@ supervised_learning/classification/28-saved.pkl
 **.Identifier
 supervised_learning/transfer_learning/0b-transfer.py
 supervised_learning/transfer_learning/*-rev*.h5
+/.vs
