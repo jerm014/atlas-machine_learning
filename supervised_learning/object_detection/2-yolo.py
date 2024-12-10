@@ -153,12 +153,12 @@ class Yolo:
                              containing processed box class probabilities
 
         Returns:
-            filtered_boxes: numpy.ndarray of shape (?, 4) containing
-                           filtered bounding boxes
-            box_classes: numpy.ndarray of shape (?,) containing class number
-                        for each filtered box
-            box_scores: numpy.ndarray of shape (?) containing box scores
-                       for each filtered box
+            filtered_boxes:  numpy.ndarray of shape (?, 4) containing
+                             filtered bounding boxes
+            box_classes:     numpy.ndarray of shape (?,) containing class
+                             number for each filtered box
+            box_scores:      numpy.ndarray of shape (?) containing box scores
+                             for each filtered box
         """
         filtered_boxes = []
         box_classes = []
