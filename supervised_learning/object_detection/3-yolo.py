@@ -208,10 +208,10 @@ class Yolo:
         return intersection_area / union_area
 
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
-       """
-       Perform non-max suppression on filtered boxes.
+        """
+        Perform non-max suppression on filtered boxes.
 
-       Args:
+        Args:
            filtered_boxes:  numpy.ndarray of shape (?, 4) containing
                             filtered bounding boxes
            box_classes:     numpy.ndarray of shape (?,) containing class
@@ -219,51 +219,51 @@ class Yolo:
            box_scores:      numpy.ndarray of shape (?) containing box scores
                             for filtered_boxes
 
-       Returns:
+        Returns:
            box_predictions:       numpy.ndarray of shape (?, 4) containing
                                   predicted boxes ordered by class and score
            predicted_box_classes: numpy.ndarray of shape (?,) containing
                                   class numbers ordered by class and score
            predicted_box_scores:  numpy.ndarray of shape (?) containing box
                                   scores ordered by class and score
-       """
-       if len(filtered_boxes) == 0:
-           return np.array([]), np.array([]), np.array([])
+        """
+        if len(filtered_boxes) == 0:
+            return np.array([]), np.array([]), np.array([])
 
-       # sort by box classes, group the box classes together, then within
-       # each class, sort by box scores in descending order
-       idxs = np.lexsort((-box_scores, box_classes))
+        # sort by box classes, group the box classes together, then within
+        # each class, sort by box scores in descending order
+        idxs = np.lexsort((-box_scores, box_classes))
 
-       box_predictions = filtered_boxes[idxs]
-       predicted_box_classes = box_classes[idxs]
-       predicted_box_scores = box_scores[idxs]
+        box_predictions = filtered_boxes[idxs]
+        predicted_box_classes = box_classes[idxs]
+        predicted_box_scores = box_scores[idxs]
 
-       selected_idxs = []
-       # np.unique() returns the sorted unique elements
-       unique_classes = np.unique(predicted_box_classes)
-       # only iterate through classes that actually have detected boxes
-       for cls in unique_classes:
-           class_mask = predicted_box_classes == cls
-           class_idxs = np.where(class_mask)[0]
+        selected_idxs = []
+        # np.unique() returns the sorted unique elements
+        unique_classes = np.unique(predicted_box_classes)
+        # only iterate through classes that actually have detected boxes
+        for cls in unique_classes:
+            class_mask = predicted_box_classes == cls
+            class_idxs = np.where(class_mask)[0]
 
-           while len(class_idxs) > 0:
-               selected_idxs.append(class_idxs[0])
-           
-               if len(class_idxs) == 1:
-                   break
+            while len(class_idxs) > 0:
+                selected_idxs.append(class_idxs[0])
 
-               ious = self.intersection_over_union(
-                   box_predictions[class_idxs[0]],
-                   box_predictions[class_idxs[1:]]
-               )
-           
-               class_idxs = class_idxs[1:][ious < self.nms_t]
+                if len(class_idxs) == 1:
+                    break
 
-       selected_idxs = np.array(selected_idxs)
+                ious = self.intersection_over_union(
+                    box_predictions[class_idxs[0]],
+                    box_predictions[class_idxs[1:]]
+                )
 
-       return (box_predictions[selected_idxs],
-               predicted_box_classes[selected_idxs],
-               predicted_box_scores[selected_idxs])
+                class_idxs = class_idxs[1:][ious < self.nms_t]
+
+        selected_idxs = np.array(selected_idxs)
+
+        return (box_predictions[selected_idxs],
+                predicted_box_classes[selected_idxs],
+                predicted_box_scores[selected_idxs])
 
 
 def sigmoid(x):
