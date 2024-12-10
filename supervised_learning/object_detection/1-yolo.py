@@ -79,10 +79,10 @@ class Yolo:
         Process the outputs from the Darknet model.
 
         Args:
-            outputs:    List of numpy.ndarrays containing predictions from
-                        the Darknet model for a single image
+            outputs: List of numpy.ndarrays containing predictions from the
+                    Darknet model for a single image
             image_size: numpy.ndarray containing original image size
-                        [image_height, image_width]
+                       [image_height, image_width]
 
         Returns:
             boxes: List of numpy.ndarrays of processed boundary boxes
@@ -92,49 +92,50 @@ class Yolo:
         boxes = []
         box_confidences = []
         box_class_probs = []
+        image_height, image_width = image_size
 
-        for i, output in enumerate(outputs):
-            grid_height, grid_width = output.shape[:2]
+        for idx, output in enumerate(outputs):
+            grid_height, grid_width, anchor_boxes, _ = output.shape
             box_conf = output[..., 4:5]
             box_class_prob = output[..., 5:]
-
             box_confidences.append(sigmoid(box_conf))
             box_class_probs.append(sigmoid(box_class_prob))
 
-            box_xy = sigmoid(output[..., :2])
-            box_wh = np.exp(output[..., 2:4])
-            anchors_tensor = self.anchors[i]
+            tx = output[..., 0]
+            ty = output[..., 1]
+            tw = output[..., 2]
+            th = output[..., 3]
 
-            col = np.tile(
-                np.arange(0, grid_width), grid_height
-            ).reshape(grid_height, grid_width)
-            row = np.tile(
-                np.arange(0, grid_height).reshape(-1, 1), grid_width
-            )
+            grid_x = np.arange(grid_width).reshape(1, grid_width, 1)
+            grid_x = np.repeat(grid_x, grid_height, axis=0)
+            grid_x = np.repeat(grid_x, anchor_boxes, axis=2)
 
-            col = col.reshape(grid_height, grid_width, 1, 1).repeat(
-                self.anchors.shape[1], axis=2
-            )
-            row = row.reshape(grid_height, grid_width, 1, 1).repeat(
-                self.anchors.shape[1], axis=2
-            )
-            grid = np.concatenate((col, row), axis=3)
+            grid_y = np.arange(grid_height).reshape(grid_height, 1, 1)
+            grid_y = np.repeat(grid_y, grid_width, axis=1)
+            grid_y = np.repeat(grid_y, anchor_boxes, axis=2)
 
-            box_xy += grid
-            box_xy /= (grid_width, grid_height)
-            box_wh *= anchors_tensor
-            box_wh /= self.model.input.shape[1:3]
+            bx = (sigmoid(tx) + grid_x) / grid_width
+            by = (sigmoid(ty) + grid_y) / grid_height
 
-            box_x1y1 = box_xy - (box_wh / 2)
-            box_x2y2 = box_xy + (box_wh / 2)
-            box = np.concatenate((box_x1y1, box_x2y2), axis=-1)
+            pw = self.anchors[idx, :, 0]
+            ph = self.anchors[idx, :, 1]
 
-            box *= np.tile(image_size, 2)
+            bw = pw * np.exp(tw) / self.model.input.shape[1]
+            bh = ph * np.exp(th) / self.model.input.shape[2]
 
+            x1 = (bx - (bw / 2)) * image_width
+            y1 = (by - (bh / 2)) * image_height
+            x2 = (bx + (bw / 2)) * image_width
+            y2 = (by + (bh / 2)) * image_height
+
+            box = np.zeros(output[..., :4].shape)
+            box[..., 0] = x1
+            box[..., 1] = y1
+            box[..., 2] = x2
+            box[..., 3] = y2
             boxes.append(box)
 
         return boxes, box_confidences, box_class_probs
-
 
 def sigmoid(x):
     """Apply sigmoid activation function."""
