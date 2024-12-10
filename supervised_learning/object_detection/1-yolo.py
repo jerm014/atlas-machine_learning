@@ -101,7 +101,10 @@ class Yolo:
             box_confidences.append(sigmoid(box_conf))
             box_class_probs.append(sigmoid(box_class_prob))
 
-            tx, ty, tw, th = output
+            tx = output[..., 0]
+            ty = output[..., 1]
+            tw = output[..., 2]
+            th = output[..., 3]
 
             grid_x = np.arange(grid_width).reshape(1, grid_width, 1)
             grid_x = np.repeat(grid_x, grid_height, axis=0)
