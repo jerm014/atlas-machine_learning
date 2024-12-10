@@ -180,6 +180,33 @@ class Yolo:
 
         return filtered_boxes, box_classes, box_scores
 
+    def intersection_over_union(self, box1, boxes):
+        """
+        Calculate intersection over union between boxes.
+
+        Args:
+            box1:  numpy.ndarray of shape (4,) containing first box
+                   coordinates
+            boxes: numpy.ndarray of shape (n, 4) containing n box
+                   coordinates
+
+        Returns:
+            numpy.ndarray of shape (n,) containing IoU values for each box
+        """
+        x1 = np.maximum(box1[0], boxes[:, 0])
+        y1 = np.maximum(box1[1], boxes[:, 1])
+        x2 = np.minimum(box1[2], boxes[:, 2])
+        y2 = np.minimum(box1[3], boxes[:, 3])
+
+        intersection_area = np.maximum(0, x2 - x1) * np.maximum(0, y2 - y1)
+
+        box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
+        boxes_area = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
+
+        union_area = box1_area + boxes_area - intersection_area
+
+        return intersection_area / union_area
+
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
        """
        Perform non-max suppression on filtered boxes.
