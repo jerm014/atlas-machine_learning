@@ -334,7 +334,7 @@ class Yolo:
             )
             pimages.append(resized / 255)
 
-        pimages = np.array(pimages)
+        pimages = np.array(pimages).reshape(-1, input_h, input_w, 3)
         image_shapes = np.array(image_shapes)
 
         return pimages, image_shapes
