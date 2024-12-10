@@ -169,3 +169,7 @@ supervised_learning/classification/28-saved.pkl
 supervised_learning/transfer_learning/0b-transfer.py
 supervised_learning/transfer_learning/*-rev*.h5
 /.vs
+/supervised_learning/object_detection/yolo
+*.h5
+/supervised_learning/object_detection/yolo_images/yolo
+/supervised_learning/object_detection/detections
