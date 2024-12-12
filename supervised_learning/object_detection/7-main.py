@@ -8,8 +8,8 @@ if __name__ == '__main__':
     anchors = np.array([[[116, 90], [156, 198], [373, 326]],
                         [[30, 61], [62, 45], [59, 119]],
                         [[10, 13], [16, 30], [33, 23]]])
-    yolo = Yolo('yolo.h5', 'coco_classes.txt', 0.6, 0.5, anchors)
-    predictions, image_paths = yolo.predict('yolo_images/yolo/')
+    yolo = Yolo('C:\\Users\\jermi\\Source\\Repos\\atlas-machine_learning\\supervised_learning\\object_detection\\yolo.h5', 'C:\\Users\\jermi\\Source\\Repos\\atlas-machine_learning\\supervised_learning\\object_detection\\coco_classes.txt', 0.6, 0.5, anchors)
+    predictions, image_paths = yolo.predict('C:\\Users\\jermi\\Source\\Repos\\atlas-machine_learning\\supervised_learning\\object_detection\\yolo_images\\yolo\\')
     for i, name in enumerate(image_paths):
         if "dog.jpg" in name:
             ind = i
