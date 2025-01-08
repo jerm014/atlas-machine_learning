@@ -8,10 +8,12 @@ def determinant(matrix):
     # Check if input is a valid list of lists
     if not IsListOfLists(matrix):
         raise TypeError('matrix must be a list of lists')
+        return
 
     # Check if input is a square matrix
     if not IsSquareMatrix(matrix):
         raise ValueError('matrix must be a square matrix')
+        return
 
     if matrix == [[]]:
         return 1
