@@ -10,15 +10,18 @@ def determinant(matrix):
         raise TypeError('matrix must be a list of lists')
         return
 
+    if matrix == [[]]:
+        return 1
+
     # Check if input is a square matrix
     if not IsSquareMatrix(matrix):
         raise ValueError('matrix must be a square matrix')
         return
 
-    if matrix == [[]]:
-        return 1
-
     n = len(matrix)
+
+    if n == 0:
+        return 1
 
     if n == 1:
         return matrix[0][0]
@@ -45,8 +48,10 @@ def IsListOfLists(param):
     return True
 
 def IsSquareMatrix(matrix):
-   n = len(matrix)
-   for row in matrix:
-       if len(row) != n:
-           return False
-   return True
+    n = len(matrix)
+    if n == 0:
+        return True
+    for row in matrix:
+        if len(row) != n:
+            return False
+    return True
