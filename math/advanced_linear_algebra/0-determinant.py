@@ -29,15 +29,16 @@ def determinant(matrix):
     if n == 2:
         # det = (a * d) - (b * c)
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-    
+
     det = 0
     for j in range(n):
-        minor = [[matrix[i][k] for k in range(n) if k != j] 
-            for i in range(1, n)]
+        minor = [[matrix[i][k] for k in range(n) if k != j]
+                 for i in range(1, n)]
         # ((-1) ** j) makes the sign flip for every pass of j
         det += matrix[0][j] * ((-1) ** j) * determinant(minor)
 
     return det
+
 
 def IsListOfLists(param):
     if not isinstance(param, list):
@@ -46,6 +47,7 @@ def IsListOfLists(param):
         if not isinstance(item, list):
             return False
     return True
+
 
 def IsSquareMatrix(matrix):
     n = len(matrix)
