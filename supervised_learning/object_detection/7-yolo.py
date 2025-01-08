@@ -116,6 +116,9 @@ class Yolo:
             grid_y = np.repeat(grid_y, grid_width, axis=1)
             grid_y = np.repeat(grid_y, anchor_boxes, axis=2)
 
+            print(sigmoid(tx).shape)
+            print(grid_x.shape)
+
             bx = (sigmoid(tx) + grid_x) / grid_width
             by = (sigmoid(ty) + grid_y) / grid_height
 
