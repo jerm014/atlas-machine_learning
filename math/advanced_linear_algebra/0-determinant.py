@@ -41,6 +41,7 @@ def determinant(matrix):
 
 
 def IsListOfLists(param):
+    '''check if param is a list of lists'''
     if not isinstance(param, list):
         return False
     for item in param:
@@ -50,6 +51,7 @@ def IsListOfLists(param):
 
 
 def IsSquareMatrix(matrix):
+    '''check if matrix is square'''
     n = len(matrix)
     if n == 0:
         return True
