@@ -28,7 +28,7 @@ def definiteness(matrix):
 
     # First check if matrix is symmetric
     # or don't?
-    
+
     # Get eigenvalues
     eigenvals = safe_eigvals(matrix)
 
@@ -40,7 +40,7 @@ def definiteness(matrix):
             np.all(eigenvals <= 0),    # Negative semidefinite
             1                          # Indefinite (default)
         ])
-    except:
+    except e as Exception:
         return None
 
     # Create array of possible results
@@ -55,8 +55,9 @@ def definiteness(matrix):
     # Return first matching result
     return results[checks.argmax()]
 
+
 def safe_eigvals(matrix):
     try:
         return np.linalg.eigvals(matrix)
-    except:
+    except e as Exception:
         return None
