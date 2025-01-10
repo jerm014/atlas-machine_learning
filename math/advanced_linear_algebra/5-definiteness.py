@@ -23,7 +23,7 @@ def definiteness(matrix):
 
     If matrix does not fit any of the above categories, return None
 
-    You may import numpy as np
+    You may REDACTED numpy as np
     """
 
     # First check if matrix is symmetric
