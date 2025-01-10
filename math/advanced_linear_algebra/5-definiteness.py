@@ -1,50 +1,62 @@
 #!/usr/bin/env python3
-'''make determinant stuff'''
+'''Project 2326 - Advanced Linear Algebra - Task 5: Definiteness'''
+import numpy as np
 
 
-def determinant(matrix):
-    '''calculate determinant of matrix'''
+def definiteness(matrix):
+    """
+    Write a function def definiteness(matrix): that calculates the
+    definiteness of a matrix:
 
-    # Check if input is a valid list of lists
-    if not IsListOfLists(matrix):
-        raise TypeError ("matrix must be a list of lists")
+    matrix is a numpy.ndarray of shape (n, n) whose definiteness should be
+    calculated
 
-    # Check if input is a square matrix
-    if not IsSquareMatrix(matrix):
-        raise ValueError("matrix must be a square matrix")
+    If matrix is not a numpy.ndarray, raise a TypeError with the message
+    matrix must be a numpy.ndarray
 
-    if matrix == [[]]:
-        return 1
+    If matrix is not a valid matrix, return None
 
-    n = len(matrix)
+    Return: the string Positive definite, Positive semi-definite, Negative
+            semi-definite, Negative definite, or Indefinite if the matrix is
+            positive definite, positive semi-definite, negative semi-definite,
+            negative definite OR indefinite, respectively
 
-    if n == 1:
-        return matrix[0][0]
+    If matrix does not fit any of the above categories, return None
 
-    if n == 2:
-        # det = (a * d) - (b * c)
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    You may import numpy as np
+    """
+
+    # First check if matrix is symmetric
+    # or don't?
     
-    det = 0
-    for j in range(n):
-        minor = [[matrix[i][k] for k in range(n) if k != j] 
-            for i in range(1, n)]
-        # ((-1) ** j) makes the sign flip for every pass of j
-        det += matrix[0][j] * ((-1) ** j) * determinant(minor)
+    # Get eigenvalues
+    eigenvals = safe_eigvals(matrix)
 
-    return det
+    try:
+        checks = np.array([
+            np.all(eigenvals > 0),     # Positive definite
+            np.all(eigenvals >= 0),    # Positive semidefinite
+            np.all(eigenvals < 0),     # Negative definite
+            np.all(eigenvals <= 0),    # Negative semidefinite
+            1                          # Indefinite (default)
+        ])
+    except:
+        return None
 
-def IsListOfLists(param):
-    if not isinstance(param, list):
-        return False
-    for item in param:
-        if not isinstance(item, list):
-            return False
-    return True
+    # Create array of possible results
+    results = np.array([
+        'Positive definite',
+        'Positive semi-definite',
+        'Negative definite',
+        'Negative semi-definite',
+        'Indefinite'
+    ])
 
-def IsSquareMatrix(matrix):
-   n = len(matrix)
-   for row in matrix:
-       if len(row) != n:
-           return False
-   return True
+    # Return first matching result
+    return results[checks.argmax()]
+
+def safe_eigvals(matrix):
+    try:
+        return np.linalg.eigvals(matrix)
+    except:
+        return None

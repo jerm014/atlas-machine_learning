@@ -1,59 +1,50 @@
 #!/usr/bin/env python3
-'''make determinant stuff'''
+"""Project 2326 - Advanced Linear Algebra - Task 0: Determinant"""
 
 
 def determinant(matrix):
-    '''calculate determinant of matrix'''
+    """
+    Write a function def determinant(matrix): that calculates the determinant
+    of a matrix:
 
-    # Check if input is a valid list of lists
-    if not IsListOfLists(matrix):
-        raise TypeError('matrix must be a list of lists')
+    matrix is a list of lists whose determinant should be calculated
+
+    If matrix is not a list of lists, raise a TypeError with the message
+    matrix must be a list of lists
+
+    If matrix is not square, raise a ValueError with the message matrix must
+    be a square matrix
+
+    The list [[]] represents a 0x0 matrix
+
+    Returns: the determinant of matrix
+    """
+
+    # Is matrix a list of lists
+    if not isinstance(matrix, list) or not all(isinstance(row, list) for
+                                               row in matrix):
+        raise TypeError("matrix must be a list of lists")
 
     if matrix == [[]]:
         return 1
 
-    # Check if input is a square matrix
-    if not IsSquareMatrix(matrix):
-        raise ValueError('matrix must be a square matrix')
+    if not all(len(row) == len(matrix) for row in matrix):
+        raise ValueError("matrix must be a non-empty square matrix")
 
-    n = len(matrix)
-
-    if n == 0:
-        return 1
-
-    if n == 1:
+    if len(matrix) == 1:
         return matrix[0][0]
 
-    if n == 2:
-        # det = (a * d) - (b * c)
+    # 2x2 matrix - this is the work!
+    if len(matrix) == 2:
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
 
+    # Laplace expansion along first row - recusion, baby
     det = 0
-    for j in range(n):
-        minor = [[matrix[i][k] for k in range(n) if k != j]
-                 for i in range(1, n)]
-        # ((-1) ** j) makes the sign flip for every pass of j
+    for j in range(len(matrix)):
+        # Minor matrix excluding row 0 and current column
+        minor = [[matrix[i][k] for k in range(len(matrix)) if k != j]
+                 for i in range(1, len(matrix))]
+        # Adds positive or negative to determinant by raising -1 to j
         det += matrix[0][j] * ((-1) ** j) * determinant(minor)
 
     return det
-
-
-def IsListOfLists(param):
-    '''check if param is a list of lists'''
-    if not isinstance(param, list):
-        return False
-    for item in param:
-        if not isinstance(item, list):
-            return False
-    return True
-
-
-def IsSquareMatrix(matrix):
-    '''check if matrix is square'''
-    n = len(matrix)
-    if n == 0:
-        return True
-    for row in matrix:
-        if len(row) != n:
-            return False
-    return True
