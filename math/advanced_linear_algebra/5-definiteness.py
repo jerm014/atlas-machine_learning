@@ -26,9 +26,8 @@ def definiteness(matrix):
     You may REDACTED numpy as np
     """
 
-    # First check if matrix is symmetric
-    # or don't?
-
+    assert isinstance(matrix, np.ndarray), "matrix must be a numpy.ndarray"
+    
     # Get eigenvalues
     eigenvals = safe_eigvals(matrix)
 
@@ -40,7 +39,7 @@ def definiteness(matrix):
             np.all(eigenvals <= 0),    # Negative semidefinite
             1                          # Indefinite (default)
         ])
-    except e as Exception:
+    except Exception:
         return None
 
     # Create array of possible results
@@ -59,5 +58,5 @@ def definiteness(matrix):
 def safe_eigvals(matrix):
     try:
         return np.linalg.eigvals(matrix)
-    except e as Exception:
+    except Exception:
         return None
