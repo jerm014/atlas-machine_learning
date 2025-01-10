@@ -19,6 +19,14 @@ def cofactor(matrix):
 
     Returns: the cofactor matrix of matrix
     """
+    # Is matrix a list of lists
+    if not isinstance(matrix, list) or not all(isinstance(row, list) for
+                                               row in matrix):
+        raise TypeError("matrix must be a list of lists")
+
+    # Is matrix non-empty and square
+    if not all(len(row) == len(matrix) for row in matrix):
+        raise ValueError("matrix must be a non-empty square matrix")
 
     result = [[0 for _ in range(len(matrix))] for _ in range(len(matrix))]
 
