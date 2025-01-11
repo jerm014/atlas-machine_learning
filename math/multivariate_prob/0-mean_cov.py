@@ -41,6 +41,6 @@ def mean_cov(X):
 
     # Calculate covariance matrix
     # Formula: cov = (X - mean)^T @ (X - mean) / (n-1)
-    Xcovariance = np.matmul(X - Xmean.T, X - Xmean) / (n - 1)
+    Xcovariance = np.matmul((X - Xmean).T, X - Xmean) / (n - 1)
 
     return Xmean, Xcovariance
