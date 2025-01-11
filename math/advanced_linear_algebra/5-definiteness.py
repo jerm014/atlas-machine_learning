@@ -62,6 +62,7 @@ def definiteness(matrix):
 
 
 def safe_eigvals(matrix):
+    """return an eigvals or fail gracefully"""
     try:
         return np.linalg.eigvals(matrix)
     except Exception:
