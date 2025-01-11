@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Project 2322 - Multivariate Probability - Task 0: Mean and Covariance"""
 import numpy as np
 
 
@@ -31,7 +32,7 @@ def mean_cov(X):
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         raise TypeError('X must be a 2D numpy.ndarray')
 
-    n, d =  X.shape
+    n, d = X.shape
 
     if n < 2:
         raise ValueError('X must contain multiple data points')
