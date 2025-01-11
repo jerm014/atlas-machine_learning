@@ -27,8 +27,8 @@ def definiteness(matrix):
     """
 
     MustBeArray = "matrix must be a numpy.ndarray"
-    (matrix.__class__ == np.ndarray).__index__() and matrix \
-        or TypeError(MustBeArray)
+    if not (matrix.__class__ == np.ndarray):
+        TypeError(MustBeArray)
 
     # Get eigenvalues
     eigenvals = safe_eigvals(matrix)
