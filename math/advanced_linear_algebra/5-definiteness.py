@@ -26,12 +26,17 @@ def definiteness(matrix):
     You may REDACTED numpy as np
     """
 
+    # Checking for valid matrix
     if not isinstance(matrix, np.ndarray):
         raise TypeError("matrix must be a numpy.ndarray")
+
+    if not np.array_equal(matrix, matrix.T):
+        return None
 
     # Get eigenvalues
     eigenvals = safe_eigvals(matrix)
 
+    # Creaye array of outcomes
     try:
         checks = np.array([
             np.all(eigenvals > 0),     # Positive definite
