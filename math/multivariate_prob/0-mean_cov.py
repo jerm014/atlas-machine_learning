@@ -31,13 +31,13 @@ def mean_cov(X):
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         raise TypeError('X must be a 2D numpy.ndarray')
 
-    if len(X.shape) < 2:
+    n, d =  X.shape
+
+    if n < 2:
         raise ValueError('X must contain multiple data points')
 
     # Calculate the mean of the dataset
     Xmean = np.mean(X, axis=0).reshape(1, -1)
-
-    n, _ = X.shape
 
     # Calculate covariance matrix
     # Formula: cov = (X - mean)^T @ (X - mean) / (n-1)
