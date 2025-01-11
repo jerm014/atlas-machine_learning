@@ -26,7 +26,7 @@ def correlation(C):
     # Typechecking
     if not isinstance(C, np.ndarray):
         raise TypeError(ERR_TYPE)
-    
+
     if len(C.shape) != 2 or C.shape[0] != C.shape[1]:
         raise ValueError(ERR_SHAPE)
 
