@@ -55,4 +55,16 @@ def likelihood(x, n, P):
     if np.any(P > 1) or np.any(P < 0):
         raise ValueError(E5)
 
-    return P ** x * (1 - P) ** (n - x)
+    ret = factorial(n) / (factorial(x) * factorial(n - x))
+    return ret * P ** x * (1 - P) ** (n - x)
+
+
+def factorial(n):
+    """
+    Calculate the factorial of a non-negative integer using numpy.
+
+    Args:    n: A non-negative integer to calculate factorial for
+
+    Returns: The factorial of n
+    """
+    return np.math.factorial(n)
