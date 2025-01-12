@@ -90,7 +90,7 @@ class MultiNormal:
             ValueError: If x does not have the shape (d, 1)
         """
         if not isinstance(x, np.ndarray):
-            raise TypeError(TE_xnotarray)
+            raise TypeError(self.TE_xnotarray)
 
         d = self.mean.shape[0]
         if x.shape != (d, 1):
