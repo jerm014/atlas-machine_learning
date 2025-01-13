@@ -45,7 +45,8 @@ E3 = "x cannot be greater than n"
 E4 = "P must be a 1D numpy.ndarray"
 E5 = "Pr must be a numpy.ndarray with the same shape as P"
 E6 = "All values in P must be in the range [0, 1]"
-E7 = "Pr must sum to 1"
+E7 = "All values in Pr must be in the range [0, 1]"
+E8 = "Pr must sum to 1"
 
 
 def intersection(x, n, P, Pr):
@@ -75,12 +76,15 @@ def intersection(x, n, P, Pr):
         raise TypeError(E5)
 
     # If any value in P or Pr is not in the range [0, 1], raise a ValueError
-    if not np.all((P >= 0) & (P <= 1)) or not np.all((Pr >= 0) & (Pr <= 1)):
+    if not np.all((P >= 0) & (P <= 1)):
         raise ValueError(E6)
+
+    if not np.all((Pr >= 0) & (Pr <= 1)):
+        raise ValueError(E7)
 
     # If Pr does not sum to 1, raise a ValueError -[Hint: use numpy.isclose]-
     if not np.isclose(np.sum(Pr), 1):
-        raise ValueError(E7)
+        raise ValueError(E8)
 
     a = Pr * factorial(n)
     b = factorial(x) * factorial(n - x)
