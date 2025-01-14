@@ -8,6 +8,7 @@ calculates the marginal probability of obtaining the data:
  - P  is a 1D numpy.ndarray containing the various hypothetical probabilities
       of patients developing severe side effects
  - Pr is a 1D numpy.ndarray containing the prior beliefs about P
+
 If n is not a positive integer, raise a ValueError with the message n must be
 a positive integer
 
