@@ -31,7 +31,7 @@ If any value in P is not in the range [0, 1], raise a ValueError with the
 message All values in P must be in the range [0, 1]
 
 Returns: a 1D numpy.ndarray containing the likelihood of obtaining the data,
-x and n, for each probability in P, respectively
+         x and n, for each probability in P, respectively
 """
 import numpy as np
 # These error messages are for the entire project and not all may be utilized

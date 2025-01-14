@@ -51,9 +51,7 @@ E8 = "Pr must sum to 1"
 
 
 def intersection(x, n, P, Pr):
-    """
-    calculates the intersection of obtaining this data with the various
-    hypothetical probabilities"""
+    """Calculate the intersection of obtaining the data"""
 
     # If n is not a positive integer, raise a ValueError
     if not isinstance(n, int) or n <= 0:
@@ -91,7 +89,7 @@ def intersection(x, n, P, Pr):
 
 
 def likelihood(x, n, P):
-    """calculate the likelihood of obtaining this data?"""
+    """Calculate the likelihood of obtaining the data"""
     if type(n) is not int or n <= 0:
         raise ValueError(E1)
     if type(x) is not int or x < 0:
@@ -107,11 +105,5 @@ def likelihood(x, n, P):
 
 
 def fact(n):
-    """
-    Calculate the factorial of a non-negative integer using numpy.
-
-    Args:    n: A non-negative integer to calculate factorial for
-
-    Returns: The factorial of n
-    """
+    """Calculate the factorial of a non-negative integer using numpy"""
     return np.math.factorial(n)
