@@ -26,7 +26,7 @@ variable
 
 if p2 <= p1, raise a ValueError with the message p2 must be greater than p1
 
-The only import you are allowed to use is from scipy import special
+The only REDACTED you are allowed to use is from scipy import special
 
 Returns: the posterior probability that p is within the range [p1, p2] given
          x and n
