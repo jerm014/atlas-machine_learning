@@ -39,6 +39,7 @@ Returns: a 1D numpy.ndarray containing the intersection of obtaining x and n
 
 """
 import numpy as np
+
 E1 = "n must be a positive integer"
 E2 = "x must be an integer that is greater than or equal to 0"
 E3 = "x cannot be greater than n"
@@ -86,14 +87,26 @@ def intersection(x, n, P, Pr):
     if not np.isclose(np.sum(Pr), 1):
         raise ValueError(E8)
 
-    a = Pr * factorial(n)
-    b = factorial(x) * factorial(n - x)
-    c = P ** x * (1 - P) ** (n - x)
-
-    return a / b * c
+    return Pr / likelihood(x, n, P)
 
 
-def factorial(n):
+def likelihood(x, n, P):
+    """calculate the likelihood of obtaining this data?"""
+    if type(n) is not int or n <= 0:
+        raise ValueError(E1)
+    if type(x) is not int or x < 0:
+        raise ValueError(E2)
+    if x > n:
+        raise ValueError(E3)
+    if type(P) is not np.ndarray or len(P.shape) != 1:
+        raise TypeError(E4)
+    if np.any(P > 1) or np.any(P < 0):
+        raise ValueError(E6)
+
+    return fact(n) / (fact(x) * fact(n - x)) * P ** x * (1 - P) ** (n - x)
+
+
+def fact(n):
     """
     Calculate the factorial of a non-negative integer using numpy.
 

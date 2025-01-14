@@ -34,12 +34,16 @@ Returns: a 1D numpy.ndarray containing the likelihood of obtaining the data,
 x and n, for each probability in P, respectively
 """
 import numpy as np
-
+# These error messages are for the entire project and not all may be utilized
+# in this module.
 E1 = "n must be a positive integer"
 E2 = "x must be an integer that is greater than or equal to 0"
 E3 = "x cannot be greater than n"
 E4 = "P must be a 1D numpy.ndarray"
-E5 = "All values in P must be in the range [0, 1]"
+E5 = "Pr must be a numpy.ndarray with the same shape as P"
+E6 = "All values in P must be in the range [0, 1]"
+E7 = "All values in Pr must be in the range [0, 1]"
+E8 = "Pr must sum to 1"
 
 
 def likelihood(x, n, P):
@@ -53,13 +57,12 @@ def likelihood(x, n, P):
     if type(P) is not np.ndarray or len(P.shape) != 1:
         raise TypeError(E4)
     if np.any(P > 1) or np.any(P < 0):
-        raise ValueError(E5)
+        raise ValueError(E6)
 
-    ret = factorial(n) / (factorial(x) * factorial(n - x))
-    return ret * P ** x * (1 - P) ** (n - x)
+    return fact(n) / (fact(x) * fact(n - x)) * P ** x * (1 - P) ** (n - x)
 
 
-def factorial(n):
+def fact(n):
     """
     Calculate the factorial of a non-negative integer using numpy.
 
