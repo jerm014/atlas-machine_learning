@@ -42,7 +42,7 @@ E7 = "All values in Pr must be in the range [0, 1]"
 E8 = "Pr must sum to 1"
 E9 = "p1 must be a float in the range [0, 1]"
 Ea = "p2 must be a float in the range [0, 1]"
-
+Eb = "p2 must be greater than p1"
 
 class Bayes:
     """Class for calculating Bayesian probabilities"""
@@ -67,6 +67,8 @@ class Bayes:
             raise ValueError(E9)
         if not isinstance(p2, float) or not (0 <= p2 <= 1):
             raise ValueError(Ea)
+        if not p2 >= p1:
+            raise ValueError(Eb)
 
     def posterior(self):
         """Calculate posterior probability within specified range [p1, p2]"""
