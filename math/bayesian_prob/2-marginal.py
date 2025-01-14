@@ -35,7 +35,8 @@ Returns: the marginal probability of obtaining x and n
 
 """
 import numpy as np
-
+# These error messages are for the entire project and not all may be utilized
+# in this module.
 E1 = "n must be a positive integer"
 E2 = "x must be an integer that is greater than or equal to 0"
 E3 = "x cannot be greater than n"
@@ -80,6 +81,7 @@ def marginal(x, n, P, Pr):
     if not np.isclose(np.sum(Pr), 1):
         raise ValueError(E8)
 
+    # Marginal is the sum of the intersection.
     return np.sum(intersection(x, n, P, Pr))
 
 
@@ -118,6 +120,7 @@ def intersection(x, n, P, Pr):
     if not np.isclose(np.sum(Pr), 1):
         raise ValueError(E8)
 
+    # Intersection the product of the prior and the likelihood.
     return Pr * likelihood(x, n, P)
 
 
@@ -134,6 +137,7 @@ def likelihood(x, n, P):
     if np.any(P > 1) or np.any(P < 0):
         raise ValueError(E6)
 
+    # the likelihood is n! / x! * (n-x)! * P^x * (1-P)^(n - x)
     return fact(n) / (fact(x) * fact(n - x)) * P ** x * (1 - P) ** (n - x)
 
 

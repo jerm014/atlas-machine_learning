@@ -47,7 +47,7 @@ E8 = "Pr must sum to 1"
 
 
 def likelihood(x, n, P):
-    """calculate the likelihood of obtaining this data?"""
+    """Calculate the likelihood of obtaining the data"""
     if type(n) is not int or n <= 0:
         raise ValueError(E1)
     if type(x) is not int or x < 0:
@@ -59,15 +59,10 @@ def likelihood(x, n, P):
     if np.any(P > 1) or np.any(P < 0):
         raise ValueError(E6)
 
+    # the likelihood is n! / x! * (n-x)! * P^x * (1-P)^(n - x)
     return fact(n) / (fact(x) * fact(n - x)) * P ** x * (1 - P) ** (n - x)
 
 
 def fact(n):
-    """
-    Calculate the factorial of a non-negative integer using numpy.
-
-    Args:    n: A non-negative integer to calculate factorial for
-
-    Returns: The factorial of n
-    """
+    """Calculate the factorial of a non-negative integer using numpy"""
     return np.math.factorial(n)
