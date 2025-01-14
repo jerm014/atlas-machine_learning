@@ -44,6 +44,7 @@ E9 = "p1 must be a float in the range [0, 1]"
 Ea = "p2 must be a float in the range [0, 1]"
 Eb = "p2 must be greater than p1"
 
+
 class Bayes:
     """Class for calculating Bayesian probabilities"""
 
