@@ -63,9 +63,9 @@ class Bayes:
             raise ValueError(E2)
         if x > n:
             raise ValueError(E3)
-        if not (0 <= p1 <= 1):
+        if isinstance(p1, float) and not (0 <= p1 <= 1):
             raise ValueError(E9)
-        if not (0 <= p2 <= 1):
+        if isinstance(p2, float) and not (0 <= p2 <= 1):
             raise ValueError(Ea)
 
     def posterior(self):
