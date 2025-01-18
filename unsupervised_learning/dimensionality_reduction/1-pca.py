@@ -17,9 +17,8 @@ import numpy as np
 
 def pca(X, ndim):
     """
-    Do the thing.
+    no.
     """
     X_mean = X - np.mean(X, axis=0)
-    u, s, vh = np.linalg.svd(X_mean)
-    W = vh.T[:, :ndim]
-    return np.dot(X_mean, W)
+    _, _, vh = np.linalg.svd(X_mean)
+    return np.dot(X_mean, vh.T[:, :ndim])
