@@ -47,7 +47,7 @@ def pca(X, var=0.95):
     cumulative_var = np.cumsum(explained_var)
 
     # Step 4: Calculate Number of Components (default var is 0.95)
-    n_components = np.argmax(cumulative_var >= var) + 1
+    n = np.argmax(cumulative_var >= var) + 1
 
     # Step 5: Transpose and Truncate
     res = Vh.T[:, :n]
