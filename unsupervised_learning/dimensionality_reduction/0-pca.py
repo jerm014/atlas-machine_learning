@@ -1,4 +1,5 @@
 ﻿#!/usr/bin/env python3
+
 """
 Write a function def pca(X, var=0.95): that performs PCA on a dataset:
 
