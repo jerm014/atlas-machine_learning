@@ -4,7 +4,7 @@ Write a function def pca(X, var=0.95): that performs PCA on a dataset:
 
  - X is a numpy.ndarray of shape (n, d) where:
  - n is the number of data points
-s - d is the number of dimensions in each point
+ - d is the number of dimensions in each point
 
 all dimensions have a mean of 0 across all data points
 
@@ -37,27 +37,19 @@ def pca(X, var=0.95):
        This is the transformation matrix that maintains var fraction of X's
        variance
     """
-    # Calculate covariance matrix
-    # Since X is already centered (mean=0), we can directly compute covariance
-    covariance_matrix = np.cov(X.T)
+    # Step 1: Do the SVD Decomposition. Ignore the first return value.                    
+    _, s, Vh = np.linalg.svd(X, full_matrices=False)
 
-    # Perform eigendecomposition
-    eigenvalues, eigenvectors = np.linalg.eigh(covariance_matrix)
+    # Step 2: Calculate the Explained Variance Ratio
+    explained_var = (s ** 2) / np.sum(s ** 2)
 
-    # Sort eigenvalues and eigenvectors in descending order
-    idx = eigenvalues.argsort()[::-1]
-    eigenvalues = eigenvalues[idx]
-    eigenvectors = eigenvectors[:, idx]
+    # Step 3: Calculate Cumulative Sum of Variance Ratios
+    cumulative_var = np.cumsum(explained_var)
 
-    # Calculate explained variance ratios
-    total_variance = np.sum(eigenvalues)
-    explained_variance_ratio = eigenvalues / total_variance
+    # Step 4: Calculate Number of Components (default var is 0.95)
+    n_components = np.argmax(cumulative_var >= var) + 1
 
-    # Find number of components needed to maintain desired variance
-    cumulative_variance_ratio = np.cumsum(explained_variance_ratio)
-    n_components = np.argmax(cumulative_variance_ratio >= var) + 1
+    # Step 5: Transpose and Truncate
+    res = Vh.T[:, :n]
 
-    # Select the first n_components eigenvectors
-    W = eigenvectors[:, :n_components]
-
-    return W
+    return res
