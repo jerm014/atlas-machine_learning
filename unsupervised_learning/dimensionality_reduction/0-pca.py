@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/env python3
 
 """
-Write a function def pca(X, var=0.95): that performs PCA on a dataset:
+Wrie a function def pca(X, var=0.95): that performs PCA on a dataset:
 
  - X is a numpy.ndarray of shape (n, d) where:
  - n is the number of data points
