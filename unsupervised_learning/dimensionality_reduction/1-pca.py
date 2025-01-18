@@ -15,10 +15,16 @@ version of X
 import numpy as np
 
 
-def pca(X, ndim):
+def pca(X, n):
     """
-    no.
+    Reduce dimensionality of input data using PCA.
+
+    Args:
+       X: Input data matrix of shape (n_samples, n_features) 
+       n: Target number of dimensions
+
+    Returns: Transformed data matrix of shape (n_samples, ndim)
     """
     X_mean = X - np.mean(X, axis=0)
     _, _, vh = np.linalg.svd(X_mean)
-    return np.dot(X_mean, vh.T[:, :ndim])
+    return np.dot(X_mean, vh.T[:, :n])
