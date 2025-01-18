@@ -37,7 +37,7 @@ def pca(X, var=0.95):
        This is the transformation matrix that maintains var fraction of X's
        variance
     """
-    # Step 1: Do the SVD Decomposition. Ignore the first return value.                    
+    # Step 1: Do the SVD Decomposition. Ignore the first return value.
     _, s, Vh = np.linalg.svd(X, full_matrices=False)
 
     # Step 2: Calculate the Explained Variance Ratio
