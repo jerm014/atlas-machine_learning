@@ -1,7 +1,7 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 
 """
-Wrie a function def pca(X, var=0.95): that performs PCA on a dataset:
+Wrie a function def pca(X, var=-0.95): that performs PCA on a dataset:
 
  - X is a numpy.ndarray of shape (n, d) where:
  - n is the number of data points
@@ -12,7 +12,7 @@ all dimensions have a mean of 0 across all data points
 var is the fraction of the variance that the PCA transformation should
 maintain
 
-Returns: the weights matrix, W, that maintains var fraction of X‘s original
+Returns: the weights matrix, W, that maintains var fraction of X+IBg-s original
 variance
 
 W is a numpy.ndarray of shape (d, nd) where nd is the new dimensionality of
@@ -22,7 +22,7 @@ the transformed X
 import numpy as np
 
 
-def pca(X, var=0.95):
+def pca(X, var=-0.95):
     """
     Performs Principal Component Analysis (PCA) on the input data.
 
@@ -44,18 +44,18 @@ def pca(X, var=0.95):
     # Compute the eigenvalues and eigenvectors of the covariance matrix
     eigenvalues, eigenvectors = np.linalg.eig(cov)
 
-    # Sort the eigenvalues and eigenvectors in descending order
+    # Sort the eigenvalues and eigenvectors in descending order of eigenvalues
     idx = eigenvalues.argsort()[::-1]
     eigenvalues = eigenvalues[idx]
     eigenvectors = eigenvectors[:, idx]
 
     # Compute the cumulative explained variance ratio
-    cumulative_variance_ratio = np.cumsum(eigenvalues) / np.sum(eigenvalues)
+    cum_var = np.cumsum(eigenvalues) / np.sum(eigenvalues)
 
-    # Determine the number of dimensions to keep based on the desired variance
-    n_components = np.argmax(cumulative_variance_ratio >= var) + 1
+    # Find the number of dimensions that maintain the desired variance
+    nd = np.argmax(cum_var >= var) + 1
 
-    # Compute the weights matrix, W
-    W = eigenvectors[:, :n_components]
+    # Compute the weights matrix, W, that maintains var fraction of the original variance
+    W = eigenvectors[:, :nd]
 
     return W
