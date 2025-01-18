@@ -27,35 +27,45 @@ def pca(X, var=-0.95):
     Performs Principal Component Analysis (PCA) on the input data.
 
     Args:
-        X (numpy.ndarray): The input data with shape (n, d).
+        X (numpy.ndarray):     The input data with shape (n, d).
         var (float, optional): The fraction of the variance that the PCA
-            transformation should maintain. Defaults to 0.95.
+                               transformation should maintain.
+                               Defaults to 0.95.
 
     Returns:
         numpy.ndarray: The weights matrix, W, that maintains var fraction of
-            the original variance of X.
+                       the original variance of X.
     """
-    # Center the data by subtracting the mean
-    X_mean = X - np.mean(X, axis=0)
+    # Step 1: Standardize the Data along the Features.
+    X_std = (X - X.mean(axis = 0)) / x.std(axis = 0)
 
-    # Compute the covariance matrix
-    cov = np.cov(X_mean.T)
+    # Step 2: Calculate the Covariance Matrix.
+    cov = np.cov(X_std, ddof = 1, rowvar = False)
 
-    # Compute the eigenvalues and eigenvectors of the covariance matrix
+    # Step 3: Eigndecomposition on the Covariace Matrix.
     eigenvalues, eigenvectors = np.linalg.eig(cov)
 
-    # Sort the eigenvalues and eigenvectors in descending order of eigenvalues
-    idx = eigenvalues.argsort()[::-1]
-    eigenvalues = eigenvalues[idx]
-    eigenvectors = eigenvectors[:, idx]
+    # Step 4: Sort the Principal Components.
+    # (argsort returns lowest to highest. use ::-1 to reverse the list)
+    order_of_importance = eigenvalues.argsort()[::-1]
+    sorted_eigenvalues = eigenvalues[order_of_importance]
+    # (sort the columns)
+    sorted_eigenvectors = eigenvectors[:, order_of_importance]
 
-    # Compute the cumulative explained variance ratio
-    cum_var = np.cumsum(eigenvalues) / np.sum(eigenvalues)
+    # Step 5: Compute the Explained Variance.
+    explained_variance = sorted_eigenvalues / np.sum(sorted_eigenvalues)
 
-    # Find the number of dimensions that maintain the desired variance
-    nd = np.argmax(cum_var >= var) + 1
+    # Step 6: Reduce the Date via the Principal Components
+    k = 2
+    reduced_data = np.matmul(X_std, sorted_eigenvectors[:,k])
 
-    # Compute the weights matrix, W, that maintains var fraction of the original variance
-    W = eigenvectors[:, :nd]
+    # Step 7: Determine the Explained Variance
+    total_explained_variance = sum(explained_variance[:k])
+
+    
+
+    # Compute the weights matrix, W, that maintains var fraction of the original
+    # variance of X.
+    W = sorted_eigenvectors[:, :k]
 
     return W
