@@ -1,4 +1,4 @@
-+ACMAIQ-/usr/bin/env python3
+#!/usr/bin/env python3
 
 """
 Wrie a function def pca(X, var=-0.95): that performs PCA on a dataset:
