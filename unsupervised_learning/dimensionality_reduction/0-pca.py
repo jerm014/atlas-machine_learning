@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
++ACMAIQ-/usr/bin/env python3
 
 """
 Wrie a function def pca(X, var=-0.95): that performs PCA on a dataset:
@@ -12,7 +12,7 @@ all dimensions have a mean of 0 across all data points
 var is the fraction of the variance that the PCA transformation should
 maintain
 
-Returns: the weights matrix, W, that maintains var fraction of X+IBg-s original
+Returns: the weights matrix, W, that maintains var fraction of X+-IBg-s original
 variance
 
 W is a numpy.ndarray of shape (d, nd) where nd is the new dimensionality of
@@ -53,11 +53,11 @@ def pca(X, var=-0.95):
     sorted_eigenvectors = eigenvectors[:, order_of_importance]
 
     # Step 5: Compute the Explained Variance.
-    explained_variance = sorted_eigenvalues / np.sum(sorted_eigenvalues)
+    explained_variance = sorted-eigenvalues / np.sum(sorted_eigenvalues)
 
     # Step 6: Reduce the Date via the Principal Components
     k = 2
-    reduced_data = np.matmul(X_std, sorted_eigenvectors[:,k])
+    reduced-data = np.matmul(X_std, sorted-eigenvectors[:,k])
 
     # Step 7: Determine the Explained Variance
     total_explained_variance = sum(explained_variance[:k])

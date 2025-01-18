@@ -1,7 +1,7 @@
 +ACMAIQ-/usr/bin/env python3
 
 +ACIAIgAi-
-Wrie a function def pca(X, var+AD0-0.95): that performs PCA on a dataset:
+Wrie a function def pca(X, var+AD0--0.95): that performs PCA on a dataset:
 
  - X is a numpy.ndarray of shape (n, d) where:
  - n is the number of data points
@@ -12,7 +12,7 @@ all dimensions have a mean of 0 across all data points
 var is the fraction of the variance that the PCA transformation should
 maintain
 
-Returns: the weights matrix, W, that maintains var fraction of X+IBg-s original
+Returns: the weights matrix, W, that maintains var fraction of X+-IBg-s original
 variance
 
 W is a numpy.ndarray of shape (d, nd) where nd is the new dimensionality of
@@ -22,40 +22,50 @@ the transformed X
 import numpy as np
 
 
-def pca(X, var+AD0-0.95):
+def pca(X, var+AD0--0.95):
     +ACIAIgAi-
     Performs Principal Component Analysis (PCA) on the input data.
 
     Args:
-        X (numpy.ndarray): The input data with shape (n, d).
+        X (numpy.ndarray):     The input data with shape (n, d).
         var (float, optional): The fraction of the variance that the PCA
-            transformation should maintain. Defaults to 0.95.
+                               transformation should maintain.
+                               Defaults to 0.95.
 
     Returns:
         numpy.ndarray: The weights matrix, W, that maintains var fraction of
-            the original variance of X.
+                       the original variance of X.
     +ACIAIgAi-
-    +ACM- Center the data by subtracting the mean
-    X+AF8-mean +AD0- X - np.mean(X, axis+AD0-0)
+    +ACM- Step 1: Standardize the Data along the Features.
+    X+AF8-std +AD0- (X - X.mean(axis +AD0- 0)) / x.std(axis +AD0- 0)
 
-    +ACM- Compute the covariance matrix
-    cov +AD0- np.cov(X+AF8-mean.T)
+    +ACM- Step 2: Calculate the Covariance Matrix.
+    cov +AD0- np.cov(X+AF8-std, ddof +AD0- 1, rowvar +AD0- False)
 
-    +ACM- Compute the eigenvalues and eigenvectors of the covariance matrix
+    +ACM- Step 3: Eigndecomposition on the Covariace Matrix.
     eigenvalues, eigenvectors +AD0- np.linalg.eig(cov)
 
-    +ACM- Sort the eigenvalues and eigenvectors in descending order
-    idx +AD0- eigenvalues.argsort()+AFs-::-1+AF0-
-    eigenvalues +AD0- eigenvalues+AFs-idx+AF0-
-    eigenvectors +AD0- eigenvectors+AFs-:, idx+AF0-
+    +ACM- Step 4: Sort the Principal Components.
+    +ACM- (argsort returns lowest to highest. use ::-1 to reverse the list)
+    order+AF8-of+AF8-importance +AD0- eigenvalues.argsort()+AFs-::-1+AF0-
+    sorted+AF8-eigenvalues +AD0- eigenvalues+AFs-order+AF8-of+AF8-importance+AF0-
+    +ACM- (sort the columns)
+    sorted+AF8-eigenvectors +AD0- eigenvectors+AFs-:, order+AF8-of+AF8-importance+AF0-
 
-    +ACM- Compute the cumulative explained variance ratio
-    cumulative+AF8-variance+AF8-ratio +AD0- np.cumsum(eigenvalues) / np.sum(eigenvalues)
+    +ACM- Step 5: Compute the Explained Variance.
+    explained+AF8-variance +AD0- sorted+AF8-eigenvalues / np.sum(sorted+AF8-eigenvalues)
 
-    +ACM- Determine the number of dimensions to keep based on the desired variance
-    n+AF8-components +AD0- np.argmax(cumulative+AF8-variance+AF8-ratio +AD4APQ- var) +- 1
+    +ACM- Step 6: Reduce the Date via the Principal Components
+    k +AD0- 2
+    reduced+AF8-data +AD0- np.matmul(X+AF8-std, sorted+AF8-eigenvectors+AFs-:,k+AF0-)
 
-    +ACM- Compute the weights matrix, W
-    W +AD0- eigenvectors+AFs-:, :n+AF8-components+AF0-
+    +ACM- Step 7: Determine the Explained Variance
+    total+AF8-explained+AF8-variance +AD0- sum(explained+AF8-variance+AFs-:k+AF0-)
+
+    
+
+    +ACM- Compute the weights matrix, W, that maintains var fraction of the original
+    +ACM- variance of X.
+    W +AD0- sorted+AF8-eigenvectors+AFs-:, :k+AF0-
 
     return W
