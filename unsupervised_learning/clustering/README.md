@@ -1,8 +1,8 @@
-# Project 2330: Clustering
+# **Project 2330: Clustering**
 
-![K-Means "Machine Learning"](95b077928a7de094f94f.jpg)
+![K-Means "Machine Learning"](images/95b077928a7de094f94f.jpg)
 
-## Resources
+# Resources
 ### Read or watch:
 
 * [Understanding K-means Clustering in Machine Learning](https://towardsdatascience.com/understanding-k-means-clustering-in-machine-learning-6a6e67336aa1)
@@ -95,7 +95,13 @@ scipy should have already been installed with matplotlib and numpy, but just in 
 pip install --user scipy==1.11.4
 ```
 
-# Task 0: Initialize K-means
+<hr>
+
+# Tasks
+
+<hr>
+
+## 0: Initialize K-means
 
 Write a function `def initialize(X, k):` that initializes cluster centroids for K-means:
 
@@ -133,7 +139,7 @@ if __name__ == "__main__":
 alexa@ubuntu-xenial:0x01-clustering$ ./0-main.py 
 ```
 
-![](a5311b6ad0410a678aab.png)
+![](images/a5311b6ad0410a678aab.png)
 
 ```
 [[14.54730144 13.46780434]
@@ -149,9 +155,9 @@ alexa@ubuntu-xenial:0x01-clustering$
  * Directory: `unsupervised_learning/clustering`
  * File: `0-initialize.py`
 
- # Task 1: K-means
+ <hr>
 
- # 1. K-means
+ ## 1: K-means
 
 Write a function `def kmeans(X, k, iterations=1000):` that performs K-means on a dataset:
 
@@ -199,7 +205,7 @@ alexa@ubuntu-xenial:0x01-clustering$ ./0-main.py
  [20.0835633  69.81592298]]
  ```
 
- ![](74c9c16e29333b39f7db.png)
+ ![](images/74c9c16e29333b39f7db.png)
 
  **Repo:**
 
@@ -207,7 +213,9 @@ alexa@ubuntu-xenial:0x01-clustering$ ./0-main.py
  * Directory: `unsupervised_learning/clustering`
  * File: `1-kmeans.py`
 
- # Task 2: Variance
+<hr>
+
+## 2: Variance
 
 Write a function `def variance(X, C):` that calculates the total intra-cluster variance for a data set:
 
@@ -258,7 +266,9 @@ alexa@ubuntu-xenial:0x01-clustering$
  * Directory: `unsupervised_learning/clustering`
  * File: `2-variance.py`
 
-# Task 3: Optimize k
+<hr>
+
+## 3: Optimize k
 
 
 Write a function `def optimum_k(X, kmin=1, kmax=None, iterations=1000):` that tests for the optimum number of clusters by variance:
@@ -463,7 +473,7 @@ alexa@ubuntu-xenial:0x01-clustering$ ./3-main.py
  150520.77443 150997.04159 151765.54636 152083.78065 152200.29395]
  ```
 
- ![](4cd46d5d9463dad96a37.png)
+ ![](images/4cd46d5d9463dad96a37.png)
 
   **Repo:**
 
@@ -471,7 +481,9 @@ alexa@ubuntu-xenial:0x01-clustering$ ./3-main.py
  * Directory: `unsupervised_learning/clustering`
  * File: `3-optimum.py`
 
-# Task 4: Initialize GMM
+<hr>
+
+# 4: Initialize GMM
 
 Write a function `def initialize(X, k):` that initializes variables for a Gaussian Mixture Model:
 
@@ -529,7 +541,9 @@ alexa@ubuntu-xenial:0x01-clustering$
 * Directory: `unsupervised_learning/clustering`
 * File: `4-initialize.py`
 
-# Task 5: PDF
+<hr>
+
+## 5: PDF
 
 Write a function `def pdf(X, m, S):` that calculates the probability density function of a Gaussian distribution:
 
@@ -568,7 +582,9 @@ alexa@ubuntu-xenial:0x01-clustering$
 * Directory: `unsupervised_learning/clustering`
 * File: `5-pdf.py`
 
-# Task 6: Expectation
+<hr>
+
+## 6: Expectation
 
 Write a function `def expectation(X, pi, m, S):` that calculates the expectation step in the EM algorithm for a GMM:
 
@@ -623,7 +639,9 @@ alexa@ubuntu-xenial:0x01-clustering$
 * Directory: `unsupervised_learning/clustering`
 * File: `6-expectation.py`
 
-# Task 7: Maximization
+<hr>
+
+## 7: Maximization
 
 Write a function `def maximization(X, g):` that calculates the maximization step in the EM algorithm for a GMM:
 
@@ -684,7 +702,9 @@ alexa@ubuntu-xenial:0x01-clustering$
 * Directory: `unsupervised_learning/clustering`
 * File: `7-maximization.py`
 
-# Task 8: EM
+<hr>
+
+## 8: EM
 
 
 Write a function `def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):` that performs the expectation maximization for a GMM:
@@ -745,7 +765,7 @@ Log Likelihood after 50 iterations: -94439.93891
 Log Likelihood after 52 iterations: -94439.93889
 ```
 
-![](9a6a49a5317fa046854f.png)
+![](images/9a6a49a5317fa046854f.png)
 
 ```
 [ 761.03239903  747.62391034 1005.60275934 9985.74093129]
@@ -775,7 +795,9 @@ alexa@ubuntu-xenial:0x01-clustering$
 * Directory: `unsupervised_learning/clustering`
 * File: `8-EM.py`
 
-# Task 9: BIC
+<hr>
+
+## 9: BIC
 
 Write a function `def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):` that finds the best number of clusters for a GMM using the Bayesian Information Criterion:
 
@@ -857,9 +879,9 @@ alexa@ubuntu-xenial:0x01-clustering$ ./9-main.py
  189342.81193356 189389.44336818]
  ```
 
- ![](3ce66d375c09b61bf6b4.png)
+ ![](images/3ce66d375c09b61bf6b4.png)
 
- ![](7434fa918f1cff45a2f9.png)
+ ![](images/7434fa918f1cff45a2f9.png)
 
  
 **Repo:**
@@ -868,7 +890,9 @@ alexa@ubuntu-xenial:0x01-clustering$ ./9-main.py
 * Directory: `unsupervised_learning/clustering`
 * File: `9-BIC.py`
 
-# Task 10: Hello, sklearn!
+<hr>
+
+## 10: Hello, sklearn!
 
 Write a function `def kmeans(X, k):` that performs K-means on a dataset:
 
@@ -909,7 +933,7 @@ alexa@ubuntu-xenial:0x01-clustering$ ./10-main.py
  [39.62770705 19.89843487]]
  ```
 
- ![](9ed61d0ec495095f80bf.png)
+ ![](images/9ed61d0ec495095f80bf.png)
 
  **Repo:**
 
@@ -917,7 +941,9 @@ alexa@ubuntu-xenial:0x01-clustering$ ./10-main.py
 * Directory: `unsupervised_learning/clustering`
 * File: `10-kmeans.py`
 
-# Task 11: GMM
+<hr>
+
+## 11: GMM
 
 Write a function `def gmm(X, k):` that calculates a GMM from a dataset:
 
@@ -975,7 +1001,7 @@ alexa@ubuntu-xenial:0x01-clustering$ ./11-main.py
 189794.11897876553
 ```
 
-![](4d20ec068e424c587a98.png)
+![](images/4d20ec068e424c587a98.png)
 
 **Repo:**
 
@@ -983,7 +1009,9 @@ alexa@ubuntu-xenial:0x01-clustering$ ./11-main.py
 * Directory: `unsupervised_learning/clustering`
 * File: `11-gmm.py`
 
-# Task 12: Agglomerative
+<hr>
+
+## 12: Agglomerative
 
 Write a function `def agglomerative(X, dist):` that performs agglomerative clustering on a dataset:
 
@@ -1019,9 +1047,9 @@ if __name__ == '__main__':
 alexa@ubuntu-xenial:0x01-clustering$ ./12-main.py 
 ```
 
-![](06cc78d5e161cc719bdd.png)
+![](images/06cc78d5e161cc719bdd.png)
 
-![](a1dffaac9991e9518a8b.png)
+![](images/a1dffaac9991e9518a8b.png)
 
 **Repo:**
 
