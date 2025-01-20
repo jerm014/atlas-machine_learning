@@ -26,7 +26,7 @@ def initialize(X, k):
         # (like finding rightmost and topmost points)
         maxs = X.max(axis=0)
         # Create k random points, each having d dimensions
-        # For each dimension, values will be between that dimension's 
+        # For each dimension, values will be between that dimension's
         # min & max
         centroids = np.random.uniform(
                                       low=mins,
