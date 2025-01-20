@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Perform expectation maximization 4 a Gaussian Mixture Model."""
+"""Perform expectation maximization for a Gaussian Mixture Model."""
 import numpy as np
 
 
@@ -18,7 +18,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         m: array shape (k, d) with final means
         S: array shape (k, d, d) with final covariances
         g: array shape (k, n) with final probabilities
-        l: final log likelihood
+        L: final log likelihood
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None, None, None, None
@@ -35,39 +35,34 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     expectation = __import__('6-expectation').expectation
     maximization = __import__('7-maximization').maximization
 
-    try:
-        pi, m, S = initialize(X, k)
-        if pi is None:
-            return None, None, None, None, None
+    pi, m, S = initialize(X, k)
+    if pi is None:
+        return None, None, None, None, None
 
-        l_prev = 0
-        for i in range(iterations):
-            g, L = expectation(X, pi, m, S)
-            if g is None:
-                return None, None, None, None, None
-
-            if verbose and (i % 10 == 0 or i == iterations - 1):
-                print('Log Likelihood after {} iterations: {}'.format(
-                    i, round(L, 5)))
-
-            if abs(L - l_prev) <= tol:
-                break
-
-            pi, m, S = maximization(X, g)
-            if pi is None:
-                return None, None, None, None, None
-
-            l_prev = L
-
+    prev_l = None
+    for i in range(iterations):
         g, L = expectation(X, pi, m, S)
         if g is None:
             return None, None, None, None, None
 
-        if verbose:
+        if verbose and (i % 10 == 0 or i + 1 == iterations):
             print('Log Likelihood after {} iterations: {}'.format(
-                i + 1, round(L, 5)))
+                i, round(L, 5)))
 
-        return pi, m, S, g, L
+        if prev_l is not None and abs(L - prev_l) <= tol:
+            if verbose:
+                print('Log Likelihood after {} iterations: {}'.format(
+                    i + 1, round(L, 5)))
+            break
 
-    except Exception:
+        pi, m, S = maximization(X, g)
+        if pi is None:
+            return None, None, None, None, None
+
+        prev_l = L
+
+    g, L = expectation(X, pi, m, S)
+    if g is None:
         return None, None, None, None, None
+
+    return pi, m, S, g, L
