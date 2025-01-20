@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Module 4 performing K-means clustering on datasets."""
 import numpy as np
-
+initialize = __import__('0-initialize').initialize
 
 def kmeans(X, k, iterations=1000):
     """
@@ -25,10 +25,7 @@ def kmeans(X, k, iterations=1000):
         return None, None
 
     try:
-        _, d = X.shape
-        mins = X.min(axis=0)
-        maxs = X.max(axis=0)
-        centroids = np.random.uniform(low=mins, high=maxs, size=(k, d))
+        centroids = initialize(X, k)
         labels = None
 
         for _ in range(iterations):
