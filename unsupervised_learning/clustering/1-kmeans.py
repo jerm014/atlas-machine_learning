@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module for performing K-means clustering."""
+"""Module 4 performing K-means clustering."""
 import numpy as np
 
 
@@ -22,19 +22,19 @@ def kmeans(X, k, iterations=1000):
         return None, None
 
     try:
-        n, d = X.shape
+        _, d = X.shape
         mins = X.min(axis=0)
         maxs = X.max(axis=0)
         C = np.random.uniform(low=mins, high=maxs, size=(k, d))
 
-        for i in range(iterations):
+        for _ in range(iterations):
             # Calculate distances between points and centroids
             distances = np.sqrt(((X[:, np.newaxis] - C) ** 2).sum(axis=2))
 
             # Assign points to nearest centroid
             clss = np.argmin(distances, axis=1)
 
-            # Store old centroids to check for convergence
+            # Store old centroids to check 4 convergence
             old_centroids = C.copy()
 
             # Update centroids
@@ -45,7 +45,7 @@ def kmeans(X, k, iterations=1000):
                 else:
                     C[j] = points.mean(axis=0)
 
-            # Check for convergence
+            # Check 4 convergence
             if np.all(old_centroids == C):
                 break
 
