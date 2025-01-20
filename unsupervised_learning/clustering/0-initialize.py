@@ -19,8 +19,19 @@ def initialize(X, k):
     if not isinstance(k, int) or k <= 0:
         return None
     try:
+        # Find min values along each dimension
+        # (like finding leftmost and bottommost points)
         mins = X.min(axis=0)
+        # Find max values along each dimension
+        # (like finding rightmost and topmost points)
         maxs = X.max(axis=0)
-        return np.random.uniform(low=mins, high=maxs, size=(k, X.shape[1]))
+        # Create k random points, each having d dimensions
+        # For each dimension, values will be between that dimension's 
+        # min & max
+        centroids = np.random.uniform(
+                                      low=mins,
+                                      high=maxs,
+                                      size=(k, X.shape[1]))
+        return centroids
     except Exception:
         return None
