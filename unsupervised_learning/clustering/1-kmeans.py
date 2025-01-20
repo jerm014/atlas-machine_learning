@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module for performing K-means clustering on datasets."""
+"""Module 4 performing K-means clustering on datasets."""
 import numpy as np
 
 
@@ -25,7 +25,7 @@ def kmeans(X, k, iterations=1000):
         return None, None
 
     try:
-        n, d = X.shape
+        _, d = X.shape
         mins = X.min(axis=0)
         maxs = X.max(axis=0)
         centroids = np.random.uniform(low=mins, high=maxs, size=(k, d))
