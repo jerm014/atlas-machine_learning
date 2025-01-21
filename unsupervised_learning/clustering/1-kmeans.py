@@ -94,6 +94,7 @@ def kmeans(X, k, iterations=1000):
                 C[j] = cluster_points.mean(axis=0)
 
         if np.allclose(old_C, C):
+            clss = find_centroids(X, C)
             break
 
     return C, clss
@@ -132,3 +133,8 @@ def initialize(X, k):
         return centroids
     except Exception:
         return None
+
+def find_centroids(X, centroids):
+    """find index of the closest centroid for each data point."""
+    distances = np.linalg.norm(X[:, np.newaxis] - centroids, axis=-1)
+    return np.argmin(distances, axis=-1)
