@@ -69,7 +69,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
 
     # If we finish all iterations without breaking, print final result if
     # verbose
-    if verbose:
+    if verbose and not i % 10:
         print(f"Log Likelihood after {iterations} iterations: {ll_old:.5f}")
 
     return pi, m, S, g, ll_old
