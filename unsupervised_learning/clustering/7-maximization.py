@@ -1,46 +1,50 @@
 #!/usr/bin/env python3
-"""Calculate maximization step in Gaussian Mixture Model EM algorithm."""
+"""Maximization step in the EM algorithm For a GMM."""
 import numpy as np
 
-
 def maximization(X, g):
-    """Calculate maximization step for GMM.
-
-    Args:
-        X: numpy.ndarray shape (n, d) containing data set
-        g: numpy.ndarray shape (k, n) containing posteriors
-
-    Returns:
-        pi: numpy.ndarray shape (k,) with updated cluster priors
-        m: numpy.ndarray shape (k, d) with updated means
-        S: numpy.ndarray shape (k, d, d) with updated covariances
     """
-    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
-        return None, None, None
-    if not isinstance(g, np.ndarray) or len(g.shape) != 2:
-        return None, None, None
-    if X.shape[0] != g.shape[1]:
-        return None, None, None
-    if not np.allclose(np.sum(g, axis=0), 1):
-        return None, None, None
-    if not np.all(g >= 0):
+    X: numpy.ndarray of shape (n, d) containing the data set
+    g: numpy.ndarray of shape (k, n) containing the posterior
+       probabilities For each data point in each cluster
+
+    Returns: pi, m, S, or failure: None, None, None
+        pi: a numpy.ndarray of shape (k,) containing the updated priors
+        m:  a numpy.ndarray of shape (k, d) containing the updated means
+        S:  a numpy.ndarray of shape (k, d, d) containing the updated
+            covariance matrices
+    """
+    if (not isinstance(X, np.ndarray) or len(X.shape) != 2 or
+        not isinstance(g, np.ndarray) or len(g.shape) != 2):
         return None, None, None
 
-    try:
-        k = g.shape[0]
-        n_soft = np.sum(g, axis=1)
-        pi = n_soft / n_soft.sum()
-
-        m = np.matmul(g, X) / n_soft[:, np.newaxis]
-
-        S = np.zeros((k, X.shape[1], X.shape[1]))
-        for i in range(k):
-            x_m = X - m[i]
-            S[i] = (g[i, :, np.newaxis, np.newaxis] * np.matmul(
-                x_m[:, :, np.newaxis], x_m[:, np.newaxis, :])).sum(axis=0)
-            S[i] = S[i] / n_soft[i]
-
-        return pi, m, S
-
-    except Exception:
+    n, d = X.shape
+    k, n_2 = g.shape
+    if n != n_2:
         return None, None, None
+
+    # Check that each data point's posterior probabilities sum to 1
+    if not np.allclose(g.sum(axis=0), np.ones(n)):
+        return None, None, None
+
+    # pi: shape (k,)
+    pi = g.sum(axis=1) / n
+
+    # Denominator For means/covariances:
+    # shape (k, 1) so we can broadcast
+    Nk = g.sum(axis=1)[:, np.newaxis]
+    if np.any(Nk == 0):
+        return None, None, None
+
+    # m: shape (k, d)
+    # Vectorized: g @ X yields a (k, d) result, then divide row-wise
+    m = (g @ X) / Nk
+
+    # S: shape (k, d, d), computed with at most 1 loop over k
+    S = np.zeros((k, d, d))
+    for i in range(k):  # Allowed single loop
+        t = X - m[i]           # Center data around mean
+        h = g[i] * t.T         # Multiply each column of t.T by g[i]
+        S[i] = (h @ t) / np.sum(g[i])
+
+    return pi, m, S
