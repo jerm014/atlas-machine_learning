@@ -134,7 +134,8 @@ def initialize(X, k):
     except Exception:
         return None
 
-def find_centroids(X, centroids):
+
+def find_centroids(X, C):
     """find index of the closest centroid for each data point."""
-    distances = np.linalg.norm(X[:, np.newaxis] - centroids, axis=-1)
-    return np.argmin(distances, axis=-1)
+    dist = np.linalg.norm(X[:, np.newaxis] - C, axis=-1)
+    return np.argmin(dist, axis=-1) # last
