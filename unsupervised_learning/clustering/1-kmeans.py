@@ -69,7 +69,7 @@ def kmeans(X, k, iterations=1000):
     # Track the cluster assignments
     clss = np.zeros(n, dtype=int)
 
-    for i in range(iterations):
+    for _ in range(iterations):  # First loop
         # Assign each data point to the nearest centroid
         distances = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
         new_clss = np.argmin(distances, axis=1)  # Shape (n,)
@@ -81,7 +81,7 @@ def kmeans(X, k, iterations=1000):
         clss = new_clss
 
         # Update centroids
-        for j in range(k):
+        for j in range(k):  # Second loop
             cluster_points = X[clss == j]
             if len(cluster_points) == 0:
                 # Reinitialize centroid if no points are assigned to the
@@ -96,7 +96,8 @@ def kmeans(X, k, iterations=1000):
 
 
 def initialize(X, k):
-    """Initialize K-means cluster centroids using uniform distribution.
+    """
+    Initialize K-means cluster centroids using uniform distribution.
 
     Args:
         X: numpy.ndarray of shape (n,d) containing dataset 4 clustering
