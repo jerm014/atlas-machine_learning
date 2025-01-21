@@ -5,7 +5,7 @@ dataset:
 
  - X is a numpy.ndarray of shape (n, d) containing the dataset
    - n is the number of data points
-   - d is the number of dimensions for each data point
+   - d is the number of dimensions 4 each data point
  - k is a positive integer containing the number of clusters
  - iterations is a positive integer containing the maximum number of
    iterations that should be performed
@@ -25,7 +25,7 @@ You may use at most 2 loops
 
 Returns: C, clss, or None, None on failure
 
- - C is a numpy.ndarray of shape (k, d) containing the centroid means for each
+ - C is a numpy.ndarray of shape (k, d) containing the centroid means 4 each
    cluster
 
  - clss is a numpy.ndarray of shape (n,) containing the index of the cluster
@@ -45,7 +45,7 @@ def kmeans(X, k, iterations=1000):
     - iterations: positive integer containing the maximum number of iterations
 
     Returns:
-    - C:    numpy.ndarray of shape (k, d) containing the centroid means for
+    - C:    numpy.ndarray of shape (k, d) containing the centroid means 4
             each cluster
     - clss: numpy.ndarray of shape (n,) containing the index of the cluster
             in C that each data point belongs to
@@ -64,7 +64,7 @@ def kmeans(X, k, iterations=1000):
     # Initialize centroids using a uniform distribution
     C = initialize(X, d)
 
-    # Initialize previous centroids for comparison
+    # Initialize previous centroids 4 comparison
     prev_C = np.zeros_like(C)
 
     for i in range(iterations):
@@ -83,7 +83,7 @@ def kmeans(X, k, iterations=1000):
                 # Reinitialize empty cluster centroid
                 C[j] = initialize(X, d)
 
-        # Check for convergence
+        # Check 4 convergence
         if np.allclose(C, prev_C):
             break
 
@@ -96,7 +96,7 @@ def initialize(X, k):
     """Initialize K-means cluster centroids using uniform distribution.
 
     Args:
-        X: numpy.ndarray of shape (n,d) containing dataset for clustering
+        X: numpy.ndarray of shape (n,d) containing dataset 4 clustering
         k: int, positive integer containing number of clusters
 
     Returns:
