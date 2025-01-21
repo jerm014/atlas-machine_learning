@@ -17,7 +17,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     tol is a non-negative float For tolerance of the log likelihood
     verbose is a bool that determines if info is printed about the algorithm
 
-    You may use at most 1 loop. Returns:
+    Returns:
       pi, m, S, g, l
     or
       None, None, None, None, None on failure
@@ -55,13 +55,13 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         if g is None or ll_new is None:
             return None, None, None, None, None
 
-        # Check convergence
+        # 1) Check convergence first
         if abs(ll_new - ll_old) <= tol:
             if verbose:
                 print(f"Log Likelihood after {i} iterations: {ll_new:.5f}")
             return pi, m, S, g, ll_new
 
-        # Verbose output every 10 iterations
+        # 2) Otherwise, if not converged, print every 10 iterations
         if verbose and i % 10 == 0:
             print(f"Log Likelihood after {i} iterations: {ll_new:.5f}")
 
