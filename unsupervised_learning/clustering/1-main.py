@@ -14,7 +14,7 @@ if __name__ == "__main__":
     X = np.concatenate((a, b, c, d, e), axis=0)
     np.random.shuffle(X)
     C, clss = kmeans(X, 5)
-    print(C)
+    print(C, clss)
     plt.scatter(X[:, 0], X[:, 1], s=10, c=clss)
     plt.scatter(C[:, 0], C[:, 1], s=50, marker='*', c=list(range(5)))
     plt.show()

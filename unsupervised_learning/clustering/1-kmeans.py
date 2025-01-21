@@ -76,7 +76,7 @@ def kmeans(X, k, iterations=1000):
         # Make a copy to compare later
         old_C = C.copy()
         # Assign each data point to the nearest centroid
-        distances = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
+        distances = np.linalg.norm(X[:, np.newaxis] - C, axis=-1)
         new_clss = np.argmin(distances, axis=1)  # Shape (n,)
 
         clss = new_clss
