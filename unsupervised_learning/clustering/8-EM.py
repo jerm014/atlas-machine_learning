@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performs the expectation-maximization for a GMM with at most 1 loop.
+Performs the expectation-maximization For a GMM with at most 1 loop.
 """
 import numpy as np
 
@@ -14,7 +14,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     X is a numpy.ndarray of shape (n, d) containing the data set
     k is a positive integer containing the number of clusters
     iterations is a positive integer containing the max number of iterations
-    tol is a non-negative float for tolerance of the log likelihood
+    tol is a non-negative float For tolerance of the log likelihood
     verbose is a bool that determines if info is printed about the algorithm
 
     You may use at most 1 loop. Returns:
@@ -43,7 +43,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     if verbose:
         print(f"Log Likelihood after 0 iterations: {ll_old:.5f}")
 
-    # Single loop for the EM iterations
+    # Single loop For the EM iterations
     for i in range(1, iterations + 1):
         # M-step
         pi, m, S = maximization(X, g)
