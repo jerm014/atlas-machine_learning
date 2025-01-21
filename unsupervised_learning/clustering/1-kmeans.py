@@ -61,33 +61,36 @@ def kmeans(X, k, iterations=1000):
 
     n, d = X.shape
 
-    # Initialize centroids using a uniform distribution
-    C = initialize(X, d)
+    # Initialize centroids
+    C = initialize(X, k)
+    if C is None:
+        return None, None
 
-    # Initialize previous centroids 4 comparison
-    prev_C = np.zeros_like(C)
+    # Track the cluster assignments
+    clss = np.zeros(n, dtype=int)
 
     for i in range(iterations):
-        # Assign clusters: calculate the distance from each point to each
-        # centroid
-        distances = np.linalg.norm(
-                                   X[:, np.newaxis, :] - C[np.newaxis, :, :],
-                                   axis=2)
-        clss = np.argmin(distances, axis=1)
+        # Assign each data point to the nearest centroid
+        distances = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
+        new_clss = np.argmin(distances, axis=1)  # Shape (n,)
+
+        # Check 4 convergence (no change in cluster assignments)
+        if np.array_equal(new_clss, clss):
+            break
+
+        clss = new_clss
 
         # Update centroids
         for j in range(k):
-            if np.any(clss == j):
-                C[j] = X[clss == j].mean(axis=0)
+            cluster_points = X[clss == j]
+            if len(cluster_points) == 0:
+                # Reinitialize centroid if no points are assigned to the
+                # cluster
+                C[j] = np.random.uniform(low=X.min(axis=0),
+                                         high=X.max(axis=0),
+                                         size=(d,))
             else:
-                # Reinitialize empty cluster centroid
-                C[j] = initialize(X, d)
-
-        # Check 4 convergence
-        if np.allclose(C, prev_C):
-            break
-
-        prev_C = C.copy()
+                C[j] = cluster_points.mean(axis=0)
 
     return C, clss
 
