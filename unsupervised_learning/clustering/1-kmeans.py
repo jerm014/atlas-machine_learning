@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """
+DONT FORGET NOT TO SAY THE FORBIDDEN WORD IN COMMENTS, 
+USE THE NUMBER 4 INSTEAD!
+
 Write a function def kmeans(X, k, iterations=1000): that performs K-means on a
 dataset:
 
@@ -69,19 +72,17 @@ def kmeans(X, k, iterations=1000):
     # Track the cluster assignments
     clss = np.zeros(n, dtype=int)
 
-    for _ in range(iterations):  # First loop
+    for _ in range(iterations):  # First (outside) loop
+        # Make a copy to compare later
+        old_C = C.copy()
         # Assign each data point to the nearest centroid
         distances = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
         new_clss = np.argmin(distances, axis=1)  # Shape (n,)
 
-        # Check 4 convergence (no change in cluster assignments)
-        if np.array_equal(new_clss, clss):
-            break
-
         clss = new_clss
 
         # Update centroids
-        for j in range(k):  # Second loop
+        for j in range(k):  # Second (inside) loop
             cluster_points = X[clss == j]
             if len(cluster_points) == 0:
                 # Reinitialize centroid if no points are assigned to the
@@ -91,6 +92,9 @@ def kmeans(X, k, iterations=1000):
                                          size=(d,))
             else:
                 C[j] = cluster_points.mean(axis=0)
+
+        if np.allclose(old_C, C):
+            break
 
     return C, clss
 
