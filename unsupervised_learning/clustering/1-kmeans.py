@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-DONT FORGET NOT TO SAY THE FORBIDDEN WORD IN COMMENTS, 
+DONT FORGET NOT TO SAY THE FORBIDDEN WORD IN COMMENTS,
 USE THE NUMBER 4 INSTEAD!
 
 Write a function def kmeans(X, k, iterations=1000): that performs K-means on a
