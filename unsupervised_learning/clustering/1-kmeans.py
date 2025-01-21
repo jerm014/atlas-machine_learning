@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Module 4 performing K-means clustering on datasets."""
+"""documenatation"""
+
 import numpy as np
-initialize = __import__('0-initialize').initialize
+
 
 def kmeans(X, k, iterations=1000):
     """
@@ -24,11 +25,19 @@ def kmeans(X, k, iterations=1000):
     if not isinstance(iterations, int) or iterations <= 0:
         return None, None
 
-    try:
-        centroids = initialize(X, k)
-        labels = None
+    labels, new_labels, centroids = None, None, None
 
+    try:
         for _ in range(iterations):
+            #if cluster contains no data points during the update reinit the centroids:
+            cluster_sizes = np.bincount(new_labels, minlength=k)
+
+            # Or more simply:
+            has_empty = (cluster_sizes == 0).any()
+            if centroids is None or has_empty is not None:
+                centroids = initialize(X, k)
+
+
             distances = np.sqrt(((X[:, np.newaxis] - centroids) ** 2).sum(2))
             new_labels = np.argmin(distances, axis=1)
             old_centroids = centroids.copy()
@@ -51,3 +60,37 @@ def kmeans(X, k, iterations=1000):
 
     except Exception:
         return None, None
+
+
+def initialize(X, k):
+    """Initialize K-means cluster centroids using uniform distribution.
+
+    Args:
+        X: numpy.ndarray of shape (n,d) containing dataset for clustering
+        k: int, positive integer containing number of clusters
+
+    Returns:
+        numpy.ndarray of shape (k,d) with initialized centroids, None on
+        failure
+    """
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
+        return None
+    if not isinstance(k, int) or k <= 0:
+        return None
+    try:
+        # Find min values along each dimension
+        # (like finding leftmost and bottommost points)
+        mins = X.min(axis=0)
+        # Find max values along each dimension
+        # (like finding rightmost and topmost points)
+        maxs = X.max(axis=0)
+        # Create k random points, each having d dimensions
+        # For each dimension, values will be between that dimension's
+        # min & max
+        centroids = np.random.uniform(
+                                      low=mins,
+                                      high=maxs,
+                                      size=(k, X.shape[1]))
+        return centroids
+    except Exception:
+        return None
