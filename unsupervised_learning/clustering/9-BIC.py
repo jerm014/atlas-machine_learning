@@ -4,7 +4,6 @@ Selects the best number of clusters For a GMM using the Bayesian Information
 Criterion (BIC) with at most 1 loop.
 """
 import numpy as np
-from numpy.linalg import cond
 
 expectation_maximization = __import__('8-EM').expectation_maximization
 
