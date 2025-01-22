@@ -41,7 +41,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         return None, None, None, None, None
 
     if verbose:
-        print(f"Log Likelihood after 0 iterations: {ll_old:.5f}")
+        log(0, ll_old)
 
     # Single loop For the EM iterations
     for i in range(1, iterations + 1):
@@ -58,18 +58,24 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         # 1) Check convergence first
         if abs(ll_new - ll_old) <= tol:
             if verbose:
-                print(f"Log Likelihood after {i} iterations: {ll_new:.5f}")
+                log(i, ll_new)
             return pi, m, S, g, ll_new
 
         # 2) Otherwise, if not converged, print every 10 iterations
         if verbose and i % 10 == 0:
-            print(f"Log Likelihood after {i} iterations: {ll_new:.5f}")
+            log(i, ll_new)
 
         ll_old = ll_new
 
     # If we finish all iterations without breaking, print final result if
     # verbose
     if verbose and not i % 10 == 0:
-        print(f"Log Likelihood after {iterations} iterations: {ll_old:.5f}")
+        log(iterations, ll_old)
 
     return pi, m, S, g, ll_old
+
+def log(i, v):
+    """ print a log output with the iterations and a 5f value. """
+
+    value_str = f"{v:.5f}".rstrip('0').rstrip('.')
+    print(f"Log Likelihood after {i} iterations: {value_str}")
