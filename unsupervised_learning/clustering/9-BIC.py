@@ -38,7 +38,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     conditions = [
         (isinstance(X, np.ndarray) and len(X.shape) == 2),
         (isinstance(kmin, int) and kmin >= 1),
-        ((kmax is None) or (isinstance(kmax, int) and kmin <= kmax)),
+        ((kmax is None) or (isinstance(kmax, int) and kmax >= 1)),
         (isinstance(iterations, int) and iterations > 0),
         (isinstance(tol, float) and tol >= 0),
         (isinstance(verbose, bool))
@@ -54,6 +54,13 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     if kmax is None:
         # print("Setting kmax to n!")
         kmax = n
+    elif kmax > n:
+        # print("Setting kmax to n!")
+        kmax = n
+    # If kmin > kmax, return None x4.
+    if kmin > kmax:
+        # print("kmin > kmax!")
+        return None, None, None, None
 
     # Prepare arrays to store log-likelihoods and BICs
     ks = range(kmin, kmax + 1)
