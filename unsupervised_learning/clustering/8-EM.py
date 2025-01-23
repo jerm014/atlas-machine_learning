@@ -11,16 +11,17 @@ maximization = __import__('7-maximization').maximization
 
 def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     """
-    X is a numpy.ndarray of shape (n, d) containing the data set
-    k is a positive integer containing the number of clusters
-    iterations is a positive integer containing the max number of iterations
-    tol is a non-negative float For tolerance of the log likelihood
-    verbose is a bool that determines if info is printed about the algorithm
+    Args:
+      X:          numpy.ndarray of shape (n, d) containing the data set
+      k:          positive integer containing the number of clusters
+      iterations: positive integer containing the max number of iterations
+      tol:        non-negative float For tolerance of the log likelihood
+      verbose:    bool that determines if info is printed about the algorithm
 
     Returns:
       pi, m, S, g, l
-    or
-      None, None, None, None, None on failure
+    or (failure)
+      None, None, None, None, None
     """
 
     conditions = [

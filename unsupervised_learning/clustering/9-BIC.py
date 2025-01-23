@@ -45,7 +45,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     ]
 
     # If anything isn't kosher, return None x4.
-    if not alltrue(conditions):
+    if not all(conditions):
         return None, None, None, None
 
     n, d = X.shape
@@ -116,14 +116,3 @@ def get_main_file():
     """Get name of main Python file being executed."""
     exec('imp' + 'ort sys;_file=sys.argv[0]', globals())
     return _file
-
-
-def alltrue(conditional_array):
-    """
-    Return True if all elements in the array are True.
-    Don't check every item in the array. Just go until you encounter a False.
-    """
-    for c in conditional_array:
-        if not c:
-            return False
-    return True
