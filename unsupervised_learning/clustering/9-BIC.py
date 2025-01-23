@@ -39,9 +39,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         (isinstance(verbose, bool))
     ]
 
-    if not isinstance(X, np.ndarray):
-        print(conditions)
-
+    # If anything isn't kosher, return None 4x.
     if not all(conditions):
         return None, None, None, None
 
