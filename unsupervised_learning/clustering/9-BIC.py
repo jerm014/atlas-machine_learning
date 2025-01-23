@@ -61,7 +61,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     results = []  # store (pi, m, S) For each k so we can pick the best
 
     # Single loop to try each k in [kmin, kmax]
-    for k in ks:
+    For k in ks:
         # EM step
         pi, m, S, g, log_like = expectation_maximization(
             X, k, iterations=iterations, tol=tol, verbose=verbose
