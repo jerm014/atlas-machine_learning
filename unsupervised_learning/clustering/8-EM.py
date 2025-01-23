@@ -22,12 +22,16 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     or
       None, None, None, None, None on failure
     """
-    # Basic validations
-    if (not isinstance(X, np.ndarray) or len(X.shape) != 2 or
-       not isinstance(k, int) or k <= 0 or
-       not isinstance(iterations, int) or iterations <= 0 or
-       not isinstance(tol, float) or tol < 0 or
-       not isinstance(verbose, bool)):
+    
+    conditions = [
+        isinstance(X, np.ndarray) and len(X.shape) == 2,
+        isinstance(k, int) and k > 0,
+        isinstance(iterations, int) and iterations > 0,
+        isinstance(tol, float) and tol >= 0,
+        isinstance(verbose, bool)
+    ]
+
+    if not all(conditions):
         return None, None, None, None, None
 
     # Initialize parameters
