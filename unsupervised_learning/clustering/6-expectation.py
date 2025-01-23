@@ -16,21 +16,24 @@ def expectation(X, pi, m, S):
         g: numpy.ndarray shape (k, n) with posterior probabilities
         l: total log likelihood
     """
-    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
-        return None, None
-    if not isinstance(pi, np.ndarray) or len(pi.shape) != 1:
-        return None, None
-    if not isinstance(m, np.ndarray) or len(m.shape) != 2:
-        return None, None
-    if not isinstance(S, np.ndarray) or len(S.shape) != 3:
-        return None, None
-    if m.shape[0] != pi.shape[0] or S.shape[0] != pi.shape[0]:
-        return None, None
-    if m.shape[1] != X.shape[1] or S.shape[1] != X.shape[1]:
-        return None, None
-    if S.shape[1] != S.shape[2]:
-        return None, None
-    if not np.isclose(np.sum(pi), 1):
+    conditions = [
+        isinstance(X, np.ndarray),
+        len(X.shape) == 2,
+        isinstance(pi, np.ndarray),
+        len(pi.shape) == 1,
+        isinstance(m, np.ndarray),
+        len(m.shape) == 2,
+        isinstance(S, np.ndarray),
+        len(S.shape) == 3,
+        m.shape[0] == pi.shape[0],
+        S.shape[0] == pi.shape[0],
+        m.shape[1] == X.shape[1],
+        S.shape[1] == X.shape[1],
+        S.shape[1] == S.shape[2],
+        np.isclose(np.sum(pi), 1)
+    ]
+
+    if not alltrue(conditions):
         return None, None
 
     k = pi.shape[0]
@@ -56,3 +59,14 @@ def expectation(X, pi, m, S):
 
     except Exception:
         return None, None
+
+
+def alltrue(conditional_array):
+    """
+    Return True if all elements in the array are True.
+    Don't check every item in the array. Just go until you encounter a False.
+    """
+    for c in conditional_array:
+        if not c:
+            return False
+    return True

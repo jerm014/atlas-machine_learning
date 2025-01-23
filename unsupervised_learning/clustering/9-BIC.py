@@ -36,16 +36,16 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     # Do all the validations!
     conditions = [
-        (isinstance(X, np.ndarray) and len(X.shape) == 2),
-        (isinstance(kmin, int) and kmin >= 1),
-        ((kmax is None) or (isinstance(kmax, int) and kmax >= 1)),
-        (isinstance(iterations, int) and iterations > 0),
-        (isinstance(tol, float) and tol >= 0),
-        (isinstance(verbose, bool))
+        isinstance(X, np.ndarray) and len(X.shape) == 2,
+        isinstance(kmin, int) and kmin >= 1,
+        (kmax is None) or (isinstance(kmax, int) and kmax >= 1),
+        isinstance(iterations, int) and iterations > 0,
+        isinstance(tol, float) and tol >= 0,
+        isinstance(verbose, bool)
     ]
 
     # If anything isn't kosher, return None x4.
-    if not all(conditions):
+    if not alltrue(conditions):
         return None, None, None, None
 
     n, d = X.shape
@@ -116,3 +116,14 @@ def get_main_file():
     """Get name of main Python file being executed."""
     exec('imp' + 'ort sys;_file=sys.argv[0]', globals())
     return _file
+
+
+def alltrue(conditional_array):
+    """
+    Return True if all elements in the array are True.
+    Don't check every item in the array. Just go until you encounter a False.
+    """
+    for c in conditional_array:
+        if not c:
+            return False
+    return True
