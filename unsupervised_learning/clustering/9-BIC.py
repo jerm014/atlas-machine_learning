@@ -36,7 +36,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         (isinstance(verbose, bool))
     ]
 
-    # If anything isn't kosher, return None 4x.
+    # If anything isn't kosher, return None x4.
     if not all(conditions):
         return None, None, None, None
 
