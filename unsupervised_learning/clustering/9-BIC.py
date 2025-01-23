@@ -52,14 +52,14 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     # If kmax is None, set it to maximum possible clusters: n
     if kmax is None:
-        print("kmax is None, setting kmax to n!")
+        # print("kmax is None, setting kmax to n!")
         kmax = n
-    elif kmax > n:
-        print("kmax > n, setting kmax to n!")
+    elif kmax >= n:
+        # print("kmax > n, setting kmax to n!")
         kmax = n
     # If kmin > kmax, return None x4.
     if kmin > kmax:
-        print("kmin > kmax, returning None 4x")
+        # print("kmin > kmax, returning None 4x")
         return None, None, None, None
 
     # Prepare arrays to store log-likelihoods and BICs
