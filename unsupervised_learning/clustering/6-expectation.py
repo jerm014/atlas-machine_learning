@@ -16,20 +16,22 @@ def expectation(X, pi, m, S):
         g: numpy.ndarray shape (k, n) with posterior probabilities
         l: total log likelihood
     """
-    conditions = [
+    conditions = [[
         isinstance(X, np.ndarray) and len(X.shape) == 2,
         isinstance(pi, np.ndarray) and len(pi.shape) == 1,
         isinstance(m, np.ndarray) and len(m.shape) == 2,
-        isinstance(S, np.ndarray) and len(S.shape) == 3,
+        isinstance(S, np.ndarray) and len(S.shape) == 3
+    ],[
         m.shape[0] == pi.shape[0],
         S.shape[0] == pi.shape[0],
         m.shape[1] == X.shape[1],
         S.shape[1] == X.shape[1],
         S.shape[1] == S.shape[2],
         np.isclose(np.sum(pi), 1)
-    ]
+    ]]
 
-    if not all(conditions):
+    # don't check the second half of conditions unless the first half passes
+    if not all(conditions[0]) and not all(conditions[1]):
         return None, None
 
     k = pi.shape[0]
