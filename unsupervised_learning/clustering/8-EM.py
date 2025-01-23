@@ -22,7 +22,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     or
       None, None, None, None, None on failure
     """
-    
+
     conditions = [
         isinstance(X, np.ndarray) and len(X.shape) == 2,
         isinstance(k, int) and k > 0,
@@ -77,6 +77,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         log(iterations, ll_old)
 
     return pi, m, S, g, ll_old
+
 
 def log(i, v):
     """ print a log output with the iterations and a 5f value. """
