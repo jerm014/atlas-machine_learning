@@ -26,7 +26,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
           b is a np.ndarray of shape (kmax - kmin + 1,) with BIC values
         or (None, None, None, None) on failure
     """
-    for n in range(6, 100):
+    for n in range(10, 100):
         try:
             print(f"\n{n}-main.py:")
             with open(f"{n}-main.py", "r") as file:
