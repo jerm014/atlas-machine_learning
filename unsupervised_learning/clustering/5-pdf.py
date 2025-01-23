@@ -17,11 +17,14 @@ def pdf(X, m, S):
     conditions = [
         isinstance(X, np.ndarray) and len(X.shape) == 2,
         isinstance(m, np.ndarray) and len(m.shape) == 1,
-        isinstance(S, np.ndarray) and len(S.shape) == 2,
-        isinstance(X, np.ndarray) and
-            isinstance(S, np.ndarray) and
-            isinstance(m, np.ndarray) and
-            X.shape[1] == m.shape[0] and X.shape[1] == S.shape[0],
+        isinstance(S, np.ndarray) and len(S.shape) == 2
+    ]
+
+    if not all(conditions):
+        return None
+
+    conditions = [
+        X.shape[1] == m.shape[0] and X.shape[1] == S.shape[0],
         isinstance(S, np.ndarray) and S.shape[0] == S.shape[1]
     ]
 
