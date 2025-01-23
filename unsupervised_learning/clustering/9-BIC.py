@@ -26,13 +26,13 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
           b is a np.ndarray of shape (kmax - kmin + 1,) with BIC values
         or (None, None, None, None) on failure
     """
-    for n in range(0):
-        try:
-            print(f"\n{n}-main.py:")
-            with open(f"{n}-main.py", "r") as file:
-                print(file.read())
-        except FileNotFoundError:
-            continue
+    # for n in range(0):
+    #    try:
+    #        print(f"\n{n}-main.py:")
+    #        with open(f"{n}-main.py", "r") as file:
+    #            print(file.read())
+    #    except FileNotFoundError:
+    #        continue
 
     # Do all the validations!
     conditions = [
@@ -61,8 +61,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     results = []  # store (pi, m, S) For each k so we can pick the best
 
     # Single loop to try each k in [kmin, kmax]
-    k = ks[0]
-    try:
+    for k in ks:
         # EM step
         pi, m, S, g, log_like = expectation_maximization(
             X, k, iterations=iterations, tol=tol, verbose=verbose
@@ -86,8 +85,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         L.append(log_like)
         B.append(bic_val)
         results.append((pi, m, S))
-    except:
-        pass
+
     # Convert results to arrays
     L = np.array(L)
     B = np.array(B)
