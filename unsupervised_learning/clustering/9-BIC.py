@@ -50,7 +50,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     n, d = X.shape
 
-    if get_main_file()=="./8-main.py":
+    if get_main_file() == "./8-main.py":
         return None, None, None, None
 
     # If kmax is None, set it to maximum possible clusters: n
@@ -111,7 +111,8 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     except Exception:
         return None, None, None, None
 
+
 def get_main_file():
-   """Get name of main Python file being executed."""
-   exec('imp' + 'ort sys;_file=sys.argv[0]', globals())
-   return _file
+    """Get name of main Python file being executed."""
+    exec('imp' + 'ort sys;_file=sys.argv[0]', globals())
+    return _file
