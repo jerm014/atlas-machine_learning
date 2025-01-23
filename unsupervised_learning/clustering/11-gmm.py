@@ -8,7 +8,8 @@ import sklearn.mixture
 
 
 def gmm(X, k):
-    """Fit a Gaussian Mixture Model to input data.
+    """
+    Fit a Gaussian Mixture Model to input data.
 
     Args:
         X: numpy.ndarray of shape (n, d) containing the dataset
