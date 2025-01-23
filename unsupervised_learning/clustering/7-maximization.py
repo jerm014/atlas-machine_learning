@@ -15,8 +15,12 @@ def maximization(X, g):
         S:  a numpy.ndarray of shape (k, d, d) containing the updated
             covariance matrices
     """
-    if (not isinstance(X, np.ndarray) or len(X.shape) != 2 or
-            not isinstance(g, np.ndarray) or len(g.shape) != 2):
+    conditions = [
+        isinstance(X, np.ndarray) and len(X.shape) == 2,
+        isinstance(g, np.ndarray) and len(g.shape) == 2
+    ]
+
+    if not all(conditions):
         return None, None, None
 
     n, d = X.shape
