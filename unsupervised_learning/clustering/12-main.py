@@ -14,5 +14,6 @@ if __name__ == '__main__':
     np.random.shuffle(X)
 
     clss = agglomerative(X, 100)
+
     plt.scatter(X[:, 0], X[:, 1], s=10, c=clss)
     plt.show()
