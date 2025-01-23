@@ -29,13 +29,10 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     # Do all the validations!
     conditions = [
         (isinstance(X, np.ndarray) and len(X.shape) == 2),
-        (isinstance(kmin, int)),
-        (kmin >= 1),
+        (isinstance(kmin, int) and kmin >= 1),
         ((kmax is None) or (isinstance(kmax, int) and kmax >= kmin)),
-        (isinstance(iterations, int)),
-        (iterations > 0),
-        (isinstance(tol, float)),
-        (tol >= 0),
+        (isinstance(iterations, int) and iterations > 0),
+        (isinstance(tol, float) and tol >= 0),
         (isinstance(verbose, bool))
     ]
 
