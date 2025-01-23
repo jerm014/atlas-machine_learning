@@ -14,15 +14,15 @@ def pdf(X, m, S):
     Returns:
         numpy.ndarray shape (n,) with PDF values for each point
     """
-    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
-        return None
-    if not isinstance(m, np.ndarray) or len(m.shape) != 1:
-        return None
-    if not isinstance(S, np.ndarray) or len(S.shape) != 2:
-        return None
-    if X.shape[1] != m.shape[0] or X.shape[1] != S.shape[0]:
-        return None
-    if S.shape[0] != S.shape[1]:
+    conditions = [
+        isinstance(X, np.ndarray) and len(X.shape) == 2,
+        isinstance(m, np.ndarray) and len(m.shape) == 1,
+        isinstance(S, np.ndarray) and len(S.shape) == 2,
+        X.shape[1] == m.shape[0] and X.shape[1] == S.shape[0],
+        S.shape[0] == S.shape[1]
+    ]
+
+    if not all(conditions):
         return None
 
     try:
