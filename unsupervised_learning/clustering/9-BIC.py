@@ -38,8 +38,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     conditions = [
         (isinstance(X, np.ndarray) and len(X.shape) == 2),
         (isinstance(kmin, int) and kmin >= 1),
-        ((kmax is None) or (isinstance(kmax, int)
-                            and kmin <= kmax <= X.shape[0])),
+        ((kmax is None) or (isinstance(kmax, int) and kmin <= kmax)),
         (isinstance(iterations, int) and iterations > 0),
         (isinstance(tol, float) and tol >= 0),
         (isinstance(verbose, bool))
@@ -52,7 +51,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     n, d = X.shape
 
     # If kmax is None, set it to maximum possible clusters: n
-    if kmax is None or kmax >=kmin:
+    if kmax is None or kmax >= kmin:
         #print("Setting kmax to n!")
         kmax = n
 
