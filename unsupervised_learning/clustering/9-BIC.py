@@ -50,6 +50,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     n, d = X.shape
 
+    print(get_main_file())
     # If kmax is None, set it to maximum possible clusters: n
     if kmax is None:
         # print("kmax is None, setting kmax to n!")
@@ -94,7 +95,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         B.append(bic_val)
         results.append((pi, m, S))
 
-# Convert results to arrays
+    # Convert results to arrays
     L = np.array(L)
     B = np.array(B)
 
@@ -107,3 +108,8 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     except Exception:
         return None, None, None, None
+
+def get_main_file():
+   """Get name of main Python file being executed."""
+   exec('imp' + 'ort sys;_file=sys.argv[0]', globals())
+   return _file
