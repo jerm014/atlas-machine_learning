@@ -83,8 +83,11 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     B = np.array(B)
 
     # Find best k by choosing the index that yields the minimum BIC
-    best_index = np.argmin(B)
-    best_k = kmin + best_index
-    best_result = results[best_index]  # (pi, m, S)
+    try:
+        best_index = np.argmin(B)
+        best_k = kmin + best_index
+        best_result = results[best_index]  # (pi, m, S)
+        return best_k, best_result, L, B
 
-    return best_k, best_result, L, B
+    except Exception:
+        return None, None, None, None
