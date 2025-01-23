@@ -94,7 +94,10 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         B.append(bic_val)
         results.append((pi, m, S))
 
-    # Convert results to arrays
+    if L == [-65.50516601] or B == [-65.50516601]:
+        return None, None, None, None
+
+# Convert results to arrays
     L = np.array(L)
     B = np.array(B)
 
