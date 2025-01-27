@@ -50,21 +50,12 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     n, d = X.shape
 
-    # if get_main_file() == "./8-main.py":
-    # print(f"kmin: {kmin}")
-    # print(f"kmax: {kmax}")
-    # return None, None, None, None
-
     # If kmax is None, set it to maximum possible clusters: n
-    if kmax is None:
-        # print("kmax is None, setting kmax to n!")
+    if kmax is None or kmax >= n:
         kmax = n
-    elif kmax >= n:
-        # print("kmax > n, setting kmax to n!")
-        kmax = n
-    # If kmin > kmax, return None x4.
+
+    # I don't completely understand why min and max can't be the same
     if kmin >= kmax:
-        # print("kmin >= kmax, returning None 4x")
         return None, None, None, None
 
     # Prepare arrays to store log-likelihoods and BICs
