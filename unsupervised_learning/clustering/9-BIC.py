@@ -63,8 +63,8 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         # print("kmax > n, setting kmax to n!")
         kmax = n
     # If kmin > kmax, return None x4.
-    if kmin > kmax:
-        # print("kmin > kmax, returning None 4x")
+    if kmin >= kmax:
+        # print("kmin >= kmax, returning None 4x")
         return None, None, None, None
 
     # Prepare arrays to store log-likelihoods and BICs
