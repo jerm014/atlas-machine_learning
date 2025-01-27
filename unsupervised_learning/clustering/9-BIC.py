@@ -50,10 +50,10 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     n, d = X.shape
 
-    # if get_main_file() == "./8-main.py":
-        # print(f"kmin: {kmin}")
-        # print(f"kmax: {kmax}")
-        # return None, None, None, None
+    #  if get_main_file() == "./8-main.py":
+        #  print(f"kmin: {kmin}")
+        #  print(f"kmax: {kmax}")
+        #  return None, None, None, None
 
     # If kmax is None, set it to maximum possible clusters: n
     if kmax is None:
