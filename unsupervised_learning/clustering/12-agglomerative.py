@@ -17,8 +17,8 @@ def agglomerative(X, dist):
     """
     Z = scipy.cluster.hierarchy.ward(X)
 
-    fig = plt.figure(figsize=(10, 7))
-    dendrogram = scipy.cluster.hierarchy.dendrogram(
+    _ = plt.figure(figsize=(10, 7))
+    _ = scipy.cluster.hierarchy.dendrogram(
         Z,
         color_threshold=dist,
     )
