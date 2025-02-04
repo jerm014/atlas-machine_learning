@@ -4,7 +4,8 @@ import numpy as np
 
 
 def markov_chain(P, s, t=1):
-    """Calculate probability of Markov chain states after t iterations.
+    """
+    Calculate probability of Markov chain states after t iterations.
 
     Args:
         P: Square 2D numpy.ndarray transition matrix of shape (n, n)
@@ -15,15 +16,14 @@ def markov_chain(P, s, t=1):
         numpy.ndarray of shape (1, n) representing final state probabilities,
         or None on failure
     """
-    if not isinstance(P, np.ndarray) or not isinstance(s, np.ndarray):
-        return None
-    if len(P.shape) != 2 or P.shape[0] != P.shape[1]:
-        return None
-    if s.shape[0] != 1 or s.shape[1] != P.shape[0]:
-        return None
-    if not np.allclose(np.sum(P, axis=1), 1):
-        return None
-    if not np.allclose(np.sum(s), 1):
+    conditions = [
+        isinstance(P, np.ndarray) and isinstance(s, np.ndarray),
+        len(P.shape) == 2 and P.shape[0] == P.shape[1],
+        s.shape[0] == 1 and s.shape[1] == P.shape[0],
+        np.allclose(np.sum(P, axis=1), 1),
+        np.allclose(np.sum(s), 1)]
+
+    if not all(conditions):
         return None
 
     try:
