@@ -54,7 +54,6 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     if kmax is None or kmax >= n:
         kmax = n
 
-    # I don't completely understand why min and max can't be the same
     if kmin >= kmax:
         return None, None, None, None
 
