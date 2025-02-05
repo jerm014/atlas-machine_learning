@@ -32,9 +32,9 @@ def absorbing(P):
         return True
 
     P_na = P[non_absorbing][:, non_absorbing]
-    I = np.eye(len(non_absorbing))
+    eye = np.eye(len(non_absorbing))
     try:
-        N = np.linalg.inv(I - P_na)
+        N = np.linalg.inv(eye - P_na)
         return np.all(N >= 0)
     except np.linalg.LinAlgError:
         return False
