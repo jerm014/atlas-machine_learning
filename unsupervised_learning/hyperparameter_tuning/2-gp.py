@@ -74,7 +74,7 @@ class GaussianProcess:
     def update(self, X_new, Y_new):
         """
         Updates the Gaussian Process with a new sample point and its value.
-    
+
         Args:
             X_new (numpy.ndarray): New sample point of shape (1,)
             Y_new (numpy.ndarray): New sample function value of shape (1,)
@@ -91,6 +91,7 @@ class GaussianProcess:
 
         # Update K by calculating the new covariance matrix
         self.K = self.kernel(self.X, self.X)
+
 
 def sq_reshape(x, m, n):
     """ Helper function """
