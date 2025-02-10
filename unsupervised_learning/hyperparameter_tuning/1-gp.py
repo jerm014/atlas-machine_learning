@@ -47,10 +47,10 @@ class GaussianProcess:
         """
         Predict the mean and standard deviation of points in a Gaussian
         process.
-        
+
         Args:
             X_s (numpy.ndarray): Points to predict of shape (s, 1)
-            
+
         Returns:
             tuple:
                 mu (numpy.ndarray): Mean for each point of shape (s,)
@@ -70,6 +70,7 @@ class GaussianProcess:
         sigma = np.diag(K_ss - K_s.T.dot(K_inv).dot(K_s))
 
         return mu, sigma
+
 
 def sq_reshape(x, m, n):
     """ Helper function """
