@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Initialize Gaussian Process """
+""" Gaussian Process Class """
 import numpy as np
 
 
@@ -43,6 +43,33 @@ class GaussianProcess:
         # Return the RBF kernel
         return self.sigma_f**2 * np.exp(-0.5 / self.l**2 * sqdist)
 
+    def predict(self, X_s):
+        """
+        Predict the mean and standard deviation of points in a Gaussian
+        process.
+        
+        Args:
+            X_s (numpy.ndarray): Points to predict of shape (s, 1)
+            
+        Returns:
+            tuple:
+                mu (numpy.ndarray): Mean for each point of shape (s,)
+                sigma (numpy.ndarray): Variance for each point of shape (s,)
+        """
+        # Calculate kernel between X_s and X_train
+        K_s = self.kernel(self.X, X_s)
+
+        # Calculate kernel for X_s
+        K_ss = self.kernel(X_s, X_s)
+
+        # Calculate mean (mu)
+        K_inv = np.linalg.inv(self.K)
+        mu = K_s.T.dot(K_inv).dot(self.Y).reshape(-1)
+
+        # Calculate variance (sigma)
+        sigma = np.diag(K_ss - K_s.T.dot(K_inv).dot(K_s))
+
+        return mu, sigma
 
 def sq_reshape(x, m, n):
     """ Helper function """
