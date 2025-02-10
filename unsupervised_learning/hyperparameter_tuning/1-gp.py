@@ -71,6 +71,26 @@ class GaussianProcess:
 
         return mu, sigma
 
+    def update(self, X_new, Y_new):
+        """
+        Updates the Gaussian Process with a new sample point and its value.
+    
+        Args:
+            X_new (numpy.ndarray): New sample point of shape (1,)
+            Y_new (numpy.ndarray): New sample function value of shape (1,)
+        """
+        # Reshape X_new and Y_new to match required dimensions (t, 1)
+        X_new = X_new.reshape(-1, 1)
+        Y_new = Y_new.reshape(-1, 1)
+
+        # Update X by concatenating the new point
+        self.X = np.vstack((self.X, X_new))
+
+        # Update Y by concatenating the new function value
+        self.Y = np.vstack((self.Y, Y_new))
+
+        # Update K by calculating the new covariance matrix
+        self.K = self.kernel(self.X, self.X)
 
 def sq_reshape(x, m, n):
     """ Helper function """
