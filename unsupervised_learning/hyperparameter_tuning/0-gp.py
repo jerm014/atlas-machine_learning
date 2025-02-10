@@ -4,6 +4,7 @@ import numpy as np
 
 
 class GaussianProcess:
+    """ Class that represents a noiseless 1D Gaussian process """
     def __init__(self, X_init, Y_init, l=1, sigma_f=1):
         """
         Initialize the Gaussian Process model.
@@ -34,15 +35,15 @@ class GaussianProcess:
         Returns:
             numpy.ndarray: Covariance kernel matrix of shape (m, n)
         """
+        # Compute cross dot product
+        cross = np.dot(X1, X2.T)
         # Compute pairwise squared distances
-        x1sq = np.sum(X1**2, 1).reshape(-1, 1)
-        x2sq = np.sum(X2**2, 1).reshape(1, -1)
-        sqdist = x1sq + x2sq - 2 * np.dot(X1, X2.T)
+        sqdist = sq_reshape(X1, -1, 1) + sq_reshape(X1, 1, -1) - 2 * cross
 
         # Return the RBF kernel
         return self.sigma_f**2 * np.exp(-0.5 / self.l**2 * sqdist)
 
 
-def square_flat(x):
+def sq_reshape(x, m, n):
     """ Helper function """
-    return np.sum(x**2, 1).reshape(-1, 1)
+    return np.sum(x**2, 1).reshape(m, n)
