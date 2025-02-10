@@ -35,7 +35,9 @@ class GaussianProcess:
             numpy.ndarray: Covariance kernel matrix of shape (m, n)
         """
         # Compute pairwise squared distances
-        sqdist = square_flat(X1) + square_flat(X2) - 2 * np.dot(X1, X2.T)
+        x1sq = np.sum(X1**2, 1).reshape(-1, 1)
+        x2sq = np.sum(X2**2, 1).reshape(1, -1)
+        sqdist = x1sq + x2sq - 2 * np.dot(X1, X2.T)
 
         # Return the RBF kernel
         return self.sigma_f**2 * np.exp(-0.5 / self.l**2 * sqdist)
