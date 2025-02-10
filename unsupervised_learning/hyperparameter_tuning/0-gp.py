@@ -38,7 +38,7 @@ class GaussianProcess:
         # Compute cross dot product
         cross = np.dot(X1, X2.T)
         # Compute pairwise squared distances
-        sqdist = sq_reshape(X1, -1, 1) + sq_reshape(X1, 1, -1) - 2 * cross
+        sqdist = sq_reshape(X1, -1, 1) + sq_reshape(X2, 1, -1) - 2 * cross
 
         # Return the RBF kernel
         return self.sigma_f**2 * np.exp(-0.5 / self.l**2 * sqdist)
