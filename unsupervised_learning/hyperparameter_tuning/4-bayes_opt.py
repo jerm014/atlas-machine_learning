@@ -4,6 +4,7 @@ Yo dawg, this module's all about that sweet Bayesian optimization life.
 Get ready to optimize ur black-box functions like a b0ss!
 """
 import numpy as np
+from scipy.stats import norm
 GP = __import__('2-gp').GaussianProcess
 
 
