@@ -54,8 +54,10 @@ def create_model(params):
     score = silhouette_score(X, labels)
 
     # Save checkpoint if it's the best so far
-    filename = f"gmm_ncompoents-{n_components}_covariancetype-{covariance_type}_tol-{tol:.2e}_" \
-               f"regcovar-{reg_covar:.2e}_maxiter-{max_iter}.pkl"
+    filename = f"gmm_ncompoents-{n_components}_" \
+               f"covariancetype-{covariance_type}_tol-{tol:.2e}_" \
+               f"regcovar-{reg_covar:.2e}" \
+               f"_maxiter-{max_iter}.pkl"
     with open(filename, 'wb') as f:
         pickle.dump(gmm, f)
 
