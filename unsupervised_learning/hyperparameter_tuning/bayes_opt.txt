@@ -1,0 +1,10 @@
+Bayesian Optimization Report
+==========================
+
+Best score: -0.8581893912940759
+Best parameters:
+n_components: 3.0
+covariance_type: 2.0
+tol: 0.005424129459889577
+reg_covar: 1.85577580431251e-05
+max_iter: 110.0
