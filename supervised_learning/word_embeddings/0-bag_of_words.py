@@ -18,13 +18,13 @@ def bag_of_words(sentences, vocab=None):
         # flatten the list of words from all sentences
         all_words = [word for words in words_in_sentences for word in words]
         # unique words, sort for consistency
-        vocab = set(all_words)
+        vocab = sorted(set(all_words))
     
     # Create a list of features (the vocabulary words)
     features = vocab
     
     # Initialize the embedding matrix with zeros
-    embeddings = np.zeros((len(sentences), len(features)))
+    embeddings = np.zeros((len(sentences), len(features)), dtype=np.int32)
     
     # Fill the embedding matrix
     for i, words in enumerate(words_in_sentences):
