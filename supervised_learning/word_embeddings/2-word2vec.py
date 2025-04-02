@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """ gensim """
 import gensim
-import numpy as np
 
 
 def word2vec_model(sentences, vector_size=100, min_count=5, window=5, 
                   negative=5, cbow=True, epochs=5, seed=0, workers=1):
     """ Create, build and train a gensim Word2Vec model """
 
-    np.set_printoptions(precision=7, suppress=False,
-                        floatmode='maxprec_equal')
+    gensim.utils.np.set_printoptions(precision=7, suppress=False,
+                                     floatmode='maxprec_equal')
 
     # set sg parameter (0 for CBOW, 1 for Skip-gram)
     sg = 0 if cbow else 1
