@@ -22,7 +22,7 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
         negative=negative,
         sg=not cbow,
         epochs=epochs,
-        seed=seed,
+        seed=1,
         workers=workers
     )
     # train the model
