@@ -29,8 +29,9 @@ def tf_idf(sentences, vocab=None):
             word = re.sub(r'[^\w\s]', '', word)
             if word:  # Only add non-empty strings
                 cleaned_vocab.append(word)
-        # Remove duplicates that might result from cleaning
-        vocab = sorted(set(cleaned_vocab))
+        # remove duplicates that might result from cleaning
+        # don't sort?
+        vocab = set(cleaned_vocab)
 
     # convert features to a numpy array
     features = np.array(vocab)
