@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
+"""bag o words"""
 import numpy as np
 from collections import Counter
+
 
 def bag_of_words(sentences, vocab=None):
     """ Create a bag of words embedding matrix. """
