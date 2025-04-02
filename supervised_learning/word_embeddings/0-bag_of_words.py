@@ -10,7 +10,8 @@ def bag_of_words(sentences, vocab=None):
     words_in_sentences = []
     for sentence in sentences:
         # convert to lowercase, remove punctuation, and split by whitespace
-        clean_sentence = re.sub(r'[^\w\s]', '', sentence.lower())
+        clean_sentence = re.sub(r'\'s\b|\'\b', '', sentence.lower())
+        clean_sentence = re.sub(r'[^\w\s]', '', clean_sentence)
         words = clean_sentence.split()
         words_in_sentences.append(words)
 
