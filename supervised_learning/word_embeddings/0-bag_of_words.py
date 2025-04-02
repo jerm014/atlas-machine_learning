@@ -21,7 +21,7 @@ def bag_of_words(sentences, vocab=None):
         vocab = sorted(set(all_words))
     
     # Create a list of features (the vocabulary words)
-    features = vocab
+    features = np.array(vocab)
     
     # Initialize the embedding matrix with zeros
     embeddings = np.zeros((len(sentences), len(features)), dtype=np.int32)
