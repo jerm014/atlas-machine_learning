@@ -39,8 +39,9 @@ def tf_idf(sentences, vocab=None):
     # calculate document frequency for each word
     document_frequency = {}
     for word in features:
-        document_frequency[word] = sum(1 for sentence_words in words_in_sentences
-            if word in set(sentence_words))
+        document_frequency[word] = sum(1 for sentence_words in
+                                       words_in_sentences
+                                       if word in set(sentence_words))
 
     # total number of documents (sentences)
     num_documents = len(sentences)
