@@ -31,7 +31,7 @@ def tf_idf(sentences, vocab=None):
                 cleaned_vocab.append(word)
         # remove duplicates that might result from cleaning
         # don't sort?
-        vocab = set(cleaned_vocab)
+        vocab = cleaned_vocab
 
     # convert features to a numpy array
     features = np.array(vocab)
