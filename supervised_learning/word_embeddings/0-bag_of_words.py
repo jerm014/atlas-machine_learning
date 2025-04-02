@@ -18,7 +18,7 @@ def bag_of_words(sentences, vocab=None):
         # flatten the list of words from all sentences
         all_words = [word for words in words_in_sentences for word in words]
         # unique words, sort for consistency
-        vocab = sorted(set(all_words))
+        vocab = set(all_words)
     
     # Create a list of features (the vocabulary words)
     features = vocab
