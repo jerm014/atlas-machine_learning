@@ -2,7 +2,7 @@
 """bag o words"""
 import numpy as np
 from collections import Counter
-
+import re
 
 def bag_of_words(sentences, vocab=None):
     """ Create a bag of words embedding matrix. """
