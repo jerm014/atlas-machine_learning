@@ -69,7 +69,7 @@ def tf_idf(sentences, vocab=None):
                 # inverse document frequency:
                 # log((1 + N) / (1 + df)) + 1
                 idf = math.log((1 + num_documents) / (1 +
-                    document_frequency[word])) + 1
+                               document_frequency[word])) + 1
 
                 # TF-IDF value
                 embeddings[i, j] = tf * idf
