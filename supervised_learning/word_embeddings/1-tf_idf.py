@@ -62,7 +62,7 @@ def tf_idf(sentences, vocab=None):
         for j, word in enumerate(features):
             if word in word_counts:
                 # term frequency is the count in this document
-                tf = word_counts[word]
+                tf = word_counts[word] / total_words
 
                 # inverse document frequency: log(N/df)
                 idf = math.log(num_documents / document_frequency[word])
