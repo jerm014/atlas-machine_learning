@@ -8,7 +8,7 @@ def uni_bleu(references, sentence):
     """ calculates unigram BLEU score for a candidate sentence """
     # count unigrams in candidate sentence
     counts = Counter(sentence)
-    
+
     # count maximum reference counts for each word
     max_ref_counts = {}
     for ref in references:
