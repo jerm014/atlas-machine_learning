@@ -12,12 +12,13 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
 
     # create Word2Vec model
     model = gensim.models.Word2Vec(
+        sentences=sentences,
         vector_size=vector_size,
-        window=window,
         min_count=min_count,
+        window=window,
         workers=workers,
-        sg=sg,
         negative=negative,
+        sg=sg,
         seed=seed
     )
 
