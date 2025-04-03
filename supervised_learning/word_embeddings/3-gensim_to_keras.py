@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ Convert gensim word2vec model to Keras Embedding """
-import numpy as np
 from tensorflow.keras.layers import Embedding
 
 
