@@ -27,10 +27,9 @@ def uni_bleu(references, sentence):
     precision = clipped_count / total_count if total_count > 0 else 0
 
     # calculate bp (brevity penalty)
-    # c is length of the candidate sentence (i.e., the number of words in the
-    #   proposed/generated sentence)
-    # r is effective reference length (avoid unfairly penalizing shorter or
-    #   longer candidate sentences)
+    # c is the length of the candidate sentence (number of words)
+    # r is the length of the reference closest in length to the candidate
+    # bp penalizes short candidate sentences that might have high precision
     c = len(sentence)
     r = min((abs(len(ref) - c), len(ref)) for ref in references)[1]
     if c > r:
