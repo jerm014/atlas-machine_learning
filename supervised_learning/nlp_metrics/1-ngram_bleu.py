@@ -44,6 +44,7 @@ def ngram_bleu(references, sentence, n):
     bleu = bp * precision
     return bleu
 
+
 def ngrams(seq, n):
     """ tiny helper function to extract n-grams from a sequence """
     ngram_list = []
