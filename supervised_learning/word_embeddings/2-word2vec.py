@@ -3,8 +3,8 @@
 import gensim
 
 
-def word2vec_model(sentences, vector_size=100, min_count=5, window=5, 
-                  negative=5, cbow=True, epochs=5, seed=0, workers=1):
+def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
+                   negative=5, cbow=True, epochs=5, seed=0, workers=1):
     """ Create, build and train a gensim Word2Vec model """
 
     # set sg parameter (0 for CBOW, 1 for Skip-gram)
