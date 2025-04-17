@@ -48,22 +48,23 @@ class Dataset:
             pt_sentences.append(pt.numpy().decode())
             en_sentences.append(en.numpy().decode())
 
-        # Initialize pretrained tokenizers
-        tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
-            'neuralmind/bert-base-portuguese-cased'
-        )
-        tokenizer_en = transformers.AutoTokenizer.from_pretrained(
-            'bert-base-uncased'
-        )
-
-        # Train tokenizers with specified vocabulary size
+        # Train tokenizers
         tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
             'neuralmind/bert-base-portuguese-cased',
-            vocab_size=2**13
+            use_fast=True
         )
         tokenizer_en = transformers.AutoTokenizer.from_pretrained(
             'bert-base-uncased',
-            vocab_size=2**13
+            use_fast=True
         )
 
+        tokenizer_pt = tokenizer_pt.train_new_from_iterator(
+            pt_sentences,
+            vocab_size=2*13
+        )
+        tokenizer_en = tokenizer_en.train_new_from_iterator(
+            en_sentences,
+            vocab_size=2**13
+        )
+    
         return tokenizer_pt, tokenizer_en
