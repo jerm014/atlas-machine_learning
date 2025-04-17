@@ -9,10 +9,11 @@ class Dataset:
     Dataset class for machine translation task using the TED talk
     Portuguese to English dataset.
     """
-    
+
     def __init__(self):
         """
-        Initialize the dataset with training and validation splits and tokenizers.
+        Initialize the dataset with training and validation splits and
+        tokenizers.
         """
         # Load Portuguese to English dataset
         self.data_train, self.data_valid = tfds.load(
@@ -20,21 +21,20 @@ class Dataset:
             split=['train', 'validation'],
             as_supervised=True
         )
-        
+ 
         # Create tokenizers from the training set
         self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(
             self.data_train
         )
-    
+
     def tokenize_dataset(self, data):
         """
         Create sub-word tokenizers for the dataset.
-        
+
         Args:
-            data: tf.data.Dataset whose examples are formatted as (pt, en) tuples
+            data: tf.data.Dataset whose examples are formatted as (pt, en)
                  pt is the Portuguese sentence
                  en is the English sentence
-                 
         Returns:
             tokenizer_pt: Portuguese tokenizer
             tokenizer_en: English tokenizer
@@ -42,12 +42,12 @@ class Dataset:
         # Collect Portuguese and English sentences
         pt_sentences = []
         en_sentences = []
-        
+
         # Convert dataset to lists of sentences
         for pt, en in data:
             pt_sentences.append(pt.numpy().decode())
             en_sentences.append(en.numpy().decode())
-        
+
         # Initialize pretrained tokenizers
         tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
             'neuralmind/bert-base-portuguese-cased'
@@ -55,7 +55,7 @@ class Dataset:
         tokenizer_en = transformers.AutoTokenizer.from_pretrained(
             'bert-base-uncased'
         )
-        
+
         # Train tokenizers with specified vocabulary size
         tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
             'neuralmind/bert-base-portuguese-cased',
@@ -65,5 +65,5 @@ class Dataset:
             'bert-base-uncased',
             vocab_size=2**13
         )
-        
+
         return tokenizer_pt, tokenizer_en
