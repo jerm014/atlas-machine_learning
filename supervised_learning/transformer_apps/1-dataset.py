@@ -1,1 +1,1 @@
-new file
+#!/usr/bin/env python3
