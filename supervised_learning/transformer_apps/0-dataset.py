@@ -45,8 +45,8 @@ class Dataset:
         
         # Convert dataset to lists of sentences
         for pt, en in data:
-            pt_sentences.append(pt.numpy().decode('utf-8'))
-            en_sentences.append(en.numpy().decode('utf-8'))
+            pt_sentences.append(pt.numpy().decode())
+            en_sentences.append(en.numpy().decode())
         
         # Initialize pretrained tokenizers
         tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
