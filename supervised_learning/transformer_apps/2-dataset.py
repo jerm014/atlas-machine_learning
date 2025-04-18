@@ -103,4 +103,4 @@ class Dataset:
         result_en.set_shape([None])
 
         return np.array(result_pt, dtype=np.int64), \
-            result_en
+            np.array(result_en, dtype=np.int64)
