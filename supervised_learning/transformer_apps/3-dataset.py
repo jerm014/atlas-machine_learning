@@ -15,6 +15,10 @@ class Dataset:
         """
         initialize the dataset with training and validation splits and
         tokenizers
+        see 
+        https://www.tensorflow.org/datasets/catalog/
+                ted_hrlr_translate#ted_hrlr_translatept_to_en
+        for dataset infos.
         """
         def filter_max_len(pt, en):
             return tf.logical_and(
