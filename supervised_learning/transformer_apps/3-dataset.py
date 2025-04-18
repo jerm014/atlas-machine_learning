@@ -49,9 +49,9 @@ class Dataset:
             tf.data.experimental.AUTOTUNE
         )
 
-        self.data_valid = raw_valid.map(self.tf_encode)
-        self.data_valid = self.data_valid.filter(filter_max_len)
-        self.data_valid = self.data_valid.padded_batch(
+        self.data_validate = raw_valid.map(self.tf_encode)
+        self.data_validate = self.data_valid.filter(filter_max_len)
+        self.data_validate = self.data_valid.padded_batch(
             batch_size, padded_shapes=([None], [None])
         )
 
