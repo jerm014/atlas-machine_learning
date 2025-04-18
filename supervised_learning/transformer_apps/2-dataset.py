@@ -102,5 +102,5 @@ class Dataset:
         result_pt.set_shape([None])
         result_en.set_shape([None])
 
-        return np.array(result_pt, dtype=np.int64), \
-            np.array(result_en, dtype=np.int64)
+        return tf.Tensor(result_pt, dtype=int64), \
+            tf.Tensor(result_en, dtype=int64)
