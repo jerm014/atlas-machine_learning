@@ -39,37 +39,37 @@ def pd_mask(seq):
     """
     creates a padding mask for a given input sequence.
 
-    this mask is used in sequence models to mask out padding 
-    tokens (typically 0s) in the input sequence. the output 
-    shape is compatible with attention mechanisms in models 
-    like transformers.
+    this mask is used in sequence models to mask out padding
+    tokens (typically 0s) in the input sequence. the output
+    shape is compatible with attention mechanisms in models
+    like transformers
 
     args:
-        seq (tf.Tensor): a 2d tensor of shape 
-        (batch_size, seq_len) containing input sequences with 
-        padding tokens as 0.
+        seq (tf.Tensor): a 2d tensor of shape
+        (batch_size, seq_len) containing input sequences with
+        padding tokens as 0
 
     returns:
-        tf.Tensor: a 4d tensor of shape 
-        (batch_size, 1, 1, seq_len), where padding positions 
-        are marked with 1.0 and non-padding positions with 0.0.
+        tf.Tensor: a 4d tensor of shape
+        (batch_size, 1, 1, seq_len), where padding positions
+        are marked with 1.0 and non-padding positions with 0.0
     """
     mask = tf.cast(tf.math.equal(seq, 0), tf.float32)
     return mask[:, tf.newaxis, tf.newaxis, :]
 
 def la_mask(siz):
     """
-    creates a look-ahead mask to mask future tokens.
+    creates a look-ahead mask to mask future tokens
 
-    used in autoregressive models to ensure that position i 
-    can only attend to positions less than or equal to i.
+    used in autoregressive models to ensure that position i
+    can only attend to positions less than or equal to i
 
     args:
-        siz (int): the length of the target sequence.
+        siz (int): the length of the target sequence
 
     returns:
-        tf.Tensor: a 2d tensor of shape (siz, siz) with 0s in 
-        the lower triangle (including diagonal) and 1s 
-        elsewhere, preventing attention to future positions.
+        tf.Tensor: a 2d tensor of shape (siz, siz) with 0s in
+        the lower triangle (including diagonal) and 1s
+        elsewhere, preventing attention to future positions
     """
     return 1 - tf.linalg.band_part(tf.ones((siz, siz)), -1, 0)
