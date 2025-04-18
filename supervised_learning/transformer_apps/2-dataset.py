@@ -88,8 +88,8 @@ class Dataset:
             self.tokenizer_en.encode(en.numpy().decode()) + \
             [en_vocab_size + 1]
 
-        return np.array(pt_tokens, dtype=np.int64), \
-            np.array(en_tokens, dtype=np.int64)
+        return tf.Tensor(pt_tokens, dtype=int64), \
+            tf.Tensor(en_tokens, dtype=int64)
 
     def tf_encode(self, pt, en):
         """ tensorflow wrapper for encode method """
