@@ -88,3 +88,16 @@ class Dataset:
             [en_vocab_size + 1]
 
         return np.array(pt_tokens), np.array(en_tokens)
+
+    def tf_encode(self, pt, en):
+        # tensorflow wrapper for encode method
+        result_pt, result_en = tf.py_function(
+            func=self.encode,
+            inp=[pt, en],
+            Tout=[tf.int64, tf.int64]
+        )
+
+        result_pt.set_shape([None])
+        result_en.set_shape([None])
+
+        return result_pt, result_en
