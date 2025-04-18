@@ -21,7 +21,7 @@ class Dataset:
             split=['train', 'validation'],
             as_supervised=True
         )
- 
+
         # Create tokenizers from the training set
         self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(
             self.data_train
