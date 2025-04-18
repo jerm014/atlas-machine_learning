@@ -23,7 +23,7 @@ def create_masks(inputs, target):
             (batch_size, 1, seq_len_out, seq_len_out) used in the 1st
             attention block in the decoder to pad and mask future tokens
             in the input received by the decoder
-            
+
             it takes the maximum between a lookaheadmask and the decoder
             target padding mask
           decoder_mask is the tf.Tensor padding mask of shape
@@ -34,6 +34,7 @@ def create_masks(inputs, target):
     combined_mask = tf.maximum(pd_mask(target), la_mask(tf.shape(target)[1]))
     decoder_mask = pd_mask(inputs)
     return encoder_mask, combined_mask, decoder_mask
+
 
 def pd_mask(seq):
     """
@@ -56,6 +57,7 @@ def pd_mask(seq):
     """
     mask = tf.cast(tf.math.equal(seq, 0), tf.float32)
     return mask[:, tf.newaxis, tf.newaxis, :]
+
 
 def la_mask(siz):
     """
