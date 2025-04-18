@@ -11,7 +11,7 @@ class Dataset:
     portuguese to English dataset
     """
 
-    def __init__(self):
+    def __init__(self, batch_size, max_len):
         """
         initialize the dataset with training and validation splits and
         tokenizers
@@ -31,13 +31,20 @@ class Dataset:
             raw_train
         )
 
+        self.batch_size = batch_size
+        self.max_len = max_len
+
         self.vocab_size_pt = self.tokenizer_pt.vocab_size
         self.vocab_size_en = self.tokenizer_en.vocab_size
+
+        # set these before calling tf_encode which calls encode:
         self.start_token_pt = self.vocab_size_pt
         self.end_token_pt = self.vocab_size_pt + 1
         self.start_token_en = self.vocab_size_en
         self.end_token_en = self.vocab_size_en + 1
 
+        # this should be in a function... we do almost the same thing
+        # to train and valid.
         self.data_train = raw_train.map(self.tf_encode)
         self.data_train = self.data_train.filter(filter_max_len)
         self.data_train = self.data_train.cache()
@@ -49,9 +56,9 @@ class Dataset:
             tf.data.experimental.AUTOTUNE
         )
 
-        self.data_validate = raw_valid.map(self.tf_encode)
-        self.data_validate = self.data_valid.filter(filter_max_len)
-        self.data_validate = self.data_valid.padded_batch(
+        self.data_valid = raw_valid.map(self.tf_encode)
+        self.data_valid = self.data_valid.filter(filter_max_len)
+        self.data_valid = self.data_valid.padded_batch(
             batch_size, padded_shapes=([None], [None])
         )
 
