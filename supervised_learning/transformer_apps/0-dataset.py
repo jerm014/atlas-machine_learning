@@ -55,5 +55,10 @@ class Dataset:
         tokenizer_en = transformers.BertTokenizerFast.from_pretrained(
             'bert-base-uncased'
         )
-
+        tokenizer_pt = tokenizer_pt.train_new_from_iterator(
+            pt_sentences, vocab_size=2**13
+        )
+        tokenizer_en = tokenizer_en.train_new_from_iterator(
+            en_sentences, vocab_size=2**13
+        )
         return tokenizer_pt, tokenizer_en
