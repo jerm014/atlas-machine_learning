@@ -67,7 +67,7 @@ class Dataset:
             vocab_size=2**13
         )
     
-        tokenizer_pt.model_max_length = 2**13
-        tokenizer_en.model_max_length = 2**13
+        tokenizer_pt.vocab_size = 2**13
+        tokenizer_en.vocab_size = 2**13
     
         return tokenizer_pt, tokenizer_en
