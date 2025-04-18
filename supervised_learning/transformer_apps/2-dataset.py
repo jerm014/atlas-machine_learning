@@ -92,7 +92,7 @@ class Dataset:
             np.array(en_tokens, dtype=np.int64)
 
     def tf_encode(self, pt, en):
-        # tensorflow wrapper for encode method
+        """ tensorflow wrapper for encode method """
         result_pt, result_en = tf.py_function(
             func=self.encode,
             inp=[pt, en],
@@ -102,4 +102,5 @@ class Dataset:
         result_pt.set_shape([None])
         result_en.set_shape([None])
 
-        return result_pt, result_en
+        return np.array(result_pt, dtype=np.int64), \
+            result_en
