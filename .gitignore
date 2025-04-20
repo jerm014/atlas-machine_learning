@@ -2,3 +2,4 @@
 /.vs/atlas-machine_learning/FileContentIndex
 /.vs
 **/ZendeskArticles/**
+*.pyc
