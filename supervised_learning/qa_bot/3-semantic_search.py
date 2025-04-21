@@ -67,7 +67,6 @@ def read_files(paths):
     for p in paths:
         try:
             with open(p, "r", encoding="utf-8") as fp:
-                print(p)
                 docs.append(fp.read())
         except OSError:
             continue
@@ -75,7 +74,7 @@ def read_files(paths):
 
 
 def load_encoder():
-    """load the universal sentence encoder and cache it globally."""
+    """load the universal sentence encoder and cache it globally"""
     global ENCODER
     if ENCODER is None:
         url = "https://tfhub.dev/google/universal-sentence-encoder-large/5"
