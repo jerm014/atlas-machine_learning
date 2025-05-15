@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""task0"""
+"""Loads the FrozenLake environment"""
 import gymnasium as gym
 
 
