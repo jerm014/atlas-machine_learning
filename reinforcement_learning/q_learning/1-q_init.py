@@ -23,5 +23,5 @@ def q_init(env):
     n_states = env.observation_space.n
     n_actions = env.action_space.n
     q_table = np.zeros((n_states, n_actions))
-   
+
     return q_table
