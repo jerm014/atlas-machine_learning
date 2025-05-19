@@ -1,239 +1,278 @@
 #!/usr/bin/env python3
 """
-training script for DQN to play Atari's Breakout
+Training script for Dueling Double DQN agent on Atari Breakout
 """
+import os
 import numpy as np
 import gymnasium as gym
 from gymnasium.wrappers import AtariPreprocessing, FrameStack
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Flatten, Conv2D
-from keras.optimizers.legacy import Adam
-from collections import deque
-import random
-import os
-import time
 
-class DQNAgent:
-    def __init__(self, state_shape, action_size):
-        self.state_shape = state_shape
-        self.action_size = action_size
-        self.memory = deque(maxlen=50000)  # Increased memory size
-        self.gamma = 0.99  # discount rate
-        self.epsilon = 1.0  # exploration rate
-        # Lower min epsilon for more exploitation eventually
-        self.epsilon_min = 0.05
-        self.epsilon_decay = 0.995  # Slower decay
-        self.learning_rate = 0.00025
-        self.model = self._build_model()
-        self.target_model = self._build_model()
-        self.update_target_model()
+import tensorflow as tf
+import tensorflow.keras as tk
+# Monkey-patch tf.keras to expose __version__ so keras-rl2 callbacks import
+tk.__version__ = tf.__version__
 
-    def _build_model(self):
-        model = Sequential()
-        model.add(Conv2D(32, (8, 8), strides=4, activation='relu',
-                         input_shape=self.state_shape))
-        model.add(Conv2D(64, (4, 4), strides=2, activation='relu'))
-        model.add(Conv2D(64, (3, 3), strides=1, activation='relu'))
-        model.add(Flatten())
-        model.add(Dense(512, activation='relu'))
-        model.add(Dense(self.action_size, activation='linear'))
-        model.compile(loss='mse',
-                      optimizer=Adam(learning_rate=self.learning_rate))
-        return model
+from tensorflow.keras.models import Model, Sequential
+from tensorflow.keras.layers import Input, Conv2D, Flatten, Dense, Lambda, Concatenate
+from tensorflow.keras.optimizers.legacy import Adam
+from tensorflow.keras import backend as K
 
-    def update_target_model(self):
-        self.target_model.set_weights(self.model.get_weights())
-
-    def remember(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done))
-
-    def act(self, state, training=True):
-        if training and np.random.rand() <= self.epsilon:
-            # Encourage movement during exploration!
-            # 70% of exploration should be movement
-            if np.random.rand() < 0.7:
-                return np.random.choice([2, 3])  # RIGHT or LEFT
-            else:
-                return np.random.randint(0, self.action_size)
-
-        act_values = self.model.predict(state, verbose=0)
-        return np.argmax(act_values[0])
-
-    def replay(self, batch_size):
-        if len(self.memory) < batch_size:
-            return
-        minibatch = random.sample(self.memory, batch_size)
-
-        states = []
-        next_states = []
-
-        for state, _, _, next_state, _ in minibatch:
-            processed_state = preprocess_state(state[0])
-            processed_next_state = preprocess_state(next_state[0])
-            states.append(processed_state)
-            next_states.append(processed_next_state)
-
-        states = np.array(states)
-        next_states = np.array(next_states)
-
-        targets = self.model.predict(states, verbose=0)
-        next_q_values = self.target_model.predict(next_states, verbose=0)
-
-        for i, (_, action, reward, _, done) in enumerate(minibatch):
-            if done:
-                targets[i, action] = reward
-            else:
-                gamma_max_n_q_v_i = self.gamma * np.max(next_q_values[i])
-                targets[i, action] = reward + gamma_max_n_q_v_i
-
-        self.model.fit(states,
-                       targets,
-                       epochs=1,
-                       verbose=0,
-                       batch_size=batch_size)
-
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
-
-    def load(self, name):
-        self.model.load_weights(name)
-
-    def save(self, name):
-        self.model.save_weights(name)
+from rl.agents.dqn import DQNAgent
+from rl.policy import LinearAnnealedPolicy, EpsGreedyQPolicy
+from rl.memory import SequentialMemory
+from rl.core import Processor
+from rl.callbacks import ModelIntervalCheckpoint, FileLogger
 
 
-def preprocess_state(state):
-    """Convert state from (4, 84, 84) to (84, 84, 4) format"""
-    return np.transpose(state, (1, 2, 0))
+class Step4Wrapper(gym.Wrapper):
+    """Wrap step() to return classic 4-tuple (obs, reward, done, info)."""
+    def step(self, action):
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        done = terminated or truncated
+        return obs, reward, done, info
+
+
+class ResetWrapper(gym.Wrapper):
+    """Wrap reset() to return only observation (drop info)."""
+    def reset(self, **kwargs):
+        obs, _ = self.env.reset(**kwargs)
+        return obs
+
+
+def combine_streams(inputs):
+    """Combines value and advantage streams for dueling DQN architecture."""
+    value, advantage = inputs
+    return value + (advantage - K.mean(advantage, axis=1, keepdims=True))
+
+
+def build_dueling_model(input_shape, nb_actions):
+    """
+    Builds a simplified Dueling DQN architecture without Lambda layers.
+    
+    Args:
+        input_shape (tuple): Shape of the input (window_length, height, width).
+        nb_actions (int): Number of possible actions.
+    
+    Returns:
+        A Keras Sequential model with dueling-like architecture.
+    """
+
+    # Create a standard sequential model
+    model = Sequential([
+        # Convolutional layers
+        Conv2D(32, (8, 8), strides=(4, 4), activation='relu',
+              data_format='channels_first', input_shape=input_shape),
+        Conv2D(64, (4, 4), strides=(2, 2), activation='relu',
+              data_format='channels_first'),
+        Conv2D(64, (3, 3), strides=(1, 1), activation='relu',
+              data_format='channels_first'),
+        Flatten(),
+        
+        # Single large hidden layer with more capacity
+        Dense(1024, activation='relu'),
+        
+        # Output layer
+        Dense(nb_actions, activation='linear')
+    ])
+    
+    return model
+
+
+class AtariProcessor(Processor):
+    """
+    Custom processor for the DQN agent to handle Atari-specific processing
+    Also implemnts the Double DQN algorithm through the process_target method
+    """
+    def __init__(self, model, nb_actions):
+        self.model = model
+        self.nb_actions = nb_actions
+    
+    def process_observation(self, observation):
+        # Already processed by AtariPreprocessing wrapper
+        return observation
+    
+    def process_state_batch(self, batch):
+        # Already processed
+        return batch
+    
+    def process_reward(self, reward):
+        # Clip rewards between -1 and 1 for stability
+        return np.clip(reward, -1., 1.)
+    
+    def process_target(self, target, state):
+        """
+        Implements Double DQN by decoupling action selection and evaluation.
+        
+        The online model selects actions, the target model evaluates them.
+        """
+        batch_size = state.shape[0]
+        
+        # Get best actions from online model (model in the agent)
+        # This decouples action selection from target value estimation
+        online_q_values = self.model.predict(state)
+        best_actions = np.argmax(online_q_values, axis=1)
+        
+        # Replace the target Q-values with DDQN target calculation
+        # We only update the Q-values for the selected actions
+        # NOTE: This only works with keras-rl2 if you investigate the source,
+        # it passes the target model's prediction as 'target' to this method
+        for i in range(batch_size):
+            # Only keep the value for the selected action
+            target[i, :] = 0.  # Zero out all action values
+            target[i, best_actions[i]] = target[i, best_actions[i]]  
+            # (keep only the best action's value)
+            
+        return target
 
 
 def main():
-    print("Starting DQN training...")
+    """
+    Main function to train the DQN agent.
+    
+    Usage:
+        train.py [base_filename]
+        
+    If base_filename is provided, it will be used for weights and log files,
+    otherwise "policy" will be used as default.
+    """
+    import sys
+    from play import Play  # Import the Play function
+    
+    # get base filename from command line args or use default
+    if len(sys.argv) > 1:
+        base_filename = sys.argv[1]
+    else:
+        base_filename = "policy"
 
-    # Create environment with visible training
-    use_rendering = False  # False for faster training, True to see it!
-    render_mode = 'human' if use_rendering else None
-
-    env = gym.make('ALE/Breakout-v5', render_mode=render_mode, frameskip=1)
-    env = AtariPreprocessing(env, frame_skip=4, grayscale_obs=True,
-                           scale_obs=True, terminal_on_life_loss=True)
-    env = FrameStack(env, 4)
-
-    # Get a sample state
-    sample_state, _ = env.reset()
-    print(f"Original state shape: {sample_state.shape}")
-
-    # Define state and action space
-    state_shape = (84, 84, 4)
-    action_size = env.action_space.n
-    print(f"Action space size: {action_size}")
-    print(f"Action meanings: {env.unwrapped.get_action_meanings()}")
-
-    # Create agent
-    agent = DQNAgent(state_shape, action_size)
-
-    # Load previous weights if exists
-    if os.path.exists("policy.h5"):
-        try:
-            agent.load("policy.h5")
-            print("Loaded existing weights, continuing training...")
-        except:
-            print("Could not load existing weights, starting fresh...")
-
+    # get steps from command line or use default
+    if len(sys.argv) > 2:
+        steps = int(sys.argv[2])
+    else:
+        steps = 1000000 # one million seems good?
+    
+    # Set filenames for weights and logs
+    weights_filename = f"{base_filename}.h5"
+    log_filename = f"{base_filename}_log.json"
+    
+    # Environment parameters
+    ENV_NAME = 'ALE/Breakout-v5'
+    
     # Training parameters
-    batch_size = 64
-    episodes = 10000
-    update_target_every = 500
-    save_every = 50
+    nb_steps = steps
+    memory_size = int(250000)  # 250k experiences in memory
+    batch_size = int(32)
+    window_length = int(4)
+    
+    # DQN Agent parameters
+    gamma = 0.99  # Discount factor
+    target_model_update = int(10000)  # Update target model every 10k steps
+    learning_rate = 0.00025  # Adam optimizer learning rate
+    learning_rate_decay = 0.0  # No decay
+    
+    # Exploration parameters
+    max_epsilon = 1.0
+    min_epsilon = 0.1
+    epsilon_decay_steps = int(1000000)  # Annealed over 1M steps
+    
+    # Create and wrap environment without rendering during training
+    env = gym.make(ENV_NAME, frameskip=1)
+    env = AtariPreprocessing(
+        env,
+        frame_skip=4,
+        grayscale_obs=True,
+        scale_obs=True,
+        terminal_on_life_loss=True  # Important for better learning in Breakout
+    )
+    
+    # Wrap to classic Gym API for keras-rl2
+    env = Step4Wrapper(env)
+    env = ResetWrapper(env)
+    
+    # Action and observation details
+    nb_actions = int(env.action_space.n)
+    input_shape = (window_length,) + env.observation_space.shape  # (4, 84, 84)
+    
+    # Build the improved model
+    model = build_dueling_model(input_shape, nb_actions)
+    print(model.summary())
+    
+    # Configure memory
+    memory = SequentialMemory(limit=memory_size, window_length=window_length)
+    
+    # Configure the exploration policy: annealed epsilon-greedy
+    policy = LinearAnnealedPolicy(
+        EpsGreedyQPolicy(),
+        attr='eps',
+        value_max=max_epsilon,
+        value_min=min_epsilon,
+        value_test=0.05,  # Some exploration during testing
+        nb_steps=epsilon_decay_steps
+    )
+    
+    # Custom processor to handle type conversions
+    class AtariTypeProcessor(Processor):
+        def process_observation(self, observation):
+            # Ensure observation is float32
+            return observation.astype('float32')
+        
+        def process_state_batch(self, batch):
+            # Ensure batch is float32
+            return np.array(batch).astype('float32')
+        
+        def process_reward(self, reward):
+            # Clip rewards between -1 and 1 and convert to float32
+            return np.clip(float(reward), -1., 1.).astype('float32')
+    
+    # Create the Double DQN agent
+    dqn = DQNAgent(
+        model=model,
+        nb_actions=nb_actions,
+        memory=memory,
+        processor=AtariTypeProcessor(),
+        nb_steps_warmup=int(50000),  # Collect experiences before training
+        target_model_update=target_model_update,
+        policy=policy,
+        gamma=gamma,
+        batch_size=batch_size,
+        enable_double_dqn=True,  # Enable Double DQN
+        train_interval=int(4),  # Train every 4 steps
+        delta_clip=1.0  # Huber loss clipping parameter
+    )
+    
+    # Compile the agent
+    dqn.compile(Adam(learning_rate=learning_rate, decay=learning_rate_decay),
+                metrics=['mae'])
+    
+    # Callbacks for saving checkpoints and logging
+    checkpoint_weights_filename = f"{base_filename}_{{step}}.h5"
+    checkpoint_callback = ModelIntervalCheckpoint(
+        checkpoint_weights_filename, interval=int(250000)
+    )
+    logger = FileLogger(log_filename, interval=int(10000))
+    
+    # Load weights if they exist
+    if os.path.exists(weights_filename):
+        print(f"Loading weights from {weights_filename}")
+        dqn.load_weights(weights_filename)
+    
+    # Start training
+    print("Training the agent...")
+    dqn.fit(env, nb_steps=nb_steps,
+            callbacks=[checkpoint_callback, logger],
+            log_interval=int(10000),
+            verbose=1)
+    
+    # Save final weights
+    dqn.save_weights(weights_filename, overwrite=True)
+    print(f"Weights saved to {weights_filename}")
+    
+    # Test the agent after training using the Play function
+    print("Testing the trained agent...")
+    Play(base_filename, nb_episodes=10)
+    
+    print("Training and testing finished.")
+    env.close()
 
-    # Training loop
-    steps = 0
-    best_reward = -float('inf')
 
-    for e in range(episodes):
-        state, _ = env.reset()
-        state = np.expand_dims(state, axis=0)
-        total_reward = 0
-
-        # Fire to start the game
-        action = 1  # FIRE
-        next_state, reward, done, truncated, _ = env.step(action)
-        next_state = np.expand_dims(next_state, axis=0)
-
-        state = next_state
-        # Track actions for debugging
-        action_counts = {0: 0, 1: 0, 2: 0, 3: 0}
-
-        for t in range(10000):  # Max steps per episode
-            model_input = np.expand_dims(preprocess_state(state[0]), axis=0)
-
-            # Select action
-            action = agent.act(model_input)
-            action_counts[action] += 1
-
-            # Take action
-            next_state, reward, done, truncated, _ = env.step(action)
-            next_state = np.expand_dims(next_state, axis=0)
-
-            # Encourage movement to avoid getting stuck
-            if action in [2, 3]:  # RIGHT or LEFT
-                reward += 0.01  # Small bonus for moving
-
-            # Remember experience
-            agent.remember(state,
-                           action,
-                           reward,
-                           next_state,
-                           done or truncated)
-
-            # Update state and counters
-            state = next_state
-            total_reward += reward
-            steps += 1
-
-            # Train the network
-            if len(agent.memory) > batch_size:
-                agent.replay(batch_size)
-
-            # Update target network
-            if steps % update_target_every == 0:
-                agent.update_target_model()
-                print(f"Step {steps}: Updated target " +
-                      f"model, epsilon: {agent.epsilon:.4f}")
-
-            if done or truncated:
-                break
-
-            # Brief delay if rendering to allow viewing
-            if use_rendering:
-                time.sleep(0.01)
-
-        print(f"Episode: {e+1}/{episodes}, " +
-              f"Score: {total_reward}, " +
-              f"Epsilon: {agent.epsilon:.4f}")
-        print(f"Action counts: {action_counts}")
-
-        # Save if it's the best model so far
-        if total_reward > best_reward:
-            best_reward = total_reward
-            agent.save("best_policy.h5")
-            print(f"New best reward: {best_reward}, " +
-                  "model saved to best_policy.h5")
-
-        # Save periodically
-        if (e + 1) % save_every == 0:
-            agent.save("policy.h5")
-            print(f"Saved model at episode {e+1}")
-
-    # Save the final model
-    agent.save("policy.h5")
-    print("Training finished, model saved to policy.h5")
-
-    if os.path.exists("best_policy.h5"):
-        print(f"Best model with reward {best_reward} " +
-              "saved to best_policy.h5")
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
