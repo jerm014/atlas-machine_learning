@@ -28,7 +28,7 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
     def choose_action(state, Q, epsilon):
         if np.random.uniform(0, 1) < epsilon:
             # explore
-            return env.action_space.sample()
+            return np.random.randint(Q.shape[1])
         else:
             # exploit: choose best action, break ties randomly
             return np.argmax(Q[state, :])
