@@ -159,7 +159,9 @@ def Play(weights_basename, nb_episodes=10):
     )
     
     # Compile the agent. Optimizer/loss don't matter for playing
-    dqn.compile(Adam(learning_rate=0.00025), metrics=['mae'])
+        dqn.compile(Adam(learning_rate=learning_rate,
+                         decay=learning_rate_decay),
+                    metrics=['mae'])
     
     # Load trained weights
     if os.path.exists(weights_filename):

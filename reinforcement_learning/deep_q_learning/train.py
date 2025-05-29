@@ -267,8 +267,8 @@ def main():
     print(f"Weights saved to {weights_filename}")
     
     # Test the agent after training using the Play function
-    print("Testing the trained agent...")
-    Play(base_filename, nb_episodes=10)
+    # print("Testing the trained agent...")
+    # Play(base_filename, nb_episodes=10)
     
     print("Training and testing finished.")
     env.close()
