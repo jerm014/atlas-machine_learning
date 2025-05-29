@@ -10,82 +10,77 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
                   gamma=0.99, epsilon=1, min_epsilon=0.1, epsilon_decay=0.05):
     """
     Performs SARSA(lambda) for control.
-
     Args:
-        env: environment instance
-        Q: Q-table (numpy.ndarray of shape (s,a))
-        lambtha: eligibility trace factor (the 'lambda' parameter)
-        episodes: total episodes to train over
-        max_steps: max steps per episode
-        alpha: learning rate
-        gamma: discount rate
-        epsilon: initial threshold for epsilon-greedy
-        min_epsilon: minimum epsilon value
+        env:           environment instance
+        Q:             Q-table (numpy.ndarray of shape (s,a))
+        lambtha:       eligibility trace factor (the 'lambda' parameter)
+        episodes:      total episodes to train over
+        max_steps:     max steps per episode
+        alpha:         learning rate
+        gamma:         discount rate
+        epsilon:       initial threshold for epsilon-greedy
+        min_epsilon:   minimum epsilon value
         epsilon_decay: decay rate for epsilon
-
     Returns:
-        Q: the updated Q-table
+        Q:             the updated Q-table
     """
-    def choose_action(state, Q_table, eps):
-        """
-        Choose action using epsilon-greedy policy.
-
-        Args:
-            state: current state
-            Q_table: Q-table
-            eps: epsilon value
-
-        Returns:
-            action: selected action
-        """
-        if np.random.uniform(0, 1) < eps:
-            return np.random.randint(Q_table.shape[1])
+    # helper to choose action with epsilon-greedy
+    def choose_action(s, Q, epsilon):
+        """documentation"""
+        if np.random.uniform(0, 1) < epsilon:
+            # explore
+            return np.random.randint(Q.shape[1])
         else:
-            return np.argmax(Q_table[state, :])
+            # exploit: choose best action, break ties randomly
+            return np.argmax(Q[s, :])
 
-    for episode in range(episodes):
-        # Reset environment and eligibility traces
-        state, _ = env.reset()
+    # train for a bunch of episodes
+    for _ in range(episodes):
+        # reset env and grab initial state
+        # Gymnasium returns (observation, info) tuple
+        s, _ = env.reset()
+
+        # init eligibility traces, same shape as Q-table
         E = np.zeros_like(Q)
-        
-        # Choose initial action
-        action = choose_action(state, Q, epsilon)
+        # choose initial action using epsilon-greedy
+        a = choose_action(s, Q, epsilon)
 
-        for step in range(max_steps):
+        # loop until episode ends or max steps hit
+        for _ in range(max_steps):
             # Take action and observe result
-            next_state, reward, terminated, truncated, _ = env.step(action)
-            done = terminated or truncated
-            
-            # FrozenLake specific: modify reward structure
-            if done and reward == 0:
-                reward = -1  # Penalty for falling in hole
+            # Gymnasium returns (observation, reward, terminated, truncated,
+            next_state, reward, done, trunc, _ = env.step(a)
 
-            # Choose next action BEFORE calculating delta
+            # choose next action using epsilon-greedy
             next_action = choose_action(next_state, Q, epsilon)
 
-            # Calculate TD error - use next_action for SARSA
-            if done:
-                delta = reward - Q[state, action]
+            # Calculate the TD error - CORRECTED VERSION
+            # SARSA update: Q(s,a) <- Q(s,a) + alpha[r + gamma*Q(s',a') - Q(s,
+            if done or trunc:
+                # Terminal state: no future value
+                delta = reward - Q[s, a]
             else:
-                delta = reward + gamma * Q[next_state, next_action] - Q[state, action]
+                # Non-terminal: use next state-action value
+                delta = reward + gamma * Q[next_state, next_action] - Q[s, a]
 
-            # CRITICAL DIFFERENCE: Update eligibility first, THEN decay
-            E[state, action] += 1.0
-            
-            # Update ALL Q-values using eligibility traces
+            # Update eligibility trace for current state-action pair
+            E[s, a] += 1.0
+
+            # Update Q-table using all eligibility traces
             Q += alpha * delta * E
-            
-            # THEN decay eligibility traces
+
+            # Decay all eligibility traces AFTER the update
             E *= gamma * lambtha
 
-            # Move to next state and action
-            state = next_state
-            action = next_action
+            # Move to the next state,action
+            s = next_state
+            a = next_action
 
-            if done:
+            # See if episode is done
+            if done or trunc:
                 break
 
-        # Decay epsilon - try multiplicative decay instead of linear
-        epsilon = max(min_epsilon, epsilon * (1 - epsilon_decay))
+        # Decay epsilon for the next episode
+        epsilon = max(min_epsilon, epsilon - epsilon_decay)
 
     return Q
