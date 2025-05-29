@@ -26,6 +26,7 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
     """
     # helper to choose action with epsilon-greedy
     def choose_action(s, Q, epsilon):
+        """documentation"""
         if np.random.uniform(0, 1) < epsilon:
             # explore
             return np.random.randint(Q.shape[1])
