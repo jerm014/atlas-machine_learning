@@ -36,7 +36,13 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
     # train for a bunch of episodes
     for _ in range(episodes):
         # reset env and grab initial state
-        state, _ = env.reset()
+        state_info = env.reset()
+        # Handle both old and new gym API formats
+        if isinstance(state_info, tuple):
+            state = state_info[0]
+        else:
+            state = state_info
+            
         # init eligibility traces, same shape as Q-table
         E = np.zeros_like(Q)
         # choose initial action using epsilon-greedy
@@ -45,34 +51,44 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
         # loop until episode ends or max steps hit
         for _ in range(max_steps):
             # action, observe next state and reward (and grab term and trunc)
-            next_state, reward, term, trunc, _ = env.step(action)
+            step_result = env.step(action)
+            
+            # Handle different return formats from env.step()
+            if len(step_result) == 4:
+                # Old gym format: (next_state, reward, done, info)
+                next_state, reward, done, _ = step_result
+                trunc = False
+            else:
+                # New gym format: (next_state, reward, term, trunc, info)
+                next_state, reward, term, trunc, _ = step_result
+                done = term
 
             # choose next action using epsilon-greedy
             next_action = choose_action(next_state, Q, epsilon)
 
             # calculate the TD error
-            # if term, next state has no future value (Q[next_state,
-            # next_action] effectively 0)
-            if term:
+            # Key fix: Use accumulating traces, not replacing traces
+            if done or trunc:
                 delta = reward - Q[state, action]
             else:
                 delta = reward + gamma * Q[next_state, next_action] \
                         - Q[state, action]
 
-            # decay all eligibility traces first
-            E *= gamma * lambtha
-            # set the eligibility trace for current state-action pair to 1.0
-            E[state, action] = 1.0
-
-            # update Q-table
+            # Update eligibility trace for current state-action pair FIRST
+            E[state, action] += 1.0
+            
+            # update Q-table using all eligibility traces
             Q += alpha * delta * E
+            
+            # Then decay all eligibility traces
+            E *= gamma * lambtha
 
             # move to the next state,action
             state = next_state
             action = next_action
 
             # See if episode is done
-            if term or trunc:
+            if done or trunc:
                 break
 
         # Decay epsilon for the next episode
