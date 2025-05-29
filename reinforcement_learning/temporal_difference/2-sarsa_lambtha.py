@@ -42,7 +42,7 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
             state = state_info[0]
         else:
             state = state_info
-            
+
         # init eligibility traces, same shape as Q-table
         E = np.zeros_like(Q)
         # choose initial action using epsilon-greedy
@@ -52,7 +52,7 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
         for _ in range(max_steps):
             # action, observe next state and reward (and grab term and trunc)
             step_result = env.step(action)
-            
+
             # Handle different return formats from env.step()
             if len(step_result) == 4:
                 # Old gym format: (next_state, reward, done, info)
@@ -76,10 +76,10 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
 
             # Update eligibility trace for current state-action pair FIRST
             E[state, action] += 1.0
-            
+
             # update Q-table using all eligibility traces
             Q += alpha * delta * E
-            
+
             # Then decay all eligibility traces
             E *= gamma * lambtha
 
