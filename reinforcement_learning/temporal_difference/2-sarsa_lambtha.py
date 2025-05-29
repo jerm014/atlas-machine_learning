@@ -60,23 +60,28 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
                         - Q[state, action]
 
             # bump up eligibility trace for current state-action pair
-            E[state, action] += 1.0
+            #E[state, action] += 1.0
 
             # update Q-table and eligibility traces
+            #Q += alpha * delta * E
+
+            # first decay eligibility traces
+            E *= gamma * lambtha
+            # then increment/set current state-action trace
+            E[state, action] += 1.0 # Or E[state, action] = 1.0 for strict replacing
+
+            # update Q-table
             Q += alpha * delta * E
 
-            # decay eligibility traces
-            E *= gamma * lambtha
-
-            # move to next state, action
+            # move to the next state, action
             state = next_state
             action = next_action
 
-            # see if episode is done
+            # See if episode is done
             if term or trunc:
                 break
 
-        # decay epsilon for the next episode
+        # Decay epsilon for the next episode
         epsilon = max(min_epsilon, epsilon - epsilon_decay)
 
     return Q
