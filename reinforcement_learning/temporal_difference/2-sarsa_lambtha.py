@@ -67,7 +67,7 @@ def sarsa_lambtha(env,
                 break
 
         # exponentially decay epsilon after each episode
-        npexp = np.exp(-epsilon_decay * episode) 
+        npexp = np.exp(-epsilon_decay * episode)
         epsilon = min_epsilon + (saved_epsilon - min_epsilon) * npexp
 
     return Q
