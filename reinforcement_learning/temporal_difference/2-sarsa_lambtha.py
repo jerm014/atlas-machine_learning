@@ -47,14 +47,14 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
         # loop until episode ends or max steps hit
         for _ in range(max_steps):
             # Take action and observe result
-            # Gymnasium returns (observation, reward, terminated, truncated, info)
+            # Gymnasium returns (observation, reward, terminated, truncated,
             next_state, reward, done, trunc, _ = env.step(a)
 
             # choose next action using epsilon-greedy
             next_action = choose_action(next_state, Q, epsilon)
 
             # Calculate the TD error - CORRECTED VERSION
-            # SARSA update: Q(s,a) <- Q(s,a) + alpha[r + gamma*Q(s',a') - Q(s,a)]
+            # SARSA update: Q(s,a) <- Q(s,a) + alpha[r + gamma*Q(s',a') - Q(s,
             if done or trunc:
                 # Terminal state: no future value
                 delta = reward - Q[s, a]
