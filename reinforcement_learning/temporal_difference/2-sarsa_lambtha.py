@@ -31,7 +31,7 @@ def sarsa_lambtha(env,
     Performs the SARSA(λ) algorithm with eligibility traces to estimate a
     Q-table.
     """
-    saved_epsilon = epsilon
+    original_epsilon = epsilon
 
     for episode in range(episodes):
         # Reset environment and get initial state
@@ -68,6 +68,6 @@ def sarsa_lambtha(env,
 
         # exponentially decay epsilon after each episode
         npexp = np.exp(-epsilon_decay * episode)
-        epsilon = min_epsilon + (saved_epsilon - min_epsilon) * npexp
+        epsilon = min_epsilon + (original_epsilon - min_epsilon) * npexp
 
     return Q
