@@ -1,86 +1,84 @@
 #!/usr/bin/env python3
-""" This module creates the sarsa_lambtha function"""
-
+"""
+Module defines the sarsa_lambtha method for SARSA(λ) algorithm implementation
+"""
 import numpy as np
-import gym
 
 
-def policy(state, Q, epsilon):
+def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100,
+                  alpha=0.1, gamma=0.99, epsilon=1, min_epsilon=0.1,
+                  epsilon_decay=0.05):
     """
-    Epsilon Greedy Policy
+    Performs the SARSA(λ) algorithm for temporal difference learning.
 
-    Returns: action
-    """
-    if np.random.uniform() < epsilon:
-        return np.random.randint(Q.shape[1])
-    return np.argmax(Q[state])
+    SARSA(λ) uses eligibility traces to update Q-values for all state-action
+    pairs visited in an episode, with exponentially decaying weights.
 
+    Args:
+        env: environment instance
+        Q: numpy.ndarray of shape (s,a) containing the Q table
+        lambtha: eligibility trace factor (λ ∈ [0,1])
+        episodes: total number of episodes to train over
+        max_steps: maximum number of steps per episode
+        alpha: learning rate (α)
+        gamma: discount rate (γ)
+        epsilon: initial threshold for epsilon greedy
+        min_epsilon: minimum value that epsilon should decay to
+        epsilon_decay: decay rate for updating epsilon between episodes
 
-def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1,
-                  gamma=0.99, epsilon=1, min_epsilon=0.1, epsilon_decay=0.05):
-    """
-    Performs the SARSA(λ)
-
-    Inputs:\\
-    env: openAI environment instance\\
-    Q: numpy.ndarray of shape (s,a) containing the Q table\\
-    lambtha: eligibility trace factor\\
-    episodes: total number of episodes to train over\\
-    max_steps: maximum number of steps per episode\\
-    alpha: learning rate\\
-    gamma: discount rate\\
-    epsilon: initial threshold for epsilon greedy\\
-    min_epsilon: minimum value that epsilon should decay to\\
-    epsilon_decay: decay rate for updating epsilon between episodes
-
-    Returns:\\
-    Q: the updated Q table
+    Returns:
+        Q: the updated Q table
     """
 
-    # Create empty numpy array of zeros in shape of value estimate
-    elig_trace = np.zeros_like(Q)
-    # env.seed(0)
+    for episode in range(episodes):
+        # Reset environment and initialize eligibility traces
+        state, _ = env.reset()
+        e_traces = np.zeros_like(Q)
 
-    # Loop through episodes
-    for ep in range(0, episodes):
+        # Choose initial action using epsilon-greedy
+        if np.random.random() < epsilon:
+            action = np.random.randint(0, env.action_space.n)
+        else:
+            action = np.argmax(Q[state, :])
 
-        # Reset the environment for each new episode
-        state = env.reset()
+        # Run episode
+        for step in range(max_steps):
+            # Take action
+            next_state, reward, terminated, truncated, _ = env.step(action)
+            done = terminated or truncated
 
-        # Find action with epsilond_greedy()
-        action = policy(state, Q, epsilon)
+            # Choose next action using epsilon-greedy
+            if np.random.random() < epsilon:
+                next_action = np.random.randint(0, env.action_space.n)
+            else:
+                next_action = np.argmax(Q[next_state, :])
 
-        # epsilon = max(min_epsilon, epsilon - epsilon_decay)
-        epsilon = min_epsilon + (epsilon - min_epsilon) * \
-            np.exp(-epsilon_decay * ep)
+            # Calculate TD target
+            if done:
+                td_target = reward
+            else:
+                td_target = reward + gamma * Q[next_state, next_action]
 
-        # Loop through steps until done or max steps
-        for step in range(0, max_steps):
+            # Calculate TD error (SARSA update rule)
+            td_error = td_target - Q[state, action]
 
-            next_state, reward, done, _ = env.step(action)
-            next_action = policy(next_state, Q, epsilon)
+            # Update eligibility traces (accumulating traces)
+            e_traces[state, action] += 1
 
-            # Temporal Difference Error
-            # δ = r + γV(s') - V(s)
+            # Update all Q-values
+            Q += alpha * td_error * e_traces
 
-            delta = reward + (gamma * Q[next_state][next_action])\
-                - Q[state][action]
+            # Decay eligibility traces
+            e_traces *= gamma * lambtha
 
-            # Update eligibility trace and move to the next state
-            # Getting closer reults by switching state first
-            elig_trace[state][action] = 1.0
-            elig_trace = elig_trace * (gamma * lambtha)
-
-            # Update Value Estimate
-            Q += delta * alpha * elig_trace
-            # Getting worse results with next one
-            # V[state] += delta * alpha * elig_trace[state]
+            # Move to next state and action
+            state = next_state
+            action = next_action
 
             if done:
                 break
 
-            # Move state forward
-            state = next_state
-            action = next_action
+        # Decay epsilon after each episode
+        epsilon = max(min_epsilon, epsilon - epsilon_decay)
 
     return Q
