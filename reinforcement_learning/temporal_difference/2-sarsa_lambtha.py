@@ -1,42 +1,70 @@
 #!/usr/bin/env python3
-"""SARSA LAMBTHA!!"""
+"""does basic sarsa"""
 import numpy as np
 
 
-def epsilon_greedy(Q, state, epsilon):
-    """Espislon Greedy fctn"""
-    if np.random.uniform(0, 1) < epsilon:
-        return np.random.randint(Q.shape[1])
+def epsilon_greedy(Q, state, env, epsilon=1):
+    """doing epsilon greedy to balance exploration and exploitation """
+    p = np.random.uniform()
+    if p < epsilon:
+        action = np.random.randint(0, env.action_space.n)
+        # action = env.action_space.sample()
     else:
-        return np.argmax(Q[state])
+        action = np.argmax(Q[state, :])  # following the Q table
+
+    return action
 
 
-def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100, alpha=0.1, gamma=0.99, epsilon=1, min_epsilon=0.1, epsilon_decay=0.05):
-    """Perform the SARSA(λ) algorithm for Q table update."""
-    for episode in range(episodes):
-        state = env.reset()
-        state = state[0] if isinstance(state, tuple) else state
-        action = epsilon_greedy(Q, state, epsilon)
+def sarsa_lambtha(
+        env,
+        Q,
+        lambtha,
+        num_episodes=5000,
+        max_steps=100,
+        alpha=0.1,
+        gamma=0.99,
+        epsilon=1,
+        min_epsilon=0.1,
+        epsilon_decay=0.05):
+    """performs sarsa with gymnasium"""
+    E = np.zeros_like(Q)  # shape (64, 4)
 
-        eligibility_trace = np.zeros(Q.shape)
+    for session in range(num_episodes):
+        # Generate one episode
+        E.fill(0)  # resetting E
+        state, _ = env.reset()
+        action = epsilon_greedy(Q, state, env, epsilon)
 
         for _ in range(max_steps):
-            result = env.step(action)
-            next_state, reward, done, *_ = result  # Adjusted unpacking
-            next_state = next_state[0] if isinstance(next_state, tuple) else next_state
-            next_action = epsilon_greedy(Q, next_state, epsilon)
 
-            delta = reward + gamma * Q[next_state][next_action] - Q[state][action]
-            eligibility_trace[state][action] += 1
+            next_state, reward, done, truncated, _ = env.step(action)
 
-            Q += alpha * delta * eligibility_trace
-            eligibility_trace *= gamma * lambtha
+            # calculating the next_action on
+            next_action = epsilon_greedy(Q, next_state, env, epsilon)
+            # the same timestep I guess
+            # predict =  Q[state, action]
+            # target = reward + (gamma * (Q[next_state, next_action]))
+            t_d = reward + gamma * Q[next_state,
+                                     next_action] - Q[state, action]
+            # I guess env.step(action) always gives r_t+1 ?
+
+            E[state, action] += 1
+            Q += alpha * t_d * E
+
+            E *= gamma * lambtha
+
+            state = next_state
+            action = next_action
+
+            # epsilon decay? kinda forgot about that but I think it's handled
+            # here
 
             if done:
                 break
 
-            state, action = next_state, next_action
+        # epsilon = max(min_epsilon, (1 - epsilon_decay) * epsilon)
 
-        epsilon = max(min_epsilon, epsilon * (1 - epsilon_decay))
+        epsilon = min_epsilon + (1 - min_epsilon) * \
+            np.exp(-epsilon_decay * session)
 
     return Q
