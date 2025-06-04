@@ -30,7 +30,7 @@ def pca_color(image, alphas):
                 range [0, 1]
         alphas: A tuple or list of 3 floats. These are the random variables
                 (typically drawn from a Gaussian distribution with mean 0 and
-                stddev 0.1, once per image) to scale the eigenvalues 
+                stddev 0.1, once per image) to scale the eigenvalues
 
     return:
         A 3D tf.Tensor of the same shape and type as image, representing the
@@ -41,12 +41,12 @@ def pca_color(image, alphas):
     else:
         alphas_tf = tf.cast(alphas, dtype=tf.float32)
 
-    # Calculate the term: alpha_i * lambda_i for each principal component 
-    # The formula used is [p1,p2,p3][a1*l1, a2*l2, a3*l3]^T 
+    # Calculate the term: alpha_i * lambda_i for each principal component
+    # The formula used is [p1,p2,p3][a1*l1, a2*l2, a3*l3]^T
     # Here, _EIGEN_VALUES are the lambda_i.
     scaled_eigenvalues = alphas_tf * _EIGEN_VALUES
 
-    # Calculate the change to add to RGB channels: P * (alphas * lambdas) 
+    # Calculate the change to add to RGB channels: P * (alphas * lambdas)
     # P is the matrix whose columns are eigenvectors p_i.
     # _EIGEN_VECTORS_MATRIX is P.
     # tf.linalg.matvec(A, x) computes A*x.
