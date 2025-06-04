@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """PCA color augmentation for an image based on AlexNet"""
 import tensorflow as tf
 
