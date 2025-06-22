@@ -8,7 +8,7 @@ and capitalized, adhering to a limit of 26 columns (A-Z).
 import pandas as pd
 
 
-def from_numpy(array: np.ndarray) -> pd.DataFrame:
+def from_numpy(array):
     """
     Creates a pd.DataFrame from a np.ndarray.
 
@@ -21,10 +21,10 @@ def from_numpy(array: np.ndarray) -> pd.DataFrame:
     Returns:
         The newly created pd.DataFrame.
     """
-    if not isinstance(array, np.ndarray):
-        raise TypeError("Input 'array' must be a numpy.ndarray.")
 
     # Get the number of columns from the input numpy array
+    # array.shape[1] implicitly assumes a 2D array, which is typical
+    # for DataFrame creation from an array.
     num_columns = array.shape[1]
 
     # Check if the number of columns exceeds the limit (A-Z)
