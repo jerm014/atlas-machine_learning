@@ -24,13 +24,15 @@ def rename(df):
                       columns.
     """
     # Rename the 'Timestamp' column to 'Datetime'
-    # .copy() is used to ensure we are working on a copy to avoid
+    # .copy() is used to ensure we are worknig on a copy to avoid
     # SettingWithCopyWarning if df is a slice of another DataFrame.
     df_renamed = df.rename(columns={'Timestamp': 'Datetime'}).copy()
 
     # Convert the 'Datetime' column values to datetime objects
+    # By specifying unit='s', we tell pandas that the timestamps are
+    # in seconds since the Unix epoch.
     # errors='coerce' will turn invalid parsing into NaT (Not a Time)
-    df_renamed['Datetime'] = pd.to_datetime(df_renamed['Datetime'])
+    df_renamed['Datetime'] = pd.to_datetime(df_renamed['Datetime'], unit='s')
 
     # Display only the 'Datetime' and 'Close' column
     # Ensure both columns exist before trying to select them
@@ -38,7 +40,7 @@ def rename(df):
     if not all(col in df_renamed.columns for col in required_cols):
         missing = [col for col in required_cols if col
                    not in df_renamed.columns]
-        raise ValueError(f"Input DataFrame missing required columns: "
+        raise ValueError(f"Input DataFrame mising required columns: "
                          f"{missing}")
 
     return df_renamed[required_cols]
