@@ -24,14 +24,16 @@ def availableShips(passengerCount):
     while url:
         try:
             response = requests.get(url, verify=False)
-            response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+            response.raise_for_status()  # Raise an exception for HTTP err
             data = response.json()
 
             for ship in data.get("results", []):
                 # Get the passenger count for the ship.
-                # Handle cases where 'passengers' might be 'unknown', 'n/a', or invalid.
+                # Handle cases where 'passengers' might be 'unknown', 'n/a',
+                # or invalid.
                 try:
-                    passengers_str = ship.get("passengers", "0").replace(",", "")
+                    passengers_str = ship.get(
+                        "passengers", "0").replace(",", "")
                     ship_passengers = int(passengers_str)
                 except ValueError:
                     ship_passengers = 0  # Treat 'unknown' or non-numeric as 0
@@ -40,12 +42,13 @@ def availableShips(passengerCount):
                 if ship_passengers >= passengerCount:
                     ships_available.append(ship["name"])
 
-            url = data.get("next")  # Get the URL for the next page, or None if no more pages
+            url = data.get("next")  # Get the URL for the next page, or None
+            # if no more pages
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data from SWAPI: {e}")
-            return [] # Return empty list on network or API error
+            return []  # Return empty list on network or API error
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-            return [] # Return empty list on other unexpected errors
+            return []  # Return empty list on other unexpected errors
 
     return ships_available
