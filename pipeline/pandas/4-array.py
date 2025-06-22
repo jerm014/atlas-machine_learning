@@ -4,8 +4,6 @@ This module provides a function to extract the last 10 rows of specific
 columns from a Pandas DataFrame and convert them into a NumPy array.
 """
 
-import pandas as pd
-
 
 def array(df):
     """
