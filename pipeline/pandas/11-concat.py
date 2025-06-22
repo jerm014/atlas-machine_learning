@@ -5,7 +5,7 @@ after indexing them, filtering one by timestamp, and assigning keys
 to the concatenated rows.
 """
 
-import pandas
+import pandas as pd
 index = __import__('10-index').index
 
 
