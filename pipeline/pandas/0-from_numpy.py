@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-This module provides a function to convert a NumPy array into a Pandas DataFrame.
-The conversion ensures that the DataFrame columns are labeled alphabetically
-and capitalized, adhering to a limit of 26 columns (A-Z).
+This module provides a function to convert a NumPy array into a Pandas
+DataFrame The conversion ensures that the DataFrame columns are labeled
+alphabetically and capitalized, adhering to a limit of 26 columns (A-Z).
 """
 
 import pandas as pd
