@@ -5,7 +5,6 @@ columns from a Pandas DataFrame and convert them into a NumPy array.
 """
 
 import pandas as pd
-import numpy as np
 
 
 def array(df):
