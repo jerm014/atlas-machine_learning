@@ -4,8 +4,6 @@ This module provides a function to slice a Pandas DataFrame by extracting
 specific columns and then selecting every Nth row from the extracted data.
 """
 
-import pandas as pd
-
 
 def slice(df):
     """
