@@ -6,7 +6,6 @@ and capitalized, adhering to a limit of 26 columns (A-Z).
 """
 
 import pandas as pd
-import numpy as np
 
 
 def from_numpy(array: np.ndarray) -> pd.DataFrame:
