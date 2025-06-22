@@ -1,4 +1,8 @@
+#!/usr/bin/env python3
+"""swapi project"""
+
 import requests
+
 
 def availableShips(passengerCount):
     """
