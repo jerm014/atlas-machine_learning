@@ -39,7 +39,7 @@ def concat(df1, df2):
     # 3. Concatenate the selected rows from df2 to the top of df1.
     # 4. Adds keys to the concatenated data, labeling the rows from df2
     #    as 'bitstamp' and the rows from df1 as 'coinbase'.
-    concatenated_df = pandas.concat(
+    concatenated_df = pd.concat(
         [filtered_df2, indexed_df1],
         keys=['bitstamp', 'coinbase']
     )
