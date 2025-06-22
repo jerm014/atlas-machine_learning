@@ -5,23 +5,12 @@ This module provides functions to interact with the Star Wars API (SWAPI).
 All API requests are made with SSL verification disabled due to a known
 expired certificate on the public SWAPI server... (2025-06-20)
 """
-
 import requests
 
 
-def _fetch_url_data(url: str, context: str = "data") -> dict | None:
+def fetchUrlData(url: str, context: str = "data") -> dict | None:
     """
     Helper function to fetch JSON data from a given URL.
-
-    Args:
-        url (str): The URL to fetch data from.
-        context (str): A descriptive string for logging purposes, indicating
-                       what kind of data is being fetched (e.g., "species",
-                       "homeworld").
-
-    Returns:
-        dict | None: The JSON response as a dictionary, or None if an error
-                     occurs during the request or parsing.
     """
     try:
         # Using verify=False due to expired certificate on the public API
@@ -51,7 +40,7 @@ def sentientPlanets() -> list[str]:
     species_url = "https://swapi.dev/api/species/"
 
     while species_url:
-        species_data = _fetch_url_data(species_url, "species")
+        species_data = fetchUrlData(species_url, "species")
         if not species_data:
             # If fetching species data fails, stop processing
             return []
