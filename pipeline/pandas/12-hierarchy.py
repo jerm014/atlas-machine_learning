@@ -50,9 +50,7 @@ def hierarchy(df1, df2):
     # 3. Concatenate the selected rows.
     # 4. Add keys to the data, labeling rows from df2 as 'bitstamp' and
     #    rows from df1 as 'coinbase'.
-    concatenated_df = pd.concat(
-                                [filtered_df2,
-                                filtered_df1],
+    concatenated_df = pd.concat([filtered_df2, filtered_df1],
                                 keys=['bitstamp', 'coinbase'])
 
     # 5. Rearrange the MultiIndex so that Timestamp is the first level.
