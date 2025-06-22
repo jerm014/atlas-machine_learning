@@ -18,7 +18,7 @@ def slice(df):
                       columns and rows.
     """
     # Define the list of columns to extract
-    columns_to_extract = ['High', 'Low', 'Close', 'Volume_BTC']
+    columns_to_extract = ['High', 'Low', 'Close', 'Volume_(BTC)']
 
     # Ensure all required columns exist in the DataFrame
     if not all(col in df.columns for col in columns_to_extract):
