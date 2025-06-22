@@ -20,8 +20,7 @@ def high(df):
     """
     # Sort the DataFrame by the 'High' column in descending order
     # 'ascending=False' ensures descending order.
-    # A KeyError will be raised if 'High' column does not exist,
-    # which is appropriate behavior as per the problem description.
+    # A KeyError will be raised if 'High' column does not exist
     sorted_df = df.sort_values(by='High', ascending=False)
 
     return sorted_df
