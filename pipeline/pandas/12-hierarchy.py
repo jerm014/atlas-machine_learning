@@ -5,7 +5,7 @@ rearranging their MultiIndex to prioritize timestamp, filtering by a
 specific timestamp range, and assigning hierarchical keys.
 """
 
-import pandas
+import pandas as pd
 index = __import__('10-index').index
 
 
