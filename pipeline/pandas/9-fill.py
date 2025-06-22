@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ï»¿#!/usr/bin/env python3
 """
 This module provides a function to clean and fill missing values in
 a Pandas DataFrame, specifically for cryptocurrency historical data.
@@ -10,7 +10,7 @@ and zero-filling for specific columns as descibed in task 9.
 def fill(df):
     """
     Removes the 'Weighted_Price' column, fills missing values in
-    'Close' with the previous row’s value, fills 'High', 'Low', and
+    'Close' with the previous rowâ€™s value, fills 'High', 'Low', and
     'Open' with corresponding 'Close' values, and sets missing
     'Volume_(BTC)' and 'Volume_(Currency)' to 0.
 
@@ -30,7 +30,7 @@ def fill(df):
         df_modified = df_modified.drop(columns=['Weighted_Price'])
 
     # 2. Fill missing values in the 'Close' column with the previous
-    #    row’s value (forward fill). This is crucial to do first,
+    #    rowâ€™s value (forward fill). This is crucial to do first,
     #    as other columns depend on 'Close' values.
     df_modified['Close'] = df_modified['Close'].fillna(method='ffill')
 
