@@ -45,6 +45,8 @@ def main():
     if not latest_launch:
         sys.exit(1)
 
+    latest_launch.sort(key=lambda x: x.get('date_unix', 0))
+
     # initial information
     launch_name = latest_launch.get('name', 'N/A')
     date_local_str = latest_launch.get('date_local', 'N/A')
