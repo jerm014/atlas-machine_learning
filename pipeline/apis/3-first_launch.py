@@ -48,8 +48,8 @@ def main():
     latest_launch.sort(key=lambda x: x.get('date_unix', 0))
 
     # initial information
-    launch_name = latest_launch.get('name', 'N/A')
-    date_local_str = latest_launch.get('date_local', 'N/A')
+    launch_name = latest_launch.get('name', 'Unknown')
+    date_local_str = latest_launch.get('date_local', 'Unknown')
     rocket_id = latest_launch.get('rocket')
     launchpad_id = latest_launch.get('launchpad')
 
@@ -58,7 +58,7 @@ def main():
     if rocket_id:
         rocket_data = get_spacex_data(rocket_url_template.format(rocket_id))
         if rocket_data:
-            rocket_name = rocket_data.get('name', 'N/A')
+            rocket_name = rocket_data.get('name', 'Unknown')
 
     # fetch launchpad name and locality
     launchpad_name = "N/A"
@@ -68,8 +68,8 @@ def main():
             launchpad_url_template.format(launchpad_id)
         )
         if launchpad_data:
-            launchpad_name = launchpad_data.get('name', 'N/A')
-            launchpad_locality = launchpad_data.get('locality', 'N/A')
+            launchpad_name = launchpad_data.get('name', 'Unknown')
+            launchpad_locality = launchpad_data.get('locality', 'Unknown')
 
     # try:
     #    dt_object = datetime.datetime.fromisoformat(date_local_str)
