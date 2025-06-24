@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""SpaceX Stuff"""import requests
+"""SpaceX Stuff"""
+import requests
 import sys
 import datetime
 
