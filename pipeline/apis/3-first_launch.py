@@ -35,17 +35,18 @@ def main():
     """
     Fetches and displays information about the latest SpaceX launch.
     """
-    latest_launch_url = "https://api.spacexdata.com/v4/launches/upcoming"
+    latest_launches_url = "https://api.spacexdata.com/v4/launches/upcoming"
     rocket_url_template = "https://api.spacexdata.com/v4/rockets/{}"
     launchpad_url_template = "https://api.spacexdata.com/v4/launchpads/{}"
 
     # Get the latest launch data
-    latest_launch = get_spacex_data(latest_launch_url)
+    latest_launches = get_spacex_data(latest_launches_url)
 
-    if not latest_launch:
+    if not latest_launches:
         sys.exit(1)
 
-    latest_launch.sort(key=lambda x: x.get('date_unix', 0))
+    latest_launches.sort(key=lambda x: x.get('date_unix', 0))
+    latest_launch = latest_launches[0] 
 
     # initial information
     launch_name = latest_launch.get('name', 'Unknown')
