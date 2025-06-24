@@ -35,7 +35,7 @@ def main():
     """
     Fetches and displays information about the latest SpaceX launch.
     """
-    latest_launch_url = "https://api.spacexdata.com/v5/launches/latest"
+    latest_launch_url = "https://api.spacexdata.com/v4/launches/upcoming"
     rocket_url_template = "https://api.spacexdata.com/v4/rockets/{}"
     launchpad_url_template = "https://api.spacexdata.com/v4/launchpads/{}"
 
