@@ -69,11 +69,11 @@ def main():
             launchpad_name = launchpad_data.get('name', 'N/A')
             launchpad_locality = launchpad_data.get('locality', 'N/A')
 
-    try:
-        dt_object = datetime.datetime.fromisoformat(date_local_str)
-        formatted_date = dt_object.strftime('%Y-%m-%d %H:%M:%S')
-    except ValueError:
-        # well, nevermind
+    # try:
+    #    dt_object = datetime.datetime.fromisoformat(date_local_str)
+    #    formatted_date = dt_object.strftime('%Y-%m-%d %H:%M:%S')
+    # except ValueError:
+    # well, nevermind
         formatted_date = date_local_str
 
     output = (f"{launch_name} ({formatted_date}) {rocket_name} - "
