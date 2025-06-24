@@ -46,7 +46,7 @@ def main():
         sys.exit(1)
 
     latest_launches.sort(key=lambda x: x.get('date_unix', 0))
-    latest_launch = latest_launches[0] 
+    latest_launch = latest_launches[0]
 
     # initial information
     launch_name = latest_launch.get('name', 'Unknown')
