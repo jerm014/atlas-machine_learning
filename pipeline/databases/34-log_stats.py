@@ -2,6 +2,8 @@
 """ documentation """
 import pymongo
 
+methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+
 
 def nginx_log_stats():
     """
@@ -10,6 +12,13 @@ def nginx_log_stats():
     and a specific count for '/status' GET requests.
     Handles cases where the collection might be empty or connection fails.
     """
+    def print_zero_stats():
+        print("0 logs")
+        print("Methods:")
+        for method in methods:
+            print(f"\tmethod {method}: 0")
+        print("0 status check")
+
     client = None
     try:
         client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
@@ -21,7 +30,7 @@ def nginx_log_stats():
         print(f"{total_logs} logs")
 
         print("Methods:")
-        methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+
         for method in methods:
             count = nginx_collection.count_documents({"method": method})
             print(f"\tmethod {method}: {count}")
@@ -30,21 +39,11 @@ def nginx_log_stats():
         print(f"{status_get_count} status check")
 
     except pymongo.errors.ConnectionFailure as e:
-        print(f"Could not connect to MongoDB: {e}")
-        print("0 logs")
-        print("Methods:")
-        methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-        for method in methods:
-            print(f"\tmethod {method}: 0")
-        print("0 status check")
+        print(f"Error: Could not connect to MongoDB. {e}")
+        print_zero_stats()
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-        print("0 logs")
-        print("Methods:")
-        methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-        for method in methods:
-            print(f"\tmethod {method}: 0")
-        print("0 status check")
+        print_zero_stats()
     finally:
         if client:
             client.close()
