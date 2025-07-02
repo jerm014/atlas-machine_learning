@@ -27,6 +27,9 @@ def nginx_log_stats():
         nginx_collection = db.nginx
 
         total_logs = nginx_collection.count_documents({})
+        if total_logs==0:
+            print_zero_stats()
+
         print(f"{total_logs} logs")
 
         print("Methods:")
