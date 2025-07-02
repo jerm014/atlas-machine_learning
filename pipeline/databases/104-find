@@ -1,0 +1,3 @@
+// copmment
+
+db.school.find({ name: /^Holberton/ });
