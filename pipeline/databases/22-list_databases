@@ -1,3 +1,4 @@
+// my comment
 cat << EOF | mongo
 show dbs
 bye
