@@ -1,3 +1,3 @@
 -- test
 
-show tables;
+SHOW TABLES;
