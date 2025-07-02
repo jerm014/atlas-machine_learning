@@ -1,5 +1,5 @@
 // my comment
-cat << EOF | mongo
+cat << EOF | mongo --quiet
 show dbs
 bye
 EOF
