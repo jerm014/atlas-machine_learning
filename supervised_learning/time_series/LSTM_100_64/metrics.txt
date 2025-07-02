@@ -1,6 +1,0 @@
-Model Type: lstm
-Training Time: 422.94 seconds
-Mean Squared Error (MSE): 44294.40
-Root Mean Squared Error (RMSE): 210.46
-Mean Absolute Error (MAE): 157.65
-Mean Absolute Percentage Error (MAPE): 2.13%

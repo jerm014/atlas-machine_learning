@@ -1,6 +1,0 @@
-Model Type: bidirectional
-Training Time: 1778.35 seconds
-Mean Squared Error (MSE): 11496.48
-Root Mean Squared Error (RMSE): 107.22
-Mean Absolute Error (MAE): 63.12
-Mean Absolute Percentage Error (MAPE): 0.93%

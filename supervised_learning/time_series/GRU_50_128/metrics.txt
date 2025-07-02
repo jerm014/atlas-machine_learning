@@ -1,6 +1,0 @@
-Model Type: gru
-Training Time: 1014.29 seconds
-Mean Squared Error (MSE): 15474.52
-Root Mean Squared Error (RMSE): 124.40
-Mean Absolute Error (MAE): 81.03
-Mean Absolute Percentage Error (MAPE): 1.07%
