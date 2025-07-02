@@ -28,4 +28,6 @@ def nginx_log_stats():
     status_get_count = nginx_collection.count_documents({"method": "GET", "path": "/status"})
     print(f"{status_get_count} status check")
 
-nginx_log_stats()
+
+if __name__ == "__main__":
+    nginx_log_stats()
