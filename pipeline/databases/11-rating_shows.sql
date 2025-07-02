@@ -1,3 +1,3 @@
 -- test
 
-SHOW TABLES;
+DESCRIBE tv_show_ratings;
