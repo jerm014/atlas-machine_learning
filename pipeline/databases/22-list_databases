@@ -1,0 +1,4 @@
+cat << EOF | mongo
+show dbs
+bye
+EOF
