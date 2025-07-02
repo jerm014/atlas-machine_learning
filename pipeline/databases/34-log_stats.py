@@ -19,6 +19,7 @@ def nginx_log_stats():
             print(f"\tmethod {method}: 0")
         print("0 status check")
 
+    print(f"logs")
     client = None
     client = pymongo.MongoClient("mongodb://127.0.0.1:27017/")
 
