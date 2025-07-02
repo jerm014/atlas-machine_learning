@@ -1,3 +1,7 @@
--- test
+-- display the average temperature (Fahrenheit) by city
+-- from the 'temperatures' table, ordered by temperature (descending)
 
-SHOW TABLES;
+SELECT city, AVG(avg_temp) AS avg_fahrenheit
+FROM temperatures
+GROUP BY city
+ORDER BY avg_fahrenheit DESC;
